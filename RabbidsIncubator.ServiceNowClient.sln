@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31919.166
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp", "src\ConsoleApp\ConsoleApp.csproj", "{19754784-576E-41A2-90CF-9F56E0C18A70}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0 - Solution Items", "0 - Solution Items", "{03243F43-0975-4776-A5D3-9BA7141293DA}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Applications", "2 - Applications", "{F7D6E20F-DE5F-4FFB-8107-63CCDC503D6C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Libraries", "1 - Libraries", "{B952F0A1-0DB3-4D9F-BD49-C3DB6389FCB4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{19754784-576E-41A2-90CF-9F56E0C18A70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19754784-576E-41A2-90CF-9F56E0C18A70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19754784-576E-41A2-90CF-9F56E0C18A70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19754784-576E-41A2-90CF-9F56E0C18A70}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{19754784-576E-41A2-90CF-9F56E0C18A70} = {F7D6E20F-DE5F-4FFB-8107-63CCDC503D6C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CF38BCED-2352-4EDA-A4D5-1462CCD9C659}
+	EndGlobalSection
+EndGlobal
