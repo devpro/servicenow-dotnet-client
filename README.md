@@ -1,12 +1,13 @@
 # ServiceNow .NET Client
 
-.NET client for ServiceNow: REST API available on DockerHub and .NET librairies on NuGet. This components work on any system (Linux, MacOS, Windows) and are completely free to use.
+This is the .NET codebase that will provide client components (API & libraries) to interact with [ServiceNow](https://www.servicenow.com/), that will work on any system (Linux, MacOS, Windows) and are free to use.
 
 ## How to have a ServiceNow instance
 
 ### ServiceNow Developer program
 
 * Register to [ServiceNow Developer program](https://developer.servicenow.com/dev.do)
+* Open the [REST API Explorer](https://devXXXXX.service-now.com/nav_to.do?uri=%2F$restapi.do) (XXXX to be replaced in the link)
 
 ## How to get knowledge about ServiceNow
 
@@ -40,8 +41,11 @@ dotnet build
 * Commands from the root folder of the repository
 
 ```bash
-# restores packages
+# runs the project
 dotnet run --project src/ConsoleApp
+
+# runs the dll with options
+dotnet src/ConsoleApp/bin/Debug/net6.0/RabbidsIncubator.ServiceNowClient.ConsoleApp.dll -v
 ```
 
 ### Debug steps

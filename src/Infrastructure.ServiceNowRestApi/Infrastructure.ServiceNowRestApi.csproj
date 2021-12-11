@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi</AssemblyName>
+    <RootNamespace>RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi</RootNamespace>
+    <ProjectGuid>{D1503758-1C3A-4CB3-8C9C-AAD9D31B1E91}</ProjectGuid>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Withywoods.Net.Http" Version="1.4.4" />
+    <PackageReference Include="Withywoods.Serialization" Version="1.4.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+  </ItemGroup>
+
+</Project>
