@@ -10,10 +10,20 @@
 
         public string HttpClientName { get; } = "ServiceNowRestApiClient";
 
+        /// <summary>
+        /// Username of the ServiceNow REST Api user account.
+        /// </summary>
         public string? Username { get; set; }
 
+        /// <summary>
+        /// Password of the ServiceNow REST Api user account.
+        /// </summary>
         public string? Password { get; set; }
 
+        /// <summary>
+        /// Is the configuration valid?
+        /// </summary>
+        /// <returns></returns>
         public bool IsValid()
         {
             return !string.IsNullOrEmpty(BaseUrl)

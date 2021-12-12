@@ -3,12 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp", "src\ConsoleApp\ConsoleApp.csproj", "{19754784-576E-41A2-90CF-9F56E0C18A70}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp", "src\ConsoleApp\ConsoleApp.csproj", "{036F4842-98FC-4725-9E40-11C9F6A4E623}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0 - Solution Items", "0 - Solution Items", "{03243F43-0975-4776-A5D3-9BA7141293DA}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		.gitignore = .gitignore
+		Directory.Build.props = Directory.Build.props
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -20,9 +21,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Infrastructure", "2 - I
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Domain", "3 - Domain", "{4F493B0A-102E-4FE5-AE00-65161EE03F22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "src\Domain\Domain.csproj", "{D1571D48-39E0-439A-BF41-F7E038C41962}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "src\Domain\Domain.csproj", "{D1571D48-39E0-439A-BF41-F7E038C41962}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.ServiceNowRestApi", "src\Infrastructure.ServiceNowRestApi\Infrastructure.ServiceNowRestApi.csproj", "{2AAC7882-5844-4745-9AF5-9D74791F4380}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.ServiceNowRestApi", "src\Infrastructure.ServiceNowRestApi\Infrastructure.ServiceNowRestApi.csproj", "{D1503758-1C3A-4CB3-8C9C-AAD9D31B1E91}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.ServiceNowRestApi.UnitTests", "test\Infrastructure.ServiceNowRestApi.UnitTests\Infrastructure.ServiceNowRestApi.UnitTests.csproj", "{E72A59EC-7CB5-4B8D-B6F4-B62A59B57560}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "src\WebApi\WebApi.csproj", "{F4D38D82-DEA4-45E8-A623-600E59622217}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "src\Application\Application.csproj", "{F4482CDC-8EE3-4612-B257-0427F6A71E89}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,26 +37,41 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{19754784-576E-41A2-90CF-9F56E0C18A70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{19754784-576E-41A2-90CF-9F56E0C18A70}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{19754784-576E-41A2-90CF-9F56E0C18A70}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{19754784-576E-41A2-90CF-9F56E0C18A70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{036F4842-98FC-4725-9E40-11C9F6A4E623}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{036F4842-98FC-4725-9E40-11C9F6A4E623}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{036F4842-98FC-4725-9E40-11C9F6A4E623}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{036F4842-98FC-4725-9E40-11C9F6A4E623}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D1571D48-39E0-439A-BF41-F7E038C41962}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D1571D48-39E0-439A-BF41-F7E038C41962}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1571D48-39E0-439A-BF41-F7E038C41962}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1571D48-39E0-439A-BF41-F7E038C41962}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2AAC7882-5844-4745-9AF5-9D74791F4380}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2AAC7882-5844-4745-9AF5-9D74791F4380}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2AAC7882-5844-4745-9AF5-9D74791F4380}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2AAC7882-5844-4745-9AF5-9D74791F4380}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1503758-1C3A-4CB3-8C9C-AAD9D31B1E91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1503758-1C3A-4CB3-8C9C-AAD9D31B1E91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1503758-1C3A-4CB3-8C9C-AAD9D31B1E91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1503758-1C3A-4CB3-8C9C-AAD9D31B1E91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E72A59EC-7CB5-4B8D-B6F4-B62A59B57560}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E72A59EC-7CB5-4B8D-B6F4-B62A59B57560}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E72A59EC-7CB5-4B8D-B6F4-B62A59B57560}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E72A59EC-7CB5-4B8D-B6F4-B62A59B57560}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4D38D82-DEA4-45E8-A623-600E59622217}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4D38D82-DEA4-45E8-A623-600E59622217}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4D38D82-DEA4-45E8-A623-600E59622217}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4D38D82-DEA4-45E8-A623-600E59622217}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4482CDC-8EE3-4612-B257-0427F6A71E89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4482CDC-8EE3-4612-B257-0427F6A71E89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4482CDC-8EE3-4612-B257-0427F6A71E89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4482CDC-8EE3-4612-B257-0427F6A71E89}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{19754784-576E-41A2-90CF-9F56E0C18A70} = {F7D6E20F-DE5F-4FFB-8107-63CCDC503D6C}
+		{036F4842-98FC-4725-9E40-11C9F6A4E623} = {F7D6E20F-DE5F-4FFB-8107-63CCDC503D6C}
 		{D1571D48-39E0-439A-BF41-F7E038C41962} = {4F493B0A-102E-4FE5-AE00-65161EE03F22}
-		{2AAC7882-5844-4745-9AF5-9D74791F4380} = {E969C658-4C02-40AF-BB9F-0949F7B8AB90}
+		{D1503758-1C3A-4CB3-8C9C-AAD9D31B1E91} = {E969C658-4C02-40AF-BB9F-0949F7B8AB90}
+		{E72A59EC-7CB5-4B8D-B6F4-B62A59B57560} = {E969C658-4C02-40AF-BB9F-0949F7B8AB90}
+		{F4D38D82-DEA4-45E8-A623-600E59622217} = {F7D6E20F-DE5F-4FFB-8107-63CCDC503D6C}
+		{F4482CDC-8EE3-4612-B257-0427F6A71E89} = {F7D6E20F-DE5F-4FFB-8107-63CCDC503D6C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CF38BCED-2352-4EDA-A4D5-1462CCD9C659}

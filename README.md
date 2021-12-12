@@ -1,18 +1,18 @@
 # ServiceNow .NET Client
 
-This is the .NET codebase that will provide client components (API & libraries) to interact with [ServiceNow](https://www.servicenow.com/), that will work on any system (Linux, MacOS, Windows) and are free to use.
+This is the codebase of .NET components (API & libraries) to integrate with [ServiceNow](https://www.servicenow.com/) from any system (Linux, MacOS, Windows).
 
 ## How to have a ServiceNow instance
 
 ### ServiceNow Developer program
 
-* Register to [ServiceNow Developer program](https://developer.servicenow.com/dev.do)
-* Open the [REST API Explorer](https://devXXXXX.service-now.com/nav_to.do?uri=%2F$restapi.do) (XXXX to be replaced in the link)
+* Register to [ServiceNow Developer program](https://developer.servicenow.com/dev.do) (free)
 
 ## How to get knowledge about ServiceNow
 
 ### ServiceNow resources
 
+* [REST API Explorer](https://dev12345.service-now.com/nav_to.do?uri=%2F$restapi.do) (dev12345 to be replaced with your instance name)
 * [Youtube channel](https://www.youtube.com/channel/UCdXorgCT87YlFRN9n8oJ7_A)
 * [Developer community](https://community.servicenow.com/community?id=community_forum&sys_id=75291a2ddbd897c068c1fb651f9619f3)
 * [Product documentation](https://docs.servicenow.com/)
@@ -29,11 +29,33 @@ This is the .NET codebase that will provide client components (API & libraries) 
 * Commands from the root folder of the repository
 
 ```bash
-# restores packages
+# restores .NET packages
 dotnet restore
 
-# builds the solution
+# builds the .NET solution
 dotnet build
+```
+
+### Configure steps
+
+* Create the file `src/ConsoleApp/Properties/launchSettings.json` 
+(can be done from Visual Studio by opening `Properties` window of ConsoleApp project then `Debug` > `General`)
+
+```json
+# update with the values of your environment
+{
+  "profiles": {
+    "ConsoleApp": {
+      "commandName": "Project",
+      "commandLineArgs": "-v",
+      "environmentVariables": {
+        "ServiceNow__RestApi__Username": "admin",
+        "ServiceNow__RestApi__Password": "*********",
+        "ServiceNow__RestApi__BaseUrl": "https://devxxxxx.service-now.com/api/now"
+      }
+    }
+  }
+}
 ```
 
 ### Run steps
@@ -41,10 +63,10 @@ dotnet build
 * Commands from the root folder of the repository
 
 ```bash
-# runs the project
+# runs the Console project
 dotnet run --project src/ConsoleApp
 
-# runs the dll with options
+# runs the Console dll with options
 dotnet src/ConsoleApp/bin/Debug/net6.0/RabbidsIncubator.ServiceNowClient.ConsoleApp.dll -v
 ```
 
@@ -56,7 +78,6 @@ dotnet src/ConsoleApp/bin/Debug/net6.0/RabbidsIncubator.ServiceNowClient.Console
 * Click on `Debug` > `Start Debugging` (`F5`)
 
 ### Quality steps
-
 
 * Commands from the root folder of the repository
 

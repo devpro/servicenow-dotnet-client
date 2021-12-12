@@ -15,8 +15,8 @@ namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.Dto
         [JsonProperty("sys_updated_on")]
         public string? SystemUpdatedOn { get; set; }
 
-        [JsonProperty("SystemTags")]
-        public string? sys_tags { get; set; }
+        [JsonProperty("sys_tags")]
+        public string? SystemTags { get; set; }
 
         [JsonProperty("type")]
         public LinkValueDto? ConfigurationItemRelationshipType { get; set; }

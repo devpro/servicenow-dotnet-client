@@ -12,6 +12,7 @@ namespace RabbidsIncubator.ServiceNowClient.ConsoleApp
             _configurationRoot = configurationRoot;
         }
 
-        public ServiceNowRestApiConfiguration ServiceNowRestApiConfiguration => _configurationRoot.GetSection("ServiceNow:RestApi").Get<ServiceNowRestApiConfiguration>();
+        public ServiceNowRestApiConfiguration ServiceNowRestApiConfiguration =>
+            _configurationRoot.GetSection("ServiceNow:RestApi").Get<ServiceNowRestApiConfiguration>();
     }
 }

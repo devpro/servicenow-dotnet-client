@@ -8,7 +8,18 @@ namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.Dep
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddServiceNowRestApi<T>(this IServiceCollection services, T configuration)
+        /// <summary>
+        /// Register services to be able to use the ServiceNow REST API infrastructure library:
+        /// - Configuration
+        /// - Repositories
+        /// - HTTP client
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="services"></param>
+        /// <param name="configuration"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static IServiceCollection AddServiceNowRestApiRepositories<T>(this IServiceCollection services, T configuration)
             where T : ServiceNowRestApiConfiguration
         {
             if (services == null)
