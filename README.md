@@ -1,5 +1,7 @@
 # ServiceNow .NET Client
 
+[![GitLab Pipeline Status](https://gitlab.com/rabbids-incubator/servicenow-dotnet-client/badges/main/pipeline.svg)](https://gitlab.com/rabbids-incubator/servicenow-dotnet-client/-/commits/main)
+
 This is the codebase of .NET components (API & libraries) to integrate with [ServiceNow](https://www.servicenow.com/) from any system (Linux, MacOS, Windows).
 
 ## How to have a ServiceNow instance
