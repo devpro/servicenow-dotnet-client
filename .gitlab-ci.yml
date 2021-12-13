@@ -1,0 +1,2 @@
+include:
+  - remote: "https://github.com/rabbids-incubator/gitlab-pipeline-definitions/blob/feature/dotnet-templates/dotnet/build-test.yml"
