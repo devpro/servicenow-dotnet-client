@@ -1,2 +1,5 @@
 include:
-  - remote: "https://raw.githubusercontent.com/rabbids-incubator/gitlab-pipeline-definitions/feature/dotnet-templates/dotnet/build-test.yml"
+  - remote: "https://raw.githubusercontent.com/rabbids-incubator/gitlab-pipeline-definitions/feature/dotnet-templates/dotnet/ci.yml"
+
+build:
+  extends: .dotnet_build

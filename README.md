@@ -92,3 +92,16 @@ dotnet src/ConsoleApp/bin/Debug/net6.0/RabbidsIncubator.ServiceNowClient.Console
 # review and update source files from the rules defined in .editorconfig file
 dotnet format
 ```
+
+### Run locally the Gitlab pipeline
+
+* Commands from the root folder of the repository (workaround found on [gitlab-runner issue#4275](https://gitlab.com/gitlab-org/gitlab-runner/-/issues/4275))
+
+```bash
+mkdir -p .gitlab/runner/local
+docker run --rm --name gitlab-runner -v /var/run/docker.sock:/var/run/docker.sock -v $PWD/.gitlab/runner/local/config:/etc/gitlab-runner -v $PWD:$PWD --workdir $PWD gitlab/gitlab-runner exec shell build
+```
+
+* Includes are not supported unfortunately
+  * Issue(s): [Local runner execution MVC](https://gitlab.com/gitlab-org/gitlab-runner/-/issues/2797)
+  * Alternative(s): [firecow/gitlab-ci-local](https://github.com/firecow/gitlab-ci-local)
