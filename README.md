@@ -95,7 +95,7 @@ dotnet format
 
 ### Run locally the Gitlab pipeline
 
-* Commands from the root folder of the repository (workaround found on [gitlab-runner issue#4275](https://gitlab.com/gitlab-org/gitlab-runner/-/issues/4275))
+* Use Docker image (workaround found on [gitlab-runner issue#4275](https://gitlab.com/gitlab-org/gitlab-runner/-/issues/4275))
 
 ```bash
 mkdir -p .gitlab/runner/local

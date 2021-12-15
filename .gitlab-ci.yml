@@ -3,3 +3,6 @@ include:
 
 build:
   extends: .dotnet_build
+
+test:
+  extends: .dotnet_test
