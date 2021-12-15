@@ -20,13 +20,18 @@ This is the codebase of .NET components (API & libraries) to integrate with [Ser
 * [Product documentation](https://docs.servicenow.com/)
   * [Now Platform App Engine > Web services > REST API (Rome)](https://docs.servicenow.com/bundle/rome-application-development/page/integrate/inbound-rest/concept/c_RESTAPI.html)
 
+### Local documentation
+
+* [Community](./docs/community.md)
+* [ServiceNow CMDB](./docs/servicenow-cmdb.md)
+
 ## How to build the solution
 
-### Build requirements
+### Requirements
 
 * [.NET 6.0 SDK](https://dotnet.microsoft.com/download)
 
-### Build steps
+### Build
 
 * Commands from the root folder of the repository
 
@@ -38,7 +43,7 @@ dotnet restore
 dotnet build
 ```
 
-### Configure steps
+### Configuration
 
 * Create the file `src/ConsoleApp/Properties/launchSettings.json` 
 (can be done from Visual Studio by opening `Properties` window of ConsoleApp project then `Debug` > `General`)
@@ -60,7 +65,7 @@ dotnet build
 }
 ```
 
-### Run steps
+### Run
 
 * Commands from the root folder of the repository
 
@@ -72,14 +77,14 @@ dotnet run --project src/ConsoleApp
 dotnet src/ConsoleApp/bin/Debug/net6.0/RabbidsIncubator.ServiceNowClient.ConsoleApp.dll -v
 ```
 
-### Debug steps
+### Debug
 
-#### Visual Studio 2019/2022
+#### Debug in Visual Studio 2022
 
 * Add breakpoint(s)
 * Click on `Debug` > `Start Debugging` (`F5`)
 
-### Quality steps
+### Quality
 
 * Commands from the root folder of the repository
 
