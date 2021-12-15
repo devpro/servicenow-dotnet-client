@@ -12,28 +12,28 @@ This is the codebase of .NET components (API & libraries) to integrate with [Ser
 
 ## How to get knowledge about ServiceNow
 
-### ServiceNow resources
-
-* [REST API Explorer](https://dev12345.service-now.com/nav_to.do?uri=%2F$restapi.do) (dev12345 to be replaced with your instance name)
-* [Youtube channel](https://www.youtube.com/channel/UCdXorgCT87YlFRN9n8oJ7_A)
-* [Developer community](https://community.servicenow.com/community?id=community_forum&sys_id=75291a2ddbd897c068c1fb651f9619f3)
-* [Product documentation](https://docs.servicenow.com/)
-  * [Now Platform App Engine > Web services > REST API (Rome)](https://docs.servicenow.com/bundle/rome-application-development/page/integrate/inbound-rest/concept/c_RESTAPI.html)
-
-### Local documentation
-
 * [Community](./docs/community.md)
 * [ServiceNow CMDB](./docs/servicenow-cmdb.md)
+* [ServiceNow Resources](./docs/servicenow-resources.md)
 
 ## How to build the solution
 
+All commands are to be ran from the root folder of the repository (where the sln file is).
+
 ### Requirements
 
-* [.NET 6.0 SDK](https://dotnet.microsoft.com/download)
+* [git CLI](https://git-scm.com/)
+* [.NET 6.0 SDK](https://dotnet.microsoft.com/download) (or above)
+* (Optional) [Docker Engine](https://docs.docker.com/engine/install/ubuntu/)
+
+### Cloning
+
+```bash
+# clones with HTTPS URL
+git clone https://github.com/rabbids-incubator/servicenow-dotnet-client.git
+```
 
 ### Build
-
-* Commands from the root folder of the repository
 
 ```bash
 # restores .NET packages
@@ -65,9 +65,22 @@ dotnet build
 }
 ```
 
-### Run
+* Create the file `src/WebApi/appsettings.Development.json`
 
-* Commands from the root folder of the repository
+```json
+# update with the values of your environment
+{
+  "ServiceNow": {
+    "RestApi": {
+      "BaseUrl": "https://devxxxxx.service-now.com/api/now",
+      "Username": "admin",
+      "Password": ""*********"
+    }
+  }
+}
+```
+
+### Run
 
 ```bash
 # runs the Console project
@@ -75,33 +88,42 @@ dotnet run --project src/ConsoleApp
 
 # runs the Console dll with options
 dotnet src/ConsoleApp/bin/Debug/net6.0/RabbidsIncubator.ServiceNowClient.ConsoleApp.dll -v
+
+# runs the Web Api project (will be accessible at https://localhost:7079/swagger)
+dotnet run --project src/WebApi
+
+# checks api health (should returned "Healthy")
+curl -k https://localhost:7079/health
 ```
 
-### Debug
+### Debug in Visual Studio 2022
 
-#### Debug in Visual Studio 2022
-
-* Add breakpoint(s)
+* Add breakpoint(s) in the files
+* Select `WebApi` in the startup project list
 * Click on `Debug` > `Start Debugging` (`F5`)
 
 ### Quality
-
-* Commands from the root folder of the repository
 
 ```bash
 # review and update source files from the rules defined in .editorconfig file
 dotnet format
 ```
 
-### Run locally the Gitlab pipeline
-
-* Use Docker image (workaround found on [gitlab-runner issue#4275](https://gitlab.com/gitlab-org/gitlab-runner/-/issues/4275))
+### Docker image
 
 ```bash
-mkdir -p .gitlab/runner/local
-docker run --rm --name gitlab-runner -v /var/run/docker.sock:/var/run/docker.sock -v $PWD/.gitlab/runner/local/config:/etc/gitlab-runner -v $PWD:$PWD --workdir $PWD gitlab/gitlab-runner exec shell build
-```
+# creates a Docker image
+docker build . -t rabbidsincubator/servicenowclientapi -f src/WebApi/Dockerfile --no-cache
 
-* Includes are not supported unfortunately
-  * Issue(s): [Local runner execution MVC](https://gitlab.com/gitlab-org/gitlab-runner/-/issues/2797)
-  * Alternative(s): [firecow/gitlab-ci-local](https://github.com/firecow/gitlab-ci-local)
+# (once) logs in remote Docker repository (Artifactory)
+docker login devpro.jfrog.io
+
+# tags the image
+docker tag <IMAGE_ID> devpro.jfrog.io/rabbidsincubator-docker-local/servicenowclientapi
+
+# pushes the image to the repository (Artifactory)
+docker push devpro.jfrog.io/rabbidsincubator-docker-local/servicenowclientapi
+
+# pulls the image from the repository (Artifactory)
+docker pull devpro.jfrog.io/rabbidsincubator-docker-local/servicenowclientapi
+```

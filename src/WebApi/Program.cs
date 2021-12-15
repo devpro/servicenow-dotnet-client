@@ -12,6 +12,7 @@ builder.Services.AddRepositories(builder.Configuration.GetSection("ServiceNow:Re
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHealthChecks();
 
 // creates the application
 
@@ -28,6 +29,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
+app.MapHealthChecks("/health");
 
 // runs the application
 
