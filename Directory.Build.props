@@ -9,7 +9,7 @@
   </PropertyGroup>
  
   <Choose>
-    <When Condition=" '$(BUILD_SOURCEBRANCHNAME)' != 'master' ">
+    <When Condition=" '$(BUILD_SOURCEBRANCHNAME)' != 'main' ">
       <PropertyGroup>
         <!-- Alpha version numbers are MAJOR.MINOR.PATCH-alpha-###### -->
         <VersionSuffix>alpha-$(BUILD_BUILDID.PadLeft(6, '0'))</VersionSuffix>
