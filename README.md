@@ -10,6 +10,11 @@ This is the codebase of .NET components (API & libraries) to integrate with [Ser
 
 * Register to [ServiceNow Developer program](https://developer.servicenow.com/dev.do) (free)
 
+* Create a new user to authenticat REST API calls to ServiceNow
+  * Open the instance "Application Navigator" (URL like "https://devXXXXX.service-now.com/")
+  * In "User Administration" > "Users", create a new User with "Web service access only" checked
+  * Open the newly created user and assign CMDB Roles
+
 ## How to get knowledge about ServiceNow
 
 * [Community](./docs/community.md)
