@@ -14,8 +14,8 @@ namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.Uni
         public void AddServiceNowRestApiRepositories_ShouldProvideRepositories()
         {
             // Arrange
+            var configuration = CreateConfiguration();
             var serviceCollection = new ServiceCollection();
-            var configuration = CreateServiceNowRestApiConfiguration();
             serviceCollection.AddSingleton(new MapperConfiguration(x => { }).CreateMapper());
 
             // Act
@@ -23,13 +23,12 @@ namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.Uni
 
             // Assert
             var services = serviceCollection.BuildServiceProvider();
-            var organizationRepository = services.GetRequiredService<IConfigurationItemRelationshipRepository>();
-            organizationRepository.Should().NotBeNull();
+            services.GetRequiredService<IConfigurationItemRelationshipRepository>().Should().NotBeNull();
         }
 
-        private static ServiceNowRestApiConfiguration CreateServiceNowRestApiConfiguration()
+        private static ServiceNowRestApiConfiguration CreateConfiguration()
         {
-            return new ServiceNowRestApiConfiguration()
+            return new ServiceNowRestApiConfiguration
             {
                 BaseUrl = "https://dummy.service-now.doesntexist.com/api/now",
                 Username = "bondjamesbond",

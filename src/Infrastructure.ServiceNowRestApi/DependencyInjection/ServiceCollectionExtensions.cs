@@ -29,6 +29,7 @@ namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.Dep
 
             services.AddSingleton(configuration);
             services.TryAddTransient<Domain.Repositories.IConfigurationItemRelationshipRepository, Repositories.ConfigurationItemRelationshipRepository>();
+            services.TryAddTransient<Domain.Repositories.ISwitchRepository, Repositories.SwitchRepository>();
             services
                 .AddHttpClient(configuration.HttpClientName, client =>
                 {

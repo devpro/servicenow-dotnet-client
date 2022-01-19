@@ -2,7 +2,7 @@
 
 namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.Dto
 {
-    internal class ConfigurationItemRelationshipDto
+    internal partial class ConfigurationItemRelationshipDto
     {
         [JsonProperty("connection_strength")]
         public string? ConnectionStrength { get; set; }

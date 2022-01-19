@@ -1,5 +1,6 @@
 ﻿using RabbidsIncubator.ServiceNowClient.Application.DependencyInjection;
 using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi;
+using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.DependencyInjection;
 
 // creates the builder
 
@@ -8,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // adds services to the collection
 
 builder.Services.AddAutoMapperConfiguration();
-builder.Services.AddRepositories(builder.Configuration.GetSection("ServiceNow:RestApi").Get<ServiceNowRestApiConfiguration>());
+builder.Services.AddServiceNowRestApiRepositories(builder.Configuration.GetSection("ServiceNow:RestApi").Get<ServiceNowRestApiConfiguration>());
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -34,3 +35,9 @@ app.MapHealthChecks("/health");
 // runs the application
 
 app.Run();
+
+// fix: make Program class public for tests
+// see: https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-6.0#basic-tests-with-the-default-webapplicationfactory
+#pragma warning disable CA1050 // Declare types in namespaces
+public partial class Program { }
+#pragma warning restore CA1050 // Declare types in namespaces

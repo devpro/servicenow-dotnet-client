@@ -2,11 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <AssemblyName>RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.UnitTests</AssemblyName>
-    <RootNamespace>RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.UnitTests</RootNamespace>
-    <ProjectGuid>{B7668B23-D052-41E3-A4A4-FE2B919133FC}</ProjectGuid>
-    <Nullable>enable</Nullable>
+    <AssemblyName>RabbidsIncubator.ServiceNowClient.WebApi.IntegrationTests</AssemblyName>
+    <RootNamespace>RabbidsIncubator.ServiceNowClient.WebApi.IntegrationTests</RootNamespace>
+    <ProjectGuid>{3672D7C4-1D56-4C24-A419-6FB63686D06E}</ProjectGuid>
     <IsPackable>false</IsPackable>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -20,8 +20,9 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="FluentAssertions" Version="6.3.0" />
-    <PackageReference Include="JunitXml.TestLogger" Version="3.0.110" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
+    <PackageReference Include="Withywoods.WebTesting" Version="1.4.5" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -30,7 +31,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Infrastructure.ServiceNowRestApi\Infrastructure.ServiceNowRestApi.csproj" />
+    <ProjectReference Include="..\..\src\WebApi\WebApi.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="xunit.runner.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

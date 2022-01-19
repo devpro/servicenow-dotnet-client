@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RabbidsIncubator.ServiceNowClient.Application.DependencyInjection;
 using RabbidsIncubator.ServiceNowClient.Domain.Repositories;
+using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.DependencyInjection;
 
 namespace RabbidsIncubator.ServiceNowClient.ConsoleApp
 {
@@ -71,7 +72,7 @@ namespace RabbidsIncubator.ServiceNowClient.ConsoleApp
                         .AddFilter("RabbidsIncubator.ServiceNowClient", opts.IsVerbose ? LogLevel.Debug : LogLevel.Information)
                         .AddConsole();
                 })
-                .AddRepositories(appConfiguration.ServiceNowRestApiConfiguration)
+                .AddServiceNowRestApiRepositories(appConfiguration.ServiceNowRestApiConfiguration)
                 .AddAutoMapperConfiguration();
 
             return serviceCollection.BuildServiceProvider();
