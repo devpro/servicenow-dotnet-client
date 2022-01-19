@@ -8,7 +8,7 @@ using Xunit;
 namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.UnitTests.DependencyInjection
 {
     [Trait("Category", "UnitTests")]
-    public class ServiceCollectionExtensionsUnitTest
+    public class ServiceCollectionExtensionsTest
     {
         [Fact]
         public void AddServiceNowRestApiRepositories_ShouldProvideRepositories()

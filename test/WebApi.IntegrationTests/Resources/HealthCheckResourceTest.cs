@@ -7,11 +7,11 @@ using Xunit.Abstractions;
 namespace RabbidsIncubator.ServiceNowClient.WebApi.IntegrationTests.Resources
 {
     [Trait("Category", "IntegrationTests")]
-    public class HealthCheckIntegrationTest : ResourceBase
+    public class HealthCheckResourceTest : ResourceBase
     {
         private const string ResourceEndpoint = "health";
 
-        public HealthCheckIntegrationTest(WebApplicationFactory<Program> factory, ITestOutputHelper testOutput)
+        public HealthCheckResourceTest(WebApplicationFactory<Program> factory, ITestOutputHelper testOutput)
             : base(factory, testOutput)
         {
         }

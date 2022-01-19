@@ -30,11 +30,12 @@ namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.Rep
         /// Generate URL from parameters.
         /// </summary>
         /// <param name="tableName">Table name.</param>
-        /// <param name="limit">Limit of items to be returned, default to 1.</param>
+        /// <param name="offset">Start index of the items to be returned, default to 0</param>
+        /// <param name="limit">Limit number of items to be returned, default to 10.</param>
         /// <returns></returns>
-        protected string GenerateUrl(string tableName, int limit = 1)
+        protected string GenerateUrl(string tableName, int offset = 0, int limit = 10)
         {
-            return $"{_restApiConfiguration.BaseUrl}/table/{tableName}?sysparm_limit={limit}";
+            return $"{_restApiConfiguration.BaseUrl}/table/{tableName}?sysparm_offset={offset}&sysparm_limit={limit}";
         }
     }
 }

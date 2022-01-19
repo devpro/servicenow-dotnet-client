@@ -22,7 +22,7 @@ namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.Rep
 
         public async Task<List<SwitchModel>> FindAllAsync()
         {
-            var url = GenerateUrl("cmdb_rel_ci");
+            var url = GenerateUrl("cmdb_ci_ip_switch");
             var resultList = await GetAsync<ResultListDto<SwitchDto>>(url);
             return Mapper.Map<List<SwitchModel>>(resultList.Result);
         }

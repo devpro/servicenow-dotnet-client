@@ -18,6 +18,7 @@ namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.Map
 
             CreateMap<Dto.SwitchDto, Domain.Models.SwitchModel>()
                 .ForMember(x => x.Id, opt => opt.MapFrom(x => x.SysId))
+                .ForMember(x => x.IsStack, opt => opt.MapFrom(x => x.Stack))
                 .ForMember(x => x.IpAddress, opt => opt.MapFrom(x => x.IpAddress));
         }
     }
