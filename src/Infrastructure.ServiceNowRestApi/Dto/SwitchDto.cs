@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.Dto
 {
@@ -16,5 +17,37 @@ namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.Dto
 
         [JsonProperty("ip_address")]
         public string? IpAddress { get; set; }
+
+        internal Dictionary<string, string>? ToDictionary()
+        {
+            var dictionary = new Dictionary<string, string>();
+
+            if (!string.IsNullOrEmpty(SysId))
+            {
+                dictionary["sys_id"] = SysId;
+            }
+
+            if (!string.IsNullOrEmpty(Name))
+            {
+                dictionary["name"] = Name;
+            }
+
+            if (Stack.HasValue)
+            {
+                dictionary["stack"] = Stack.Value.ToString();
+            }
+
+            if (!string.IsNullOrEmpty(SerialNumber))
+            {
+                dictionary["serial_number"] = SerialNumber;
+            }
+
+            if (!string.IsNullOrEmpty(IpAddress))
+            {
+                dictionary["ip_address"] = IpAddress;
+            }
+
+            return dictionary;
+        }
     }
 }

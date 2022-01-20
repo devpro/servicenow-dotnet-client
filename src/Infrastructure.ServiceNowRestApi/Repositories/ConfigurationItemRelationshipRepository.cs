@@ -22,7 +22,7 @@ namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.Rep
 
         public async Task<List<ConfigurationItemRelationshipModel>> FindAllAsync()
         {
-            var url = GenerateUrl("cmdb_rel_ci");
+            var url = GenerateUrl("cmdb_rel_ci", null, 0, 10);
             var resultList = await GetAsync<ResultListDto<ConfigurationItemRelationshipDto>>(url);
             return Mapper.Map<List<ConfigurationItemRelationshipModel>>(resultList.Result);
         }

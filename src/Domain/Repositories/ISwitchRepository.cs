@@ -6,6 +6,6 @@ namespace RabbidsIncubator.ServiceNowClient.Domain.Repositories
 {
     public interface ISwitchRepository
     {
-        Task<List<SwitchModel>> FindAllAsync();
+        Task<List<SwitchModel>> FindAllAsync(QueryModel<SwitchModel> query);
     }
 }

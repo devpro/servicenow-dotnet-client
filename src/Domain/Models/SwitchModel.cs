@@ -1,4 +1,7 @@
-﻿namespace RabbidsIncubator.ServiceNowClient.Domain.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace RabbidsIncubator.ServiceNowClient.Domain.Models
 {
     public class SwitchModel
     {

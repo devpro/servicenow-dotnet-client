@@ -20,6 +20,10 @@ namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.Map
                 .ForMember(x => x.Id, opt => opt.MapFrom(x => x.SysId))
                 .ForMember(x => x.IsStack, opt => opt.MapFrom(x => x.Stack))
                 .ForMember(x => x.IpAddress, opt => opt.MapFrom(x => x.IpAddress));
+
+            CreateMap<Domain.Models.SwitchModel, Dto.SwitchDto>()
+                .ForMember(x => x.SysId, opt => opt.MapFrom(x => x.Id))
+                .ForMember(x => x.Stack, opt => opt.MapFrom(x => x.IsStack));
         }
     }
 }

@@ -19,9 +19,9 @@ namespace RabbidsIncubator.ServiceNowClient.WebApi.Controllers
         }
 
         [HttpGet(Name = "GetSwitches")]
-        public async Task<List<SwitchModel>> Get(string? ipAddress)
+        public async Task<List<SwitchModel>> Get([FromQuery] SwitchModel model, int? startIndex, int? limit)
         {
-            var items = await _switchRepository.FindAllAsync();
+            var items = await _switchRepository.FindAllAsync(new QueryModel<SwitchModel>(model, startIndex, limit));
             _logger.LogDebug($"Number of items found: {items.Count}");
             return items;
         }
