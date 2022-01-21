@@ -1,6 +1,6 @@
 ﻿namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.Dto
 {
-    internal class LinkValueDto
+    public class LinkValueDto
     {
         public string? Link { get; set; }
 

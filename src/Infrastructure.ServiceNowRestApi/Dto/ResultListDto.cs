@@ -2,7 +2,7 @@
 
 namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.Dto
 {
-    internal class ResultListDto<T>
+    public class ResultListDto<T>
     {
         public ResultListDto()
         {

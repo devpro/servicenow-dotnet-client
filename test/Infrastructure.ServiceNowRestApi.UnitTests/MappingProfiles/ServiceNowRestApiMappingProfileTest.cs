@@ -8,7 +8,7 @@ namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.Uni
     public class ServiceNowRestApiMappingProfileTest
     {
         [Fact]
-        public void GenericMappingProfileBuildAutoMapper_AssertConfigurationIsValid()
+        public void ServiceNowRestApiMappingProfile_ShouldProvideValidConfiguration()
         {
             var mappingConfig = new MapperConfiguration(x =>
             {

@@ -24,6 +24,7 @@ namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.Uni
             // Assert
             var services = serviceCollection.BuildServiceProvider();
             services.GetRequiredService<IConfigurationItemRelationshipRepository>().Should().NotBeNull();
+            services.GetRequiredService<ISwitchRepository>().Should().NotBeNull();
         }
 
         private static ServiceNowRestApiConfiguration CreateConfiguration()

@@ -85,6 +85,20 @@ dotnet build
 }
 ```
 
+* (Optional) Create at the root of the repositoty a file `Local.runsettings`
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <RunConfiguration>
+    <EnvironmentVariables>
+      <IsLocalhostEnvironment>true</IsLocalhostEnvironment>
+      <ApiUrl></ApiUrl>
+    </EnvironmentVariables>
+  </RunConfiguration>
+</RunSettings>
+```
+
 ### Run
 
 ```bash
@@ -101,11 +115,25 @@ dotnet run --project src/WebApi
 curl -k https://localhost:7079/health
 ```
 
-### Debug in Visual Studio 2022
+### Debug the API in Visual Studio 2022
 
 * Add breakpoint(s) in the files
 * Select `WebApi` in the startup project list
 * Click on `Debug` > `Start Debugging` (`F5`)
+
+### Debug a test  Visual Studio 2022
+
+* Add breakpoint(s) in the files
+* (Optional) In the top menu, click on `Test` > `Configure Run Settings` > `Selection Solution Wide runsettings File`
+and select `Local.runsettings` at the root level of the solution
+* Select a test in the `Test Explorer` and click on Debug
+
+### Run tests
+
+```bash
+# runs all tests (unit + integration)
+dotnet test
+```
 
 ### Quality
 

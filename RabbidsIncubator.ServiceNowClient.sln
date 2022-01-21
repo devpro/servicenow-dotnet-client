@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0 - Solution Items", "0 - S
 		.gitignore = .gitignore
 		.gitlab-ci.yml = .gitlab-ci.yml
 		Directory.Build.props = Directory.Build.props
+		Local.runsettings = Local.runsettings
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -36,8 +37,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{D314857E-9
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.InMemory", "src\Infrastructure.InMemory\Infrastructure.InMemory.csproj", "{25997433-8E39-4C68-BD44-CDECDB4B1CFF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi.UnitTests", "test\WebApi.UnitTests\WebApi.UnitTests.csproj", "{64DE99B8-06E1-4BD0-971E-2004670BCE1F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi.IntegrationTests", "test\WebApi.IntegrationTests\WebApi.IntegrationTests.csproj", "{21CE6E53-4C11-47E8-9FEB-A307DB047CCF}"
 EndProject
@@ -77,10 +76,6 @@ Global
 		{25997433-8E39-4C68-BD44-CDECDB4B1CFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25997433-8E39-4C68-BD44-CDECDB4B1CFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{25997433-8E39-4C68-BD44-CDECDB4B1CFF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{64DE99B8-06E1-4BD0-971E-2004670BCE1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{64DE99B8-06E1-4BD0-971E-2004670BCE1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{64DE99B8-06E1-4BD0-971E-2004670BCE1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{64DE99B8-06E1-4BD0-971E-2004670BCE1F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{21CE6E53-4C11-47E8-9FEB-A307DB047CCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{21CE6E53-4C11-47E8-9FEB-A307DB047CCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21CE6E53-4C11-47E8-9FEB-A307DB047CCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -102,7 +97,6 @@ Global
 		{9F01E230-5B2E-46A0-B9DD-534E7A7A0BDB} = {B952F0A1-0DB3-4D9F-BD49-C3DB6389FCB4}
 		{D314857E-9EE4-4947-AD1A-0949B04E28CA} = {03243F43-0975-4776-A5D3-9BA7141293DA}
 		{25997433-8E39-4C68-BD44-CDECDB4B1CFF} = {B952F0A1-0DB3-4D9F-BD49-C3DB6389FCB4}
-		{64DE99B8-06E1-4BD0-971E-2004670BCE1F} = {F7D6E20F-DE5F-4FFB-8107-63CCDC503D6C}
 		{21CE6E53-4C11-47E8-9FEB-A307DB047CCF} = {F7D6E20F-DE5F-4FFB-8107-63CCDC503D6C}
 		{316EB894-BC0C-4846-86D7-AD3B66FC50AB} = {B952F0A1-0DB3-4D9F-BD49-C3DB6389FCB4}
 	EndGlobalSection

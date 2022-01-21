@@ -3,14 +3,12 @@ using Newtonsoft.Json;
 
 namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.Dto
 {
-    internal partial class SwitchDto
+    public partial class SwitchDto : IEntityDto
     {
         [JsonProperty("sys_id")]
         public string? SysId { get; set; }
 
         public string? Name { get; set; }
-
-        public bool? Stack { get; set; }
 
         [JsonProperty("serial_number")]
         public string? SerialNumber { get; set; }
@@ -18,7 +16,7 @@ namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.Dto
         [JsonProperty("ip_address")]
         public string? IpAddress { get; set; }
 
-        internal Dictionary<string, string>? ToDictionary()
+        public Dictionary<string, string>? ToDictionary()
         {
             var dictionary = new Dictionary<string, string>();
 
@@ -30,11 +28,6 @@ namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.Dto
             if (!string.IsNullOrEmpty(Name))
             {
                 dictionary["name"] = Name;
-            }
-
-            if (Stack.HasValue)
-            {
-                dictionary["stack"] = Stack.Value.ToString();
             }
 
             if (!string.IsNullOrEmpty(SerialNumber))
