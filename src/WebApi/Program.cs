@@ -1,6 +1,6 @@
 ﻿using RabbidsIncubator.ServiceNowClient.Application.DependencyInjection;
-using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi;
-using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.DependencyInjection;
+using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient;
+using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.DependencyInjection;
 
 // creates the builder
 
@@ -9,7 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 // adds services to the collection
 
 builder.Services.AddAutoMapperConfiguration();
-builder.Services.AddServiceNowRestApiRepositories(builder.Configuration.GetSection("ServiceNow:RestApi").Get<ServiceNowRestApiConfiguration>());
+builder.Services.AddServiceNowRestClientRepositories(builder.Configuration.GetSection("ServiceNow:RestApi").Get<ServiceNowRestClientConfiguration>());
+builder.Services.AddServiceNowRestClientGeneratedRepositories();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

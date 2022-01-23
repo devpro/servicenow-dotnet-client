@@ -1,4 +1,4 @@
-﻿namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.Dto
+﻿namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.Dto
 {
     public class LinkValueDto
     {

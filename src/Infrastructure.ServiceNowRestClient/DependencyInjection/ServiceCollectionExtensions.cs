@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.DependencyInjection
+namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {
@@ -19,8 +19,8 @@ namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.Dep
         /// <param name="configuration"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static IServiceCollection AddServiceNowRestApiRepositories<T>(this IServiceCollection services, T configuration)
-            where T : ServiceNowRestApiConfiguration
+        public static IServiceCollection AddServiceNowRestClientRepositories<T>(this IServiceCollection services, T configuration)
+            where T : ServiceNowRestClientConfiguration
         {
             if (services == null)
             {
@@ -30,6 +30,7 @@ namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.Dep
             services.AddSingleton(configuration);
             services.TryAddTransient<Domain.Repositories.IConfigurationItemRelationshipRepository, Repositories.ConfigurationItemRelationshipRepository>();
             services.TryAddTransient<Domain.Repositories.ISwitchRepository, Repositories.SwitchRepository>();
+            //services.AddServiceNowRestClientGeneratedRepositories();
             services
                 .AddHttpClient(configuration.HttpClientName, client =>
                 {

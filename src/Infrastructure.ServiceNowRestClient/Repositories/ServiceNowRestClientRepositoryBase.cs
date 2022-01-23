@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
 
-namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.Repositories
+namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.Repositories
 {
     /// <summary>
     /// Abstract class for repositories.
@@ -13,15 +13,15 @@ namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.Rep
     /// <remarks>
     /// https://docs.servicenow.com/bundle/rome-application-development/page/integrate/inbound-rest/concept/c_RESTAPI.html
     /// </remarks>
-    public abstract class ServiceNowRestApiRepositoryBase : Withywoods.Net.Http.HttpRepositoryBase
+    public abstract class ServiceNowRestClientRepositoryBase : Withywoods.Net.Http.HttpRepositoryBase
     {
-        private readonly ServiceNowRestApiConfiguration _restApiConfiguration;
+        private readonly ServiceNowRestClientConfiguration _restApiConfiguration;
 
-        protected ServiceNowRestApiRepositoryBase(
+        protected ServiceNowRestClientRepositoryBase(
             ILogger logger,
             IHttpClientFactory httpClientFactory,
             IMapper mapper,
-            ServiceNowRestApiConfiguration restApiConfiguration)
+            ServiceNowRestClientConfiguration restApiConfiguration)
             : base(logger, httpClientFactory)
         {
             Mapper = mapper;

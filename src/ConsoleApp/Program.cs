@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RabbidsIncubator.ServiceNowClient.Application.DependencyInjection;
 using RabbidsIncubator.ServiceNowClient.Domain.Repositories;
-using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.DependencyInjection;
+using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.DependencyInjection;
 
 namespace RabbidsIncubator.ServiceNowClient.ConsoleApp
 {
@@ -22,7 +22,7 @@ namespace RabbidsIncubator.ServiceNowClient.ConsoleApp
         private async static Task<int> RunOptionsAndReturnExitCode(CommandLineOptions opts)
         {
             var appConfiguration = new AppConfiguration(LoadConfiguration());
-            if (!appConfiguration.ServiceNowRestApiConfiguration.IsValid())
+            if (!appConfiguration.ServiceNowRestClientConfiguration.IsValid())
             {
                 Console.WriteLine("Missing or invalid ServiceNow configuration. Please make sure all parameters are set.");
                 return -1;
@@ -72,7 +72,7 @@ namespace RabbidsIncubator.ServiceNowClient.ConsoleApp
                         .AddFilter("RabbidsIncubator.ServiceNowClient", opts.IsVerbose ? LogLevel.Debug : LogLevel.Information)
                         .AddConsole();
                 })
-                .AddServiceNowRestApiRepositories(appConfiguration.ServiceNowRestApiConfiguration)
+                .AddServiceNowRestClientRepositories(appConfiguration.ServiceNowRestClientConfiguration)
                 .AddAutoMapperConfiguration();
 
             return serviceCollection.BuildServiceProvider();

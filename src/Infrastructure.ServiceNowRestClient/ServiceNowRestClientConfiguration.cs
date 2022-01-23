@@ -1,6 +1,6 @@
-﻿namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi
+﻿namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient
 {
-    public class ServiceNowRestApiConfiguration
+    public class ServiceNowRestClientConfiguration
     {
         /// <summary>
         /// ServiceNow REST Api base URL.
@@ -8,7 +8,7 @@
         /// <example>https://dev12345.service-now.com/api/now</example>
         public string? BaseUrl { get; set; }
 
-        public string HttpClientName { get; } = "ServiceNowRestApiClient";
+        public string HttpClientName { get; } = "ServiceNowRestClient";
 
         /// <summary>
         /// Username of the ServiceNow REST Api user account.

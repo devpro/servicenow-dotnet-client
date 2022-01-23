@@ -5,17 +5,17 @@ using AutoMapper;
 using Microsoft.Extensions.Logging;
 using RabbidsIncubator.ServiceNowClient.Domain.Models;
 using RabbidsIncubator.ServiceNowClient.Domain.Repositories;
-using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.Dto;
+using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.Dto;
 
-namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.Repositories
+namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.Repositories
 {
-    public class SwitchRepository : ServiceNowRestApiRepositoryBase, ISwitchRepository
+    public class SwitchRepository : ServiceNowRestClientRepositoryBase, ISwitchRepository
     {
         public SwitchRepository(
             ILogger<SwitchRepository> logger,
             IHttpClientFactory httpClientFactory,
             IMapper mapper,
-            ServiceNowRestApiConfiguration restApiConfiguration)
+            ServiceNowRestClientConfiguration restApiConfiguration)
             : base(logger, httpClientFactory, mapper, restApiConfiguration)
         {
         }

@@ -10,7 +10,8 @@ namespace RabbidsIncubator.ServiceNowClient.Application.DependencyInjection
             var mappingConfig = new MapperConfiguration(x =>
             {
                 // Infrastructure
-                x.AddProfile(new Infrastructure.ServiceNowRestApi.MappingProfiles.ServiceNowRestApiMappingProfile());
+                x.AddProfile(new Infrastructure.ServiceNowRestClient.MappingProfiles.ServiceNowRestClientMappingProfile());
+                x.AddProfile(new Infrastructure.ServiceNowRestClient.MappingProfiles.GeneratedServiceNowRestClientMappingProfile());
                 // General
                 x.AllowNullCollections = true;
             });

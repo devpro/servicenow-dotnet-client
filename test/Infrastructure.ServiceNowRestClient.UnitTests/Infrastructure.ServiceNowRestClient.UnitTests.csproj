@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <AssemblyName>RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.UnitTests</AssemblyName>
-    <RootNamespace>RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.UnitTests</RootNamespace>
+    <AssemblyName>RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.UnitTests</AssemblyName>
+    <RootNamespace>RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.UnitTests</RootNamespace>
     <ProjectGuid>{B7668B23-D052-41E3-A4A4-FE2B919133FC}</ProjectGuid>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Infrastructure.ServiceNowRestApi\Infrastructure.ServiceNowRestApi.csproj" />
+    <ProjectReference Include="..\..\src\Infrastructure.ServiceNowRestClient\Infrastructure.ServiceNowRestClient.csproj" />
   </ItemGroup>
 
 </Project>

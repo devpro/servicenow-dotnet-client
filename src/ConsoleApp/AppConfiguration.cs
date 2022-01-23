@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
-using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi;
+using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient;
 
 namespace RabbidsIncubator.ServiceNowClient.ConsoleApp
 {
@@ -12,7 +12,7 @@ namespace RabbidsIncubator.ServiceNowClient.ConsoleApp
             _configurationRoot = configurationRoot;
         }
 
-        public ServiceNowRestApiConfiguration ServiceNowRestApiConfiguration =>
-            _configurationRoot.GetSection("ServiceNow:RestApi").Get<ServiceNowRestApiConfiguration>();
+        public ServiceNowRestClientConfiguration ServiceNowRestClientConfiguration =>
+            _configurationRoot.GetSection("ServiceNow:RestApi").Get<ServiceNowRestClientConfiguration>();
     }
 }

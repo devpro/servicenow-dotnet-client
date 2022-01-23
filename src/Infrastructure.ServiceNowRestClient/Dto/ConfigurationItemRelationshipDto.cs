@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.Dto
+namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.Dto
 {
     public partial class ConfigurationItemRelationshipDto
     {

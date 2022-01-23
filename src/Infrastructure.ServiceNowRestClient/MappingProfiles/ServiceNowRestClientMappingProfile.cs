@@ -1,15 +1,15 @@
 ﻿using AutoMapper;
 
-namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestApi.MappingProfiles
+namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.MappingProfiles
 {
-    public class ServiceNowRestApiMappingProfile : Profile
+    public class ServiceNowRestClientMappingProfile : Profile
     {
         public override string ProfileName
         {
-            get { return "RabbidsIncubatorServiceNowClientRestApiServiceNowRestApiMappingProfile"; }
+            get { return "RabbidsIncubatorServiceNowRestClientMappingProfile"; }
         }
 
-        public ServiceNowRestApiMappingProfile()
+        public ServiceNowRestClientMappingProfile()
         {
             CreateMap<Dto.ConfigurationItemRelationshipDto, Domain.Models.ConfigurationItemRelationshipModel>()
                 .ForMember(x => x.Id, opt => opt.MapFrom(x => x.SysId))
