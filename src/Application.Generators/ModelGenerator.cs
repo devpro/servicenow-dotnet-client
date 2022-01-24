@@ -10,15 +10,15 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators
     {
         protected override void GenerateCode(GeneratorExecutionContext context, Models.GenerationConfigurationModel model)
         {
-            model.Entities?.ForEach(x => GenerateModel(context, x));
+            model.Entities?.ForEach(x => GenerateModel(context, x, model.Namespaces));
         }
 
-        private static void GenerateModel(GeneratorExecutionContext context, Models.EntityModel entity)
+        private static void GenerateModel(GeneratorExecutionContext context, Models.EntityModel entity, Models.NamespacesModel namespaces)
         {
             var entityPascalName = entity.Name.FirstCharToUpper();
 
             var sourceBuilder = new StringBuilder($@"
-namespace RabbidsIncubator.ServiceNowClient.Domain.Models
+namespace {namespaces.Root}.Domain.Models
 {{
     public class {entityPascalName}Model
     {{

@@ -10,25 +10,26 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators
     {
         protected override void GenerateCode(GeneratorExecutionContext context, Models.GenerationConfigurationModel model)
         {
-            var sourceBuilder = new StringBuilder(@"
+            var sourceBuilder = new StringBuilder($@"
 using AutoMapper;
 
-namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.MappingProfiles
-{
+namespace {model.Namespaces.Root}.Infrastructure.ServiceNowRestClient.MappingProfiles
+{{
     public class GeneratedServiceNowRestClientMappingProfile : Profile
-    {
+    {{
         public override string ProfileName
-        {
-            get { return ""RabbidsIncubatorServiceNowRestClientGeneratedMappingProfile""; }
-        }
+        {{
+            get {{ return ""{model.Namespaces.Root.Replace(".", "")}ServiceNowRestClientGeneratedMappingProfile""; }}
+        }}
 
         public GeneratedServiceNowRestClientMappingProfile()
-        {
+        {{
 ");
             foreach (var entity in model.Entities)
             {
                 sourceBuilder.Append($@"
             CreateMap<Dto.{entity.Name.FirstCharToUpper()}Dto, Domain.Models.{entity.Name.FirstCharToUpper()}Model>();
+            CreateMap<Domain.Models.{entity.Name.FirstCharToUpper()}Model, Dto.{entity.Name.FirstCharToUpper()}Dto>();
 ");
             }
 

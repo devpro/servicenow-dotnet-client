@@ -8,6 +8,9 @@ using YamlDotNet.Serialization.NamingConventions;
 
 namespace RabbidsIncubator.ServiceNowClient.Application.Generators
 {
+    /// <summary>
+    /// Base class for all code generators.
+    /// </summary>
     public abstract class GeneratorBase : ISourceGenerator
     {
         // ISourceGenerator methods

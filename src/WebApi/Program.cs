@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // adds services to the collection
 
-builder.Services.AddAutoMapperConfiguration();
+builder.Services.AddAutoMapperConfiguration(new RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.MappingProfiles.GeneratedServiceNowRestClientMappingProfile());
 builder.Services.AddServiceNowRestClientRepositories(builder.Configuration.GetSection("ServiceNow:RestApi").Get<ServiceNowRestClientConfiguration>());
 builder.Services.AddServiceNowRestClientGeneratedRepositories();
 builder.Services.AddControllers();

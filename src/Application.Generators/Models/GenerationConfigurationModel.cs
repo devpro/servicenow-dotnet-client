@@ -11,5 +11,10 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators.Models
         /// Entities.
         /// </summary>
         public List<EntityModel> Entities { get; set; }
+
+        /// <summary>
+        /// Namespaces.
+        /// </summary>
+        public NamespacesModel Namespaces { get; set; }
     }
 }

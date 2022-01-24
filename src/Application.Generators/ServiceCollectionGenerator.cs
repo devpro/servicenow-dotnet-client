@@ -10,19 +10,19 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators
     {
         protected override void GenerateCode(GeneratorExecutionContext context, Models.GenerationConfigurationModel model)
         {
-            var sourceBuilder = new StringBuilder(@"
+            var sourceBuilder = new StringBuilder($@"
 using System;
 using System.Net.Http.Headers;
 using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.DependencyInjection
-{
+namespace {model.Namespaces.Root}.Infrastructure.ServiceNowRestClient.DependencyInjection
+{{
     public static class GeneratedServiceCollectionExtensions
-    {
+    {{
         public static IServiceCollection AddServiceNowRestClientGeneratedRepositories(this IServiceCollection services)
-        {
+        {{
 ");
             foreach (var entity in model.Entities)
             {

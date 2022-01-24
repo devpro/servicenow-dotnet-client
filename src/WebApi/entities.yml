@@ -1,8 +1,11 @@
+namespaces:
+  root: RabbidsIncubator.ServiceNowClient
+  webApi: RabbidsIncubator.ServiceNowClient.WebApi
 entities:
   - name: Location
     resourceName: locations
     queries:
-      - action: Get
+      findAll:
         table: cmn_location
     fields:
       - name: Name

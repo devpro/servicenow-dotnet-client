@@ -5,14 +5,21 @@ namespace RabbidsIncubator.ServiceNowClient.Application.DependencyInjection
 {
     public static class AutoMapperExtensions
     {
-        public static IServiceCollection AddAutoMapperConfiguration(this IServiceCollection services)
+        /// <summary>
+        /// Add AutoMapper configuration in service collection.
+        /// </summary>
+        /// <param name="services">Service collection</param>
+        /// <param name="generatedMappingProfile">Generated mapping profile, null if not provided</param>
+        /// <returns></returns>
+        public static IServiceCollection AddAutoMapperConfiguration(this IServiceCollection services, Profile? generatedMappingProfile = null)
         {
             var mappingConfig = new MapperConfiguration(x =>
             {
-                // Infrastructure
                 x.AddProfile(new Infrastructure.ServiceNowRestClient.MappingProfiles.ServiceNowRestClientMappingProfile());
-                x.AddProfile(new Infrastructure.ServiceNowRestClient.MappingProfiles.GeneratedServiceNowRestClientMappingProfile());
-                // General
+                if (generatedMappingProfile != null)
+                {
+                    x.AddProfile(generatedMappingProfile);
+                }
                 x.AllowNullCollections = true;
             });
 

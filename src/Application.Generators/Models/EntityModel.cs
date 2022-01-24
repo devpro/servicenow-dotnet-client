@@ -18,7 +18,7 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators.Models
         /// <summary>
         /// Queries.
         /// </summary>
-        public List<QueryModel> Queries { get; set; }
+        public QueriesModel Queries { get; set; }
 
         /// <summary>
         /// Entity field definitions.

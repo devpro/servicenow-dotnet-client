@@ -10,21 +10,21 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators
     {
         protected override void GenerateCode(GeneratorExecutionContext context, Models.GenerationConfigurationModel model)
         {
-            model.Entities?.ForEach(x => GenerateRepositoryInterface(context, x));
-            model.Entities?.ForEach(x => GenerateServiceNowRepository(context, x));
-            model.Entities?.ForEach(x => GenerateServiceNowDto(context, x));
+            model.Entities?.ForEach(x => GenerateRepositoryInterface(context, x, model.Namespaces));
+            model.Entities?.ForEach(x => GenerateServiceNowRepository(context, x, model.Namespaces));
+            model.Entities?.ForEach(x => GenerateServiceNowDto(context, x, model.Namespaces));
         }
 
-        private static void GenerateRepositoryInterface(GeneratorExecutionContext context, Models.EntityModel entity)
+        private static void GenerateRepositoryInterface(GeneratorExecutionContext context, Models.EntityModel entity, Models.NamespacesModel namespaces)
         {
             var entityPascalName = entity.Name.FirstCharToUpper();
 
             var sourceBuilder = new StringBuilder($@"
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using RabbidsIncubator.ServiceNowClient.Domain.Models;
+using {namespaces.Root}.Domain.Models;
 
-namespace RabbidsIncubator.ServiceNowClient.Domain.Repositories
+namespace {namespaces.Root}.Domain.Repositories
 {{
     public interface I{entityPascalName}Repository
     {{
@@ -37,7 +37,7 @@ namespace RabbidsIncubator.ServiceNowClient.Domain.Repositories
             context.AddSource($"IGenerated{entityPascalName}Repository.cs", SourceText.From(sourceBuilder.ToString(), Encoding.UTF8));
         }
 
-        private static void GenerateServiceNowRepository(GeneratorExecutionContext context, Models.EntityModel entity)
+        private static void GenerateServiceNowRepository(GeneratorExecutionContext context, Models.EntityModel entity, Models.NamespacesModel namespaces)
         {
             var entityPascalName = entity.Name.FirstCharToUpper();
 
@@ -47,11 +47,12 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
-using RabbidsIncubator.ServiceNowClient.Domain.Models;
-using RabbidsIncubator.ServiceNowClient.Domain.Repositories;
-using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.Dto;
+using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.Repositories;
+using {namespaces.Root}.Domain.Models;
+using {namespaces.Root}.Domain.Repositories;
+using {namespaces.Root}.Infrastructure.ServiceNowRestClient.Dto;
 
-namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.Repositories
+namespace {namespaces.Root}.Infrastructure.ServiceNowRestClient.Repositories
 {{
     public class {entityPascalName}Repository : ServiceNowRestClientRepositoryBase, I{entityPascalName}Repository
     {{
@@ -63,28 +64,36 @@ namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.
             : base(logger, httpClientFactory, mapper, restApiConfiguration)
         {{
         }}
+");
 
+            if (entity.Queries.FindAll != null)
+            {
+                sourceBuilder.Append($@"
         public async Task<List<{entityPascalName}Model>> FindAllAsync(QueryModel<{entityPascalName}Model> query)
         {{
-            return await FindAllAsync<{entityPascalName}Model, {entityPascalName}Dto>(""{entity.Queries[0].Table}"", query);
+            return await FindAllAsync<{entityPascalName}Model, {entityPascalName}Dto>(""{entity.Queries.FindAll.Table}"", query, ""{entity.Queries.FindAll.Filter}"");
         }}
-    }}
-}}
 ");
+            }
+
+            sourceBuilder.Append(@"
+    }
+}");
 
             // inject the created source into the users compilation
             context.AddSource($"Generated{entityPascalName}ServiceNowRepository.cs", SourceText.From(sourceBuilder.ToString(), Encoding.UTF8));
         }
 
-        private static void GenerateServiceNowDto(GeneratorExecutionContext context, Models.EntityModel entity)
+        private static void GenerateServiceNowDto(GeneratorExecutionContext context, Models.EntityModel entity, Models.NamespacesModel namespaces)
         {
             var entityPascalName = entity.Name.FirstCharToUpper();
 
             var sourceBuilder = new StringBuilder($@"
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.Dto;
 
-namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.Dto
+namespace {namespaces.Root}.Infrastructure.ServiceNowRestClient.Dto
 {{
     public partial class {entityPascalName}Dto : IEntityDto
     {{

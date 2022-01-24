@@ -39,11 +39,12 @@ namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.
         /// <param name="filters">Filter dictionary</param>
         /// <param name="offset">Start index of the items to be returned, default to 0</param>
         /// <param name="limit">Limit number of items to be returned, default to 10</param>
+        /// <param name="extraParameters">Extra parameters to be added</param>
         /// <returns></returns>
-        protected string GenerateUrl(string tableName, Dictionary<string, string>? filters, int offset, int limit)
+        protected string GenerateUrl(string tableName, Dictionary<string, string>? filters, int offset, int limit, string extraParameters = "")
         {
-            var filtersParameter = filters == null ? string.Empty : $"&{string.Join("&", filters.Select(kv => kv.Key + "=" + kv.Value).ToArray())}";
-            return $"{_restApiConfiguration.BaseUrl}/table/{tableName}?sysparm_offset={offset}&sysparm_limit={limit}{filtersParameter}";
+            var filterParameters = filters == null ? string.Empty : $"&{string.Join("&", filters.Select(kv => kv.Key + "=" + kv.Value).ToArray())}";
+            return $"{_restApiConfiguration.BaseUrl}/table/{tableName}?sysparm_offset={offset}&sysparm_limit={limit}{filterParameters}{extraParameters}";
         }
 
         /// <summary>
@@ -53,12 +54,13 @@ namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.
         /// <typeparam name="U">Dto</typeparam>
         /// <param name="tableName">Table name</param>
         /// <param name="queryModel">Query model input object</param>
+        /// <param name="extraParameters">Extra parameters to be added</param>
         /// <returns></returns>
-        protected string GenerateUrl<T, U>(string tableName, Domain.Models.QueryModel<T> queryModel)
+        protected string GenerateUrl<T, U>(string tableName, Domain.Models.QueryModel<T> queryModel, string extraParameters = "")
             where T : class
             where U : Dto.IEntityDto
         {
-            return GenerateUrl(tableName, GetFilterParameters<T, U>(queryModel), queryModel.StartIndex, queryModel.Limit);
+            return GenerateUrl(tableName, GetFilterParameters<T, U>(queryModel), queryModel.StartIndex, queryModel.Limit, extraParameters);
         }
 
         /// <summary>
@@ -82,12 +84,13 @@ namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.
         /// <typeparam name="U">Dto</typeparam>
         /// <param name="tableName">Table name</param>
         /// <param name="queryModel">Query model input object</param>
+        /// <param name="extraParameters">Extra parameters to be added</param>
         /// <returns></returns>
-        protected async Task<List<T>> FindAllAsync<T, U>(string tableName, Domain.Models.QueryModel<T> queryModel)
+        protected async Task<List<T>> FindAllAsync<T, U>(string tableName, Domain.Models.QueryModel<T> queryModel, string extraParameters = "")
             where T : class
             where U : Dto.IEntityDto
         {
-            var url = GenerateUrl<T, U>(tableName, queryModel);
+            var url = GenerateUrl<T, U>(tableName, queryModel, extraParameters);
             var resultList = await GetAsync<Dto.ResultListDto<U>>(url);
             return Mapper.Map<List<T>>(resultList.Result);
         }

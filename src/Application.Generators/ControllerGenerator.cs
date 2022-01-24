@@ -10,20 +10,20 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators
     {
         protected override void GenerateCode(GeneratorExecutionContext context, Models.GenerationConfigurationModel model)
         {
-            model.Entities?.ForEach(x => GenerateController(context, x));
+            model.Entities?.ForEach(x => GenerateController(context, x, model.Namespaces));
         }
 
-        private static void GenerateController(GeneratorExecutionContext context, Models.EntityModel entity)
+        private static void GenerateController(GeneratorExecutionContext context, Models.EntityModel entity, Models.NamespacesModel namespaces)
         {
             var entityCamelName = entity.Name.FirstCharToLower();
             var entityPascalName = entity.Name.FirstCharToUpper();
 
             var sourceBuilder = new StringBuilder($@"
 using Microsoft.AspNetCore.Mvc;
-using RabbidsIncubator.ServiceNowClient.Domain.Models;
-using RabbidsIncubator.ServiceNowClient.Domain.Repositories;
+using {namespaces.Root}.Domain.Models;
+using {namespaces.Root}.Domain.Repositories;
 
-namespace RabbidsIncubator.ServiceNowClient.WebApi.Controllers
+namespace {namespaces.WebApi}.Controllers
 {{
     [ApiController]
     [Route(""{entity.ResourceName}"")]
