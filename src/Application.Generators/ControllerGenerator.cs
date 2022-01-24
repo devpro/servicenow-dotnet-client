@@ -20,6 +20,7 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators
 
             var sourceBuilder = new StringBuilder($@"
 using Microsoft.AspNetCore.Mvc;
+using RabbidsIncubator.ServiceNowClient.Domain.Models;
 using {namespaces.Root}.Domain.Models;
 using {namespaces.Root}.Domain.Repositories;
 

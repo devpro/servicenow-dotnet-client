@@ -22,6 +22,7 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators
             var sourceBuilder = new StringBuilder($@"
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using RabbidsIncubator.ServiceNowClient.Domain.Models;
 using {namespaces.Root}.Domain.Models;
 
 namespace {namespaces.Root}.Domain.Repositories
@@ -47,6 +48,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
+using RabbidsIncubator.ServiceNowClient.Domain.Models;
+using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient;
 using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.Repositories;
 using {namespaces.Root}.Domain.Models;
 using {namespaces.Root}.Domain.Repositories;
