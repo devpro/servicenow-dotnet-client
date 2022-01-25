@@ -1,4 +1,4 @@
-﻿namespace RabbidsIncubator.ServiceNowClient.Domain.Models
+﻿namespace RabbidsIncubator.Samples.ServiceNowWebApiSample.Domain
 {
     public class SwitchModel
     {

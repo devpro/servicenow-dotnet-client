@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RabbidsIncubator.ServiceNowClient.Domain.Models;
-using RabbidsIncubator.ServiceNowClient.Domain.Repositories;
+using RabbidsIncubator.Samples.ServiceNowWebApiSample.Domain;
 
-namespace RabbidsIncubator.ServiceNowClient.WebApi.Controllers
+namespace RabbidsIncubator.Samples.ServiceNowWebApiSample.Controllers
 {
     [ApiController]
     [Route("configuration-item-relationships")]

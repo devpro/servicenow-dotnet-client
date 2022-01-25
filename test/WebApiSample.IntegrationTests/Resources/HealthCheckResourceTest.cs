@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace RabbidsIncubator.ServiceNowClient.WebApi.IntegrationTests.Resources
+namespace RabbidsIncubator.Samples.ServiceNowWebApiSample.IntegrationTests.Resources
 {
     [Trait("Category", "IntegrationTests")]
     public class HealthCheckResourceTest : ResourceBase

@@ -1,7 +1,7 @@
-﻿using AutoMapper;
+﻿using System.Net.Http;
+using AutoMapper;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using RabbidsIncubator.ServiceNowClient.Domain.Repositories;
 using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.DependencyInjection;
 using Xunit;
 
@@ -23,8 +23,8 @@ namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.
 
             // Assert
             var services = serviceCollection.BuildServiceProvider();
-            services.GetRequiredService<IConfigurationItemRelationshipRepository>().Should().NotBeNull();
-            services.GetRequiredService<ISwitchRepository>().Should().NotBeNull();
+            services.GetRequiredService<ServiceNowRestClientConfiguration>().Should().NotBeNull();
+            services.GetRequiredService<IHttpClientFactory>().Should().NotBeNull();
         }
 
         private static ServiceNowRestClientConfiguration CreateConfiguration()

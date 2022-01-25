@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RabbidsIncubator.Samples.ServiceNowWebApiSample.Domain;
 using RabbidsIncubator.ServiceNowClient.Domain.Models;
-using RabbidsIncubator.ServiceNowClient.Domain.Repositories;
 
-namespace RabbidsIncubator.ServiceNowClient.WebApi.Controllers
+namespace RabbidsIncubator.Samples.ServiceNowWebApiSample.Controllers
 {
     [ApiController]
     [Route("switches")]

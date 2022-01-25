@@ -1,8 +1,9 @@
-﻿using RabbidsIncubator.ServiceNowClient.Application.DependencyInjection;
-using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient;
-using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.DependencyInjection;
+﻿using RabbidsIncubator.Samples.ServiceNowWebApiSample.Infrastructure;
 using RabbidsIncubator.Samples.ServiceNowWebApiSample.Infrastructure.ServiceNowRestClient.DependencyInjection;
 using RabbidsIncubator.Samples.ServiceNowWebApiSample.Infrastructure.ServiceNowRestClient.MappingProfiles;
+using RabbidsIncubator.ServiceNowClient.Application.DependencyInjection;
+using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient;
+using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.DependencyInjection;
 
 // creates the builder
 
@@ -10,8 +11,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // adds services to the collection
 
-builder.Services.AddAutoMapperConfiguration(new GeneratedServiceNowRestClientMappingProfile());
+builder.Services.AddAutoMapperConfiguration(new GeneratedServiceNowRestClientMappingProfile(), new InfrastructureMappingProfile());
 builder.Services.AddServiceNowRestClientRepositories(builder.Configuration.GetSection("ServiceNow:RestApi").Get<ServiceNowRestClientConfiguration>());
+builder.Services.AddWebApiSampleInfrastructureRepositories();
 builder.Services.AddServiceNowRestClientGeneratedRepositories();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

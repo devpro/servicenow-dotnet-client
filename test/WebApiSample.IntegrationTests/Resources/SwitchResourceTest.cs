@@ -2,10 +2,11 @@
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
+using RabbidsIncubator.Samples.ServiceNowWebApiSample.Domain;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace RabbidsIncubator.ServiceNowClient.WebApi.IntegrationTests.Resources
+namespace RabbidsIncubator.Samples.ServiceNowWebApiSample.IntegrationTests.Resources
 {
     [Trait("Category", "IntegrationTests")]
     public class SwitchResourceTest : ResourceBase
@@ -21,7 +22,7 @@ namespace RabbidsIncubator.ServiceNowClient.WebApi.IntegrationTests.Resources
         [Trait("Mode", "Readonly")]
         public async Task SwitchResource_Get_ReturnsNotEmptyList()
         {
-            var output = await GetAsync<List<Domain.Models.SwitchModel>>($"/{ResourceEndpoint}");
+            var output = await GetAsync<List<SwitchModel>>($"/{ResourceEndpoint}");
             output.Should().NotBeNull();
             output.Should().HaveCount(10);
         }

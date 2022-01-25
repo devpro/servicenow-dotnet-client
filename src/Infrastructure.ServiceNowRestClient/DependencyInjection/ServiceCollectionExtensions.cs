@@ -2,7 +2,6 @@
 using System.Net.Http.Headers;
 using System.Text;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.DependencyInjection
 {
@@ -28,9 +27,7 @@ namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.
             }
 
             services.AddSingleton(configuration);
-            services.TryAddTransient<Domain.Repositories.IConfigurationItemRelationshipRepository, Repositories.ConfigurationItemRelationshipRepository>();
-            services.TryAddTransient<Domain.Repositories.ISwitchRepository, Repositories.SwitchRepository>();
-            //services.AddServiceNowRestClientGeneratedRepositories();
+
             services
                 .AddHttpClient(configuration.HttpClientName, client =>
                 {

@@ -6,7 +6,7 @@ using Withywoods.WebTesting.Rest;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace RabbidsIncubator.ServiceNowClient.WebApi.IntegrationTests.Resources
+namespace RabbidsIncubator.Samples.ServiceNowWebApiSample.IntegrationTests.Resources
 {
     public class ResourceBase : RestClient, IClassFixture<WebApplicationFactory<Program>>
     {

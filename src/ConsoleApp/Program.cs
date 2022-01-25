@@ -19,13 +19,13 @@ namespace RabbidsIncubator.ServiceNowClient.ConsoleApp
                  );
         }
 
-        private async static Task<int> RunOptionsAndReturnExitCode(CommandLineOptions opts)
+        private /*async*/ static Task<int> RunOptionsAndReturnExitCode(CommandLineOptions opts)
         {
             var appConfiguration = new AppConfiguration(LoadConfiguration());
             if (!appConfiguration.ServiceNowRestClientConfiguration.IsValid())
             {
                 Console.WriteLine("Missing or invalid ServiceNow configuration. Please make sure all parameters are set.");
-                return -1;
+                return Task.FromResult(-1);
             }
 
             using var serviceProvider = CreateServiceProvider(opts, appConfiguration);
@@ -33,18 +33,18 @@ namespace RabbidsIncubator.ServiceNowClient.ConsoleApp
             try
             {
                 // TODO: use arguments to define the action
-                var repository = serviceProvider.GetRequiredService<IConfigurationItemRelationshipRepository>();
-                var items = await repository.FindAllAsync();
+                //var repository = serviceProvider.GetRequiredService<IConfigurationItemRelationshipRepository>();
+                //var items = await repository.FindAllAsync();
 
-                Console.WriteLine($"Number of items found: {items.Count}");
-                Console.WriteLine($"First item received: Id={items[0].Id}");
+                //Console.WriteLine($"Number of items found: {items.Count}");
+                //Console.WriteLine($"First item received: Id={items[0].Id}");
 
-                return 0;
+                return Task.FromResult(0);
             }
             catch (Exception exc)
             {
                 Console.WriteLine($"An error occured: {exc.Message}");
-                return -2;
+                return Task.FromResult(-2);
             }
         }
 

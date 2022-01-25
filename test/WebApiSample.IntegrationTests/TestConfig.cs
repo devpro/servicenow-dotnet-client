@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RabbidsIncubator.ServiceNowClient.WebApi.IntegrationTests
+namespace RabbidsIncubator.Samples.ServiceNowWebApiSample.IntegrationTests
 {
     public class TestConfig
     {

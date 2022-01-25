@@ -9,16 +9,16 @@ namespace RabbidsIncubator.ServiceNowClient.Application.DependencyInjection
         /// Add AutoMapper configuration in service collection.
         /// </summary>
         /// <param name="services">Service collection</param>
-        /// <param name="generatedMappingProfile">Generated mapping profile, null if not provided</param>
+        /// <param name="additionalProfiles">Additional profiles</param>
         /// <returns></returns>
-        public static IServiceCollection AddAutoMapperConfiguration(this IServiceCollection services, Profile? generatedMappingProfile = null)
+        public static IServiceCollection AddAutoMapperConfiguration(this IServiceCollection services, params Profile[] additionalProfiles)
         {
             var mappingConfig = new MapperConfiguration(x =>
             {
                 x.AddProfile(new Infrastructure.ServiceNowRestClient.MappingProfiles.ServiceNowRestClientMappingProfile());
-                if (generatedMappingProfile != null)
+                if (additionalProfiles != null && additionalProfiles.Length > 0)
                 {
-                    x.AddProfile(generatedMappingProfile);
+                    x.AddProfiles(additionalProfiles);
                 }
                 x.AllowNullCollections = true;
             });

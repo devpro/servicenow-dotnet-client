@@ -1,13 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.Extensions.Logging;
-using RabbidsIncubator.ServiceNowClient.Domain.Models;
-using RabbidsIncubator.ServiceNowClient.Domain.Repositories;
+﻿using AutoMapper;
+using RabbidsIncubator.Samples.ServiceNowWebApiSample.Domain;
+using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient;
 using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.Dto;
+using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.Repositories;
 
-namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.Repositories
+namespace RabbidsIncubator.Samples.ServiceNowWebApiSample.Infrastructure
 {
     public class ConfigurationItemRelationshipRepository : ServiceNowRestClientRepositoryBase, IConfigurationItemRelationshipRepository
     {
