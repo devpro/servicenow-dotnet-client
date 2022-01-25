@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>RabbidsIncubator.ServiceNowClient.Application</AssemblyName>
     <RootNamespace>RabbidsIncubator.ServiceNowClient.Application</RootNamespace>
     <ProjectGuid>{9F01E230-5B2E-46A0-B9DD-534E7A7A0BDB}</ProjectGuid>
@@ -12,6 +12,10 @@
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Infrastructure.InMemory\Infrastructure.InMemory.csproj" />
