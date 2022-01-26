@@ -142,23 +142,29 @@ dotnet test
 dotnet format
 ```
 
-### Docker image
+### Docker image (sample)
 
 ```bash
-# creates a Docker image
-docker build . -t rabbidsincubator/servicenowclientapi -f src/WebApi/Dockerfile --no-cache
+# creates a Docker image for the webapi sample
+docker build . -t rabbidsincubator/servicenowclientapisample -f samples/WebApiSample/Dockerfile --no-cache
+
+# runs locally the webapi sample in a container
+docker run -it --rm -p 8080:80 --name servicenowclientapisample \
+  -e ASPNETCORE_ENVIRONMENT=Development \
+  -e ServiceNow__RestApi__BaseUrl="xxx" -e ServiceNow__RestApi__Username="xxx" -e ServiceNow__RestApi__Password="xxx" \
+  rabbidsincubator/servicenowclientapisample
 
 # (once) logs in remote Docker repository (Artifactory)
 docker login devpro.jfrog.io
 
 # tags the image
-docker tag <IMAGE_ID> devpro.jfrog.io/rabbidsincubator-docker-local/servicenowclientapi
+docker tag <IMAGE_ID> devpro.jfrog.io/rabbidsincubator-docker-local/servicenowclientapisample
 
 # pushes the image to the repository (Artifactory)
-docker push devpro.jfrog.io/rabbidsincubator-docker-local/servicenowclientapi
+docker push devpro.jfrog.io/rabbidsincubator-docker-local/servicenowclientapisample
 
 # pulls the image from the repository (Artifactory)
-docker pull devpro.jfrog.io/rabbidsincubator-docker-local/servicenowclientapi
+docker pull devpro.jfrog.io/rabbidsincubator-docker-local/servicenowclientapisample
 ```
 
 ### Troubleshooting
