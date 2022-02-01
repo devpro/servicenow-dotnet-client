@@ -189,3 +189,32 @@ docker pull devpro.jfrog.io/rabbidsincubator-docker-local/servicenowclientapisam
       files?.ToList().ForEach(x => GenerateCode(context, x));
   }
   ```
+
+### Run locally the CI pipeline
+
+* Make sure all content files to be checked are committed (except `.gitlab-ci.yml`)
+
+* Run the runner locally with Docker
+
+```bash
+# creates local folder
+mkdir -p .gitlab/runner/local
+
+# runs build job
+docker run --rm --name gitlab-runner --workdir $PWD \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v $PWD/.gitlab/runner/local/config:/etc/gitlab-runner \
+  -v $PWD:$PWD \
+  gitlab/gitlab-runner exec docker build
+
+# runs pack job
+docker run --rm --name gitlab-runner --workdir $PWD \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v $PWD/.gitlab/runner/local/config:/etc/gitlab-runner \
+  -v $PWD:$PWD \
+  gitlab/gitlab-runner exec docker \
+    --env CI_COMMIT_BRANCH=feature/init-solution \
+    --env CI_PIPELINE_ID=1234 \
+    --env NUGET_APIKEY=*** \
+    pack
+```

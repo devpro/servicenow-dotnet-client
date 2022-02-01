@@ -356,3 +356,4 @@ Local.runsettings
 
 # GitLab runner files
 /builds/
+/.gitlab/runner/local/
