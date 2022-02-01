@@ -207,6 +207,13 @@ docker run --rm --name gitlab-runner --workdir $PWD \
   -v $PWD:$PWD \
   gitlab/gitlab-runner exec docker build
 
+# runs test job
+docker run --rm --name gitlab-runner --workdir $PWD \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v $PWD/.gitlab/runner/local/config:/etc/gitlab-runner \
+  -v $PWD:$PWD \
+  gitlab/gitlab-runner exec docker test
+
 # runs pack job
 docker run --rm --name gitlab-runner --workdir $PWD \
   -v /var/run/docker.sock:/var/run/docker.sock \
