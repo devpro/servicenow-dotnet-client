@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0 - Solution Items", "0 - S
 		.gitignore = .gitignore
 		.gitlab-ci.yml = .gitlab-ci.yml
 		Directory.Build.props = Directory.Build.props
+		Local.md = Local.md
 		Local.runsettings = Local.runsettings
 		README.md = README.md
 	EndProjectSection
@@ -31,9 +32,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "src\Applicat
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{D314857E-9EE4-4947-AD1A-0949B04E28CA}"
 	ProjectSection(SolutionItems) = preProject
-		docs\community.md = docs\community.md
-		docs\servicenow-cmdb.md = docs\servicenow-cmdb.md
-		docs\servicenow-resources.md = docs\servicenow-resources.md
+		docs\contribute.md = docs\contribute.md
+		docs\getting-started.md = docs\getting-started.md
+		docs\gitlab.md = docs\gitlab.md
+		docs\servicenow.md = docs\servicenow.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.InMemory", "src\Infrastructure.InMemory\Infrastructure.InMemory.csproj", "{A01619B4-8F70-417D-B4BD-1651D627770E}"
