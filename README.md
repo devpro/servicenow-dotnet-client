@@ -21,6 +21,10 @@ This is the codebase of .NET components (API & libraries) to integrate with [Ser
 * [ServiceNow CMDB](./docs/servicenow-cmdb.md)
 * [ServiceNow Resources](./docs/servicenow-resources.md)
 
+## How to setup the automation
+
+* [GitLab](./docs/gitlab.md)
+
 ## How to build the solution
 
 All commands are to be ran from the root folder of the repository (where the sln file is).
@@ -212,7 +216,11 @@ docker run --rm --name gitlab-runner --workdir $PWD \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v $PWD/.gitlab/runner/local/config:/etc/gitlab-runner \
   -v $PWD:$PWD \
-  gitlab/gitlab-runner exec docker test
+  gitlab/gitlab-runner exec docker \
+    --env SERVICENOW_SANDBOX_URL=*** \
+    --env SERVICENOW_SANDBOX_USERNAME=*** \
+    --env SERVICENOW_SANDBOX_USERPWD=*** \
+    test
 
 # runs pack job
 docker run --rm --name gitlab-runner --workdir $PWD \

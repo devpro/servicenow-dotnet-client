@@ -24,6 +24,10 @@ build:
 #.dotnet_test:
 test:
   stage: test
+  variables:
+    ServiceNow__RestApi__BaseUrl: $SERVICENOW_SANDBOX_URL
+    ServiceNow__RestApi__Username: $SERVICENOW_SANDBOX_USERNAME
+    ServiceNow__RestApi__Password: $SERVICENOW_SANDBOX_USERPWD
   script:
     - cd $ROOT_FOLDER
     - dotnet test --configuration Debug --logger:"junit;LogFilePath=..\..\artifacts\{assembly}-test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose"
@@ -37,6 +41,7 @@ test:
       junit:
         - ./**/*test-result.xml
 
+# ref. https://docs.microsoft.com/en-us/nuget/nuget-org/publish-a-package
 #.dotnet_pack:
 pack:
   stage: build
