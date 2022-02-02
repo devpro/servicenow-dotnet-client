@@ -8,7 +8,7 @@ This is the codebase of .NET components (API & libraries) to integrate with [Ser
 
 * Start with [Getting Started](./docs/getting-started.md) to learn about how to use the components.
 
-* To work locally with the sources and improve it, go to [Contribute](./docs/contribue.md).
+* To work locally with the sources and improve it, go to [Contribute](./docs/contribute.md).
 
 ## Going further
 
