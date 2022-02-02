@@ -1,0 +1,63 @@
+#include:
+#  - remote: "https://raw.githubusercontent.com/rabbids-incubator/gitlab-pipeline-definitions/feature/dotnet-templates/dotnet/ci.yml"
+
+image: mcr.microsoft.com/dotnet/sdk:6.0
+
+variables:
+  ROOT_FOLDER: .
+  BUILD_SOURCEBRANCHNAME: $CI_COMMIT_BRANCH
+  BUILD_BUILDID: $CI_PIPELINE_ID
+
+stages:
+  - build
+  - pack
+  - test
+
+#.dotnet_build:
+build:
+  stage: build
+  script:
+    - cd $ROOT_FOLDER
+    - dotnet restore
+    - dotnet build --no-restore --configuration Debug
+
+#.dotnet_test:
+test:
+  stage: test
+  variables:
+    ServiceNow__RestApi__BaseUrl: $SERVICENOW_SANDBOX_URL
+    ServiceNow__RestApi__Username: $SERVICENOW_SANDBOX_USERNAME
+    ServiceNow__RestApi__Password: $SERVICENOW_SANDBOX_USERPWD
+  script:
+    - cd $ROOT_FOLDER
+    - dotnet test --configuration Debug --logger:"junit;LogFilePath=..\..\artifacts\{assembly}-test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose"
+  dependencies:
+    - build
+  artifacts:
+    when: always
+    paths:
+      - ./**/*test-result.xml
+    reports:
+      junit:
+        - ./**/*test-result.xml
+
+# ref. https://docs.microsoft.com/en-us/nuget/nuget-org/publish-a-package
+#.dotnet_pack:
+pack:
+  stage: build
+  script:
+    - cd $ROOT_FOLDER
+    - dotnet pack --configuration Release -o output
+    - ls -alrt output
+    - for f in output/*.nupkg; do dotnet nuget push "$f" --api-key $NUGET_APIKEY --source https://api.nuget.org/v3/index.json ; done
+  only:
+    - main
+
+#build:
+#  extends: .dotnet_build
+
+#pack:
+#  extends: .dotnet_pack
+
+#test:
+#  extends: .dotnet_test
