@@ -24,7 +24,7 @@ namespace RabbidsIncubator.Samples.ServiceNowWebApiSample.IntegrationTests.Resou
         {
             var output = await GetAsync<List<SwitchModel>>($"/{ResourceEndpoint}");
             output.Should().NotBeNull();
-            output.Should().HaveCount(10);
+            output.Should().NotBeEmpty();
         }
     }
 }
