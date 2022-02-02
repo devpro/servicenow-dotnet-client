@@ -353,6 +353,7 @@ MigrationBackup/
 /src/ConsoleApp/Properties/launchSettings.json
 appsettings.Development.json
 Local.runsettings
+Local.md
 
 # GitLab runner files
 /builds/

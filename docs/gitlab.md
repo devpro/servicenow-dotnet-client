@@ -41,6 +41,7 @@ docker run --rm --name gitlab-runner --workdir $PWD \
   gitlab/gitlab-runner exec docker build
 
 # runs test job
+
 docker run --rm --name gitlab-runner --workdir $PWD \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v $PWD/.gitlab/runner/local/config:/etc/gitlab-runner \
@@ -49,6 +50,10 @@ docker run --rm --name gitlab-runner --workdir $PWD \
     --env SERVICENOW_SANDBOX_URL=*** \
     --env SERVICENOW_SANDBOX_USERNAME=*** \
     --env SERVICENOW_SANDBOX_USERPWD=*** \
+    --env SONAR_ORGANIZATION=*** \
+    --env SONAR_PROJECTKEY=*** \
+    --env SONAR_HOSTURL=*** \
+    --env SONAR_TOKEN=*** \
     test
 
 # runs pack job
