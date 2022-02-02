@@ -40,8 +40,6 @@ test:
     - dotnet build --no-restore --configuration Debug
     - dotnet test --no-build --configuration Debug --logger:"junit;LogFilePath=..\..\artifacts\{assembly}-test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose" --collect:"XPlat Code Coverage"
     - reportgenerator "-reports:./test/*/TestResults/*/coverage.cobertura.xml" "-targetdir:sonarqubecoverage" "-reporttypes:SonarQube"
-    - ls -alrt .
-    - ls -alrt sonarqubecoverage
     - dotnet sonarscanner end
   dependencies:
     - build

@@ -12,12 +12,16 @@ GitLab is used to run the CI (Continuous Integration) pipeline, which is defined
 
 * Add 4 variables
 
-Name | Value
----- | -----
-NUGET_APIKEY | API key generated from nuget.org website
-SERVICENOW_SANDBOX_URL | ServiceNow Sandbox URL
-SERVICENOW_SANDBOX_USERNAME | ServiceNow Sandbox Username
-SERVICENOW_SANDBOX_USERPWD | ServiceNow Sandbox Password
+Name | Value | Protected | Masked
+---- | ----- | --------- | ------
+NUGET_APIKEY | API key generated from nuget.org website | Yes | Yes
+SERVICENOW_SANDBOX_URL | ServiceNow Sandbox URL | No | Yes
+SERVICENOW_SANDBOX_USERNAME | ServiceNow Sandbox Username | No | Yes
+SERVICENOW_SANDBOX_USERPWD | ServiceNow Sandbox Password | No | Yes
+SONAR_ORGANIZATION | Sonar Organization | No | No
+SONAR_PROJECTKEY | Sonar Project Key | No | No
+SONAR_HOSTURL | Sonar Instance URL | No | No
+SONAR_TOKEN | Sonar Key | No | Yes
 
 ## Debug
 
