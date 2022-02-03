@@ -13,22 +13,29 @@ stages:
   - pack
   - test
 
-workflow:
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-    - if: '$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS'
-      when: never
-    - if: '$CI_COMMIT_BRANCH'
+# avoid duplicate runs
+#workflow:
+#  rules:
+#    - if: '$CI_PIPELINE_SOURCE == "external_pull_request_event"'
+#    - if: '$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS'
+#      when: never
+#    - if: '$CI_COMMIT_BRANCH'
 
 #.dotnet_build:
 build:
   stage: build
   script:
     - echo CI_PIPELINE_SOURCE=$CI_PIPELINE_SOURCE
-    - echo CI_OPEN_MERGE_REQUESTS=$CI_OPEN_MERGE_REQUESTS
+    - echo CI_COMMIT_BRANCH=$CI_COMMIT_BRANCH
+    - env
+    - env | grep CI
+    - env | grep CI_EXTERNAL_PULL_REQUEST_
     - cd $ROOT_FOLDER
     - dotnet restore
     - dotnet build --no-restore --configuration Debug
+  only:
+    - external_pull_requests
+    - main
 
 #.dotnet_test_sonar:
 test:
@@ -60,6 +67,9 @@ test:
       junit:
         - ./**/*test-result.xml
       cobertura: ./test/*/TestResults/*/coverage.cobertura.xml
+  only:
+    - external_pull_requests
+    - main
 
 # ref. https://docs.microsoft.com/en-us/nuget/nuget-org/publish-a-package
 #.dotnet_pack:
