@@ -1,0 +1,21 @@
+namespaces:
+  root: RabbidsIncubator.ServiceNowClient.ConsoleApp
+  webApi: RabbidsIncubator.ServiceNowClient.ConsoleApp
+targetApplication: Console
+entities:
+  - name: Location
+    resourceName: locations
+    queries:
+      findAll:
+        table: cmn_location
+    fields:
+      - name: Name
+        serviceNowFieldName: name
+      - name: City
+        serviceNowFieldName: city
+      - name: CountryName
+        serviceNowFieldName: country
+      - name: Latitude
+        serviceNowFieldName: latitude
+      - name: Longitude
+        serviceNowFieldName: longitude

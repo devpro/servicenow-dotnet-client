@@ -3,7 +3,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RabbidsIncubator.ServiceNowClient.Application.DependencyInjection;
-using RabbidsIncubator.ServiceNowClient.Domain.Repositories;
+using RabbidsIncubator.ServiceNowClient.ConsoleApp.Infrastructure.ServiceNowRestClient.DependencyInjection;
+using RabbidsIncubator.ServiceNowClient.ConsoleApp.Infrastructure.ServiceNowRestClient.MappingProfiles;
 using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.DependencyInjection;
 
 namespace RabbidsIncubator.ServiceNowClient.ConsoleApp
@@ -19,32 +20,31 @@ namespace RabbidsIncubator.ServiceNowClient.ConsoleApp
                  );
         }
 
-        private /*async*/ static Task<int> RunOptionsAndReturnExitCode(CommandLineOptions opts)
+        private async static Task<int> RunOptionsAndReturnExitCode(CommandLineOptions opts)
         {
             var appConfiguration = new AppConfiguration(LoadConfiguration());
             if (!appConfiguration.ServiceNowRestClientConfiguration.IsValid())
             {
                 Console.WriteLine("Missing or invalid ServiceNow configuration. Please make sure all parameters are set.");
-                return Task.FromResult(-1);
+                return -1;
             }
 
             using var serviceProvider = CreateServiceProvider(opts, appConfiguration);
 
             try
             {
-                // TODO: use arguments to define the action
-                //var repository = serviceProvider.GetRequiredService<IConfigurationItemRelationshipRepository>();
-                //var items = await repository.FindAllAsync();
+                var repository = serviceProvider.GetRequiredService<Domain.Repositories.ILocationRepository>();
+                var items = await repository.FindAllAsync(new ServiceNowClient.Domain.Models.QueryModel<Domain.Models.LocationModel>(null, null, null));
 
-                //Console.WriteLine($"Number of items found: {items.Count}");
-                //Console.WriteLine($"First item received: Id={items[0].Id}");
+                Console.WriteLine($"Number of items found: {items.Count}");
+                Console.WriteLine($"First item received: Id={items[0].Name}");
 
-                return Task.FromResult(0);
+                return 0;
             }
             catch (Exception exc)
             {
                 Console.WriteLine($"An error occured: {exc.Message}");
-                return Task.FromResult(-2);
+                return -2;
             }
         }
 
@@ -72,8 +72,9 @@ namespace RabbidsIncubator.ServiceNowClient.ConsoleApp
                         .AddFilter("RabbidsIncubator.ServiceNowClient", opts.IsVerbose ? LogLevel.Debug : LogLevel.Information)
                         .AddConsole();
                 })
+                .AddServiceNowRestClientGeneratedRepositories()
                 .AddServiceNowRestClientRepositories(appConfiguration.ServiceNowRestClientConfiguration)
-                .AddAutoMapperConfiguration();
+                .AddAutoMapperConfiguration(new GeneratedServiceNowRestClientMappingProfile());
 
             return serviceCollection.BuildServiceProvider();
         }
