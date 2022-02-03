@@ -28,7 +28,10 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators
 
                 var model = deserializer.Deserialize<Models.GenerationConfigurationModel>(yml);
 
-                GenerateCode(context, model);
+                if (IsCompatible(model.TargetApplication))
+                {
+                    GenerateCode(context, model);
+                }
             });
         }
 
@@ -38,6 +41,8 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators
         }
 
         // Protected methods
+
+        protected abstract bool IsCompatible(Models.TargetApplicationType targetApplication);
 
         protected abstract void GenerateCode(GeneratorExecutionContext context, Models.GenerationConfigurationModel model);
 

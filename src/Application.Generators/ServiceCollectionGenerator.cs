@@ -42,5 +42,10 @@ namespace {model.Namespaces.Root}.Infrastructure.ServiceNowRestClient.Dependency
             // inject the created source into the users compilation
             context.AddSource($"GeneratedServiceCollectionExtensions.cs", SourceText.From(sourceBuilder.ToString(), Encoding.UTF8));
         }
+
+        protected override bool IsCompatible(Models.TargetApplicationType targetApplication)
+        {
+            return true;
+        }
     }
 }

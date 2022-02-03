@@ -44,5 +44,10 @@ namespace {model.Namespaces.Root}.Infrastructure.ServiceNowRestClient.MappingPro
             var fileContent = SourceText.From(sourceBuilder.ToString(), Encoding.UTF8);
             context.AddSource($"GeneratedServiceNowRestClientMappingProfile.cs", fileContent);
         }
+
+        protected override bool IsCompatible(Models.TargetApplicationType targetApplication)
+        {
+            return true;
+        }
     }
 }

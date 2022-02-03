@@ -54,5 +54,10 @@ namespace {namespaces.WebApi}.Controllers
             // inject the created source into the users compilation
             context.AddSource($"Generated{entityPascalName}Controller.cs", SourceText.From(sourceBuilder.ToString(), Encoding.UTF8));
         }
+
+        protected override bool IsCompatible(Models.TargetApplicationType targetApplication)
+        {
+            return targetApplication == Models.TargetApplicationType.WebApp;
+        }
     }
 }

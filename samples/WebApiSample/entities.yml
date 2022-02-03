@@ -1,6 +1,7 @@
 namespaces:
   root: RabbidsIncubator.Samples.ServiceNowWebApiSample
   webApi: RabbidsIncubator.Samples.ServiceNowWebApiSample
+targetApplication: WebApp
 entities:
   - name: Location
     resourceName: locations
