@@ -51,6 +51,8 @@ test:
     - dotnet test --no-build --configuration Debug --logger:"junit;LogFilePath=..\..\artifacts\{assembly}-test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose" --collect:"XPlat Code Coverage"
     - reportgenerator "-reports:$COBERTURA_REPORT_FILEPATH" $REPORTGENERATOR_OPTIONS
     - dotnet sonarscanner end
+  #dependencies:
+  #  - build
   artifacts:
     when: always
     paths:
@@ -67,7 +69,7 @@ test:
 # ref. https://docs.microsoft.com/en-us/nuget/nuget-org/publish-a-package
 #.dotnet_pack:
 pack:
-  stage: publish
+  stage: build
   script:
     - cd $ROOT_FOLDER
     - dotnet restore
@@ -75,8 +77,6 @@ pack:
     - dotnet pack --no-build --configuration Release -o output
     - ls -alrt output
     - for f in output/*.nupkg; do dotnet nuget push "$f" --api-key $NUGET_APIKEY --source https://api.nuget.org/v3/index.json ; done
-  dependencies:
-    - test
   only:
     refs:
       - main
