@@ -12,7 +12,7 @@ namespace RabbidsIncubator.ServiceNowClient.Infrastructure.InMemory.DependencyIn
         /// <param name="services"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static IServiceCollection AddServiceNowRestClientRepositories<T>(this IServiceCollection services)
+        public static IServiceCollection AddInMemoryRepositories(this IServiceCollection services)
         {
             if (services == null)
             {

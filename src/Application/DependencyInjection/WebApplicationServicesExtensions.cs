@@ -14,6 +14,7 @@ namespace RabbidsIncubator.ServiceNowClient.Application.DependencyInjection
             params AutoMapper.Profile[] additionalProfiles)
         {
             services.AddAutoMapperConfiguration(additionalProfiles);
+            services.AddInMemoryRepositories();
             services.AddServiceNowRestClientRepositories(configuration.GetSection("ServiceNow:RestApi").Get<ServiceNowRestClientConfiguration>());
             services.AddControllers();
             services.AddEndpointsApiExplorer();

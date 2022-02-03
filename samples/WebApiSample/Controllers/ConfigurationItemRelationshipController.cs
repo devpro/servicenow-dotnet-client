@@ -23,7 +23,7 @@ namespace RabbidsIncubator.Samples.ServiceNowWebApiSample.Controllers
         public async Task<List<ConfigurationItemRelationshipModel>> Get()
         {
             var items = await _configurationItemRelationshipRepository.FindAllAsync();
-            _logger.LogDebug($"Number of items found: {items.Count}");
+            _logger.LogDebug("Number of items found: {itemsCount}", items.Count);
             return items;
         }
     }

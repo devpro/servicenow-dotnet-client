@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Linq;
+using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using RabbidsIncubator.ServiceNowClient.Application.Generators.Extensions;
@@ -25,11 +26,11 @@ namespace {model.Namespaces.Root}.Infrastructure.ServiceNowRestClient.MappingPro
         public GeneratedServiceNowRestClientMappingProfile()
         {{
 ");
-            foreach (var entity in model.Entities)
+            foreach (var entityName in model.Entities?.Select(x => x.Name))
             {
                 sourceBuilder.Append($@"
-            CreateMap<Dto.{entity.Name.FirstCharToUpper()}Dto, Domain.Models.{entity.Name.FirstCharToUpper()}Model>();
-            CreateMap<Domain.Models.{entity.Name.FirstCharToUpper()}Model, Dto.{entity.Name.FirstCharToUpper()}Dto>();
+            CreateMap<Dto.{entityName.FirstCharToUpper()}Dto, Domain.Models.{entityName.FirstCharToUpper()}Model>();
+            CreateMap<Domain.Models.{entityName.FirstCharToUpper()}Model, Dto.{entityName.FirstCharToUpper()}Dto>();
 ");
             }
 

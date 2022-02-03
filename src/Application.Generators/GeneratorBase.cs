@@ -45,14 +45,19 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators
 
         private static IEnumerable<string> GetMappingFiles(GeneratorExecutionContext context)
         {
-            foreach (var file in context.AdditionalFiles)
+            if (context.AdditionalFiles == null || !context.AdditionalFiles.Any())
             {
-                if (!Path.GetExtension(file.Path).Equals(".yml", StringComparison.OrdinalIgnoreCase))
+                yield break;
+            }
+
+            foreach (var filePath in context.AdditionalFiles.Select(x => x.Path))
+            {
+                if (!Path.GetExtension(filePath).Equals(".yml", StringComparison.OrdinalIgnoreCase))
                 {
                     continue;
                 }
 
-                yield return file.Path;
+                yield return filePath;
             }
         }
     }
