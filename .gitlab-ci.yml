@@ -67,7 +67,7 @@ test:
 # ref. https://docs.microsoft.com/en-us/nuget/nuget-org/publish-a-package
 #.dotnet_pack:
 pack:
-  stage: build
+  stage: publish
   script:
     - cd $ROOT_FOLDER
     - dotnet restore
