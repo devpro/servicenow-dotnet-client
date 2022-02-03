@@ -7,9 +7,10 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators.UnitTests
 {
     using VerifyCS = CSharpSourceGeneratorVerifier<AutoMapperGenerator>;
 
+    [Trait("Category", "UnitTests")]
     public class AutoMapperGeneratorTest
     {
-        [Fact()]
+        [Fact]
         public async Task AutoMapperGeneratorGenerateCode()
         {
             var original = @"
@@ -79,13 +80,16 @@ entities:
         serviceNowFieldName: longitude
 ")
                     },
+                    AdditionalReferences =
+                    {
+                        typeof(AutoMapper.Profile).Assembly
+                    },
                     GeneratedSources =
                     {
                         (typeof(AutoMapperGenerator), "GeneratedServiceNowRestClientMappingProfile.cs", SourceText.From(expected, Encoding.UTF8, SourceHashAlgorithm.Sha1)),
                     }
                 }
             };
-            test.TestState.AdditionalReferences.Add(typeof(AutoMapper.Profile).Assembly);
             await test.RunAsync();
         }
     }

@@ -19,7 +19,10 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators
             var entityPascalName = entity.Name.FirstCharToUpper();
 
             var sourceBuilder = new StringBuilder($@"
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using RabbidsIncubator.ServiceNowClient.Domain.Models;
 using {namespaces.Root}.Domain.Models;
 using {namespaces.Root}.Domain.Repositories;
@@ -44,7 +47,7 @@ namespace {namespaces.WebApi}.Controllers
         public async Task<List<{entityPascalName}Model>> Get([FromQuery] {entityPascalName}Model model, int? startIndex, int? limit)
         {{
             var items = await _{entityCamelName}Repository.FindAllAsync(new QueryModel<{entityPascalName}Model>(model, startIndex, limit));
-            _logger.LogDebug($""Number of items found: {{items.Count}}"");
+            _logger.LogDebug(""Number of items found: {{itemsCount}}"", items.Count);
             return items;
         }}
     }}
