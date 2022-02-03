@@ -33,9 +33,9 @@ build:
     - cd $ROOT_FOLDER
     - dotnet restore
     - dotnet build --no-restore --configuration Debug
-  only:
-    - external_pull_requests
-    - main
+  #only:
+  #  - external_pull_requests
+  #  - main
 
 #.dotnet_test_sonar:
 test:
