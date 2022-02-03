@@ -8,7 +8,7 @@ using Xunit.Abstractions;
 
 namespace RabbidsIncubator.Samples.ServiceNowWebApiSample.IntegrationTests.Resources
 {
-    [Trait("Category", "IntegrationTests")]
+    //[Trait("Category", "IntegrationTests")]
     public class SwitchResourceTest : ResourceBase
     {
         private const string ResourceEndpoint = "switches";
@@ -18,8 +18,8 @@ namespace RabbidsIncubator.Samples.ServiceNowWebApiSample.IntegrationTests.Resou
         {
         }
 
-        [Fact]
-        [Trait("Mode", "Readonly")]
+        //[Fact]
+        //[Trait("Mode", "Readonly")]
         public async Task SwitchResource_Get_ReturnsNotEmptyList()
         {
             var output = await GetAsync<List<SwitchModel>>($"/{ResourceEndpoint}");

@@ -13,15 +13,23 @@ stages:
   - pack
   - test
 
+# avoid duplicate runs
+# CI_PIPELINE_SOURCE=push|external_pull_request_event
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "external_pull_request_event"'
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+
 #.dotnet_build:
 build:
   stage: build
   script:
+    - env
     - cd $ROOT_FOLDER
     - dotnet restore
     - dotnet build --no-restore --configuration Debug
 
-#.dotnet_test:
+#.dotnet_test_sonar:
 test:
   stage: test
   variables:
@@ -29,8 +37,18 @@ test:
     ServiceNow__RestApi__Username: $SERVICENOW_SANDBOX_USERNAME
     ServiceNow__RestApi__Password: $SERVICENOW_SANDBOX_USERPWD
   script:
+    - apt update
+    - apt install -y default-jre
+    - dotnet tool install --global dotnet-sonarscanner
+    - dotnet tool install --global dotnet-reportgenerator-globaltool
+    - export PATH="$PATH:/root/.dotnet/tools"
     - cd $ROOT_FOLDER
-    - dotnet test --configuration Debug --logger:"junit;LogFilePath=..\..\artifacts\{assembly}-test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose"
+    - dotnet restore
+    - dotnet sonarscanner begin /o:$SONAR_ORGANIZATION /k:$SONAR_PROJECTKEY /d:sonar.host.url=$SONAR_HOSTURL /d:sonar.cpd.exclusions=**/*Generated*.cs /d:sonar.coverageReportPaths="./sonarqubecoverage/SonarQube.xml"
+    - dotnet build --no-restore --configuration Debug
+    - dotnet test --no-build --configuration Debug --logger:"junit;LogFilePath=..\..\artifacts\{assembly}-test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose" --collect:"XPlat Code Coverage"
+    - reportgenerator "-reports:./test/*/TestResults/*/coverage.cobertura.xml" "-targetdir:sonarqubecoverage" "-reporttypes:SonarQube"
+    - dotnet sonarscanner end
   dependencies:
     - build
   artifacts:
@@ -40,6 +58,10 @@ test:
     reports:
       junit:
         - ./**/*test-result.xml
+      cobertura: ./test/*/TestResults/*/coverage.cobertura.xml
+  only:
+    - external_pull_requests
+    - main
 
 # ref. https://docs.microsoft.com/en-us/nuget/nuget-org/publish-a-package
 #.dotnet_pack:
@@ -47,7 +69,9 @@ pack:
   stage: build
   script:
     - cd $ROOT_FOLDER
-    - dotnet pack --configuration Release -o output
+    - dotnet restore
+    - dotnet build --no-restore --configuration Release
+    - dotnet pack --no-build --configuration Release -o output
     - ls -alrt output
     - for f in output/*.nupkg; do dotnet nuget push "$f" --api-key $NUGET_APIKEY --source https://api.nuget.org/v3/index.json ; done
   only:
