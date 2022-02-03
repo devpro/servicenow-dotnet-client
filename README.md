@@ -9,12 +9,12 @@ This is the codebase of .NET components (API & libraries) to integrate with [Ser
 
 ## Quick start
 
-* Start with [Getting Started](./docs/getting-started.md) to learn about how to use the components.
+* Begin with [Getting Started](./docs/getting-started.md) to learn about how to use the components.
 
-* To work locally with the sources and improve it, go to [Contribute](./docs/contribute.md).
+* To work locally with the sources and improve them, go to [Contribute](./docs/contribute.md).
 
 ## Going further
 
 * Understand the automation done on this codebase with [GitLab](./docs/gitlab.md).
 
-* Get more knowledge about calls with [ServiceNow](./docs/servicenow.md).
+* Look at resources on [ServiceNow](./docs/servicenow.md).
