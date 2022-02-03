@@ -75,7 +75,10 @@ pack:
     - ls -alrt output
     - for f in output/*.nupkg; do dotnet nuget push "$f" --api-key $NUGET_APIKEY --source https://api.nuget.org/v3/index.json ; done
   only:
-    - main
+    refs:
+      - main
+    changes:
+      - Directory.Build.props
 
 #build:
 #  extends: .dotnet_build
