@@ -14,28 +14,20 @@ stages:
   - test
 
 # avoid duplicate runs
-#workflow:
-#  rules:
-#    - if: '$CI_PIPELINE_SOURCE == "external_pull_request_event"'
-#    - if: '$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS'
-#      when: never
-#    - if: '$CI_COMMIT_BRANCH'
+# CI_PIPELINE_SOURCE=push|external_pull_request_event
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "external_pull_request_event"'
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
 
 #.dotnet_build:
 build:
   stage: build
   script:
-    - echo CI_PIPELINE_SOURCE=$CI_PIPELINE_SOURCE
-    - echo CI_COMMIT_BRANCH=$CI_COMMIT_BRANCH
     - env
-    - env | grep CI
-    - env | grep CI_EXTERNAL_PULL_REQUEST_
     - cd $ROOT_FOLDER
     - dotnet restore
     - dotnet build --no-restore --configuration Debug
-  #only:
-  #  - external_pull_requests
-  #  - main
 
 #.dotnet_test_sonar:
 test:
