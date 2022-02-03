@@ -48,7 +48,7 @@ test:
     - cd $ROOT_FOLDER
     - dotnet restore
     - dotnet sonarscanner begin /o:$SONAR_ORGANIZATION /k:$SONAR_PROJECTKEY /d:sonar.host.url=$SONAR_HOSTURL $SONAR_EXTRA_PARAMETERS
-    - dotnet test --no-build --configuration Debug --logger:"junit;LogFilePath=..\..\artifacts\{assembly}-test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose" --collect:"XPlat Code Coverage"
+    - dotnet test --configuration Debug --logger:"junit;LogFilePath=..\..\artifacts\{assembly}-test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose" --collect:"XPlat Code Coverage"
     - reportgenerator "-reports:$COBERTURA_REPORT_FILEPATH" $REPORTGENERATOR_OPTIONS
     - dotnet sonarscanner end
   #dependencies:
