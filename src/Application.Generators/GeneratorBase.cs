@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using Microsoft.CodeAnalysis;
@@ -17,16 +18,14 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators
 
         public void Execute(GeneratorExecutionContext context)
         {
-            var files = GetMappingFiles(context);
-            files?.ToList().ForEach(x =>
+            var files = GetMappingFiles(context.AdditionalFiles);
+            files?.ToList().ForEach(file =>
             {
-                var yml = File.ReadAllText(x);
-
                 var deserializer = new DeserializerBuilder()
                     .WithNamingConvention(CamelCaseNamingConvention.Instance)
                     .Build();
 
-                var model = deserializer.Deserialize<Models.GenerationConfigurationModel>(yml);
+                var model = deserializer.Deserialize<Models.GenerationConfigurationModel>(file.GetText().ToString());
 
                 if (IsCompatible(model.TargetApplication))
                 {
@@ -48,21 +47,21 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators
 
         // Private methods
 
-        private static IEnumerable<string> GetMappingFiles(GeneratorExecutionContext context)
+        private static IEnumerable<AdditionalText> GetMappingFiles(ImmutableArray<AdditionalText> additionalFiles)
         {
-            if (context.AdditionalFiles == null || !context.AdditionalFiles.Any())
+            if (additionalFiles == null || !additionalFiles.Any())
             {
                 yield break;
             }
 
-            foreach (var filePath in context.AdditionalFiles.Select(x => x.Path))
+            foreach (var file in additionalFiles)
             {
-                if (!Path.GetExtension(filePath).Equals(".yml", StringComparison.OrdinalIgnoreCase))
+                if (!Path.GetExtension(file.Path).Equals(".yml", StringComparison.OrdinalIgnoreCase))
                 {
                     continue;
                 }
 
-                yield return filePath;
+                yield return file;
             }
         }
     }

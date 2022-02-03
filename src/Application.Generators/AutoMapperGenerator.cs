@@ -42,7 +42,7 @@ namespace {model.Namespaces.Root}.Infrastructure.ServiceNowRestClient.MappingPro
 
             // inject the created source into the users compilation
             var fileContent = SourceText.From(sourceBuilder.ToString(), Encoding.UTF8);
-            context.AddSource($"GeneratedServiceNowRestClientMappingProfile.cs", fileContent);
+            context.AddSource("GeneratedServiceNowRestClientMappingProfile.cs", fileContent);
         }
 
         protected override bool IsCompatible(Models.TargetApplicationType targetApplication)
