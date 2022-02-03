@@ -28,7 +28,10 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators
 
                 var model = deserializer.Deserialize<Models.GenerationConfigurationModel>(yml);
 
-                GenerateCode(context, model);
+                if (IsCompatible(model.TargetApplication))
+                {
+                    GenerateCode(context, model);
+                }
             });
         }
 
@@ -39,20 +42,27 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators
 
         // Protected methods
 
+        protected abstract bool IsCompatible(Models.TargetApplicationType targetApplication);
+
         protected abstract void GenerateCode(GeneratorExecutionContext context, Models.GenerationConfigurationModel model);
 
         // Private methods
 
         private static IEnumerable<string> GetMappingFiles(GeneratorExecutionContext context)
         {
-            foreach (var file in context.AdditionalFiles)
+            if (context.AdditionalFiles == null || !context.AdditionalFiles.Any())
             {
-                if (!Path.GetExtension(file.Path).Equals(".yml", StringComparison.OrdinalIgnoreCase))
+                yield break;
+            }
+
+            foreach (var filePath in context.AdditionalFiles.Select(x => x.Path))
+            {
+                if (!Path.GetExtension(filePath).Equals(".yml", StringComparison.OrdinalIgnoreCase))
                 {
                     continue;
                 }
 
-                yield return file.Path;
+                yield return filePath;
             }
         }
     }

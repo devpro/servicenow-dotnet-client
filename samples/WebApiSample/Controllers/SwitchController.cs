@@ -22,7 +22,7 @@ namespace RabbidsIncubator.Samples.ServiceNowWebApiSample.Controllers
         public async Task<List<SwitchModel>> Get([FromQuery] SwitchModel model, int? startIndex, int? limit)
         {
             var items = await _switchRepository.FindAllAsync(new QueryModel<SwitchModel>(model, startIndex, limit));
-            _logger.LogDebug($"Number of items found: {items.Count}");
+            _logger.LogDebug("Number of items found: {itemsCount}", items.Count);
             return items;
         }
     }

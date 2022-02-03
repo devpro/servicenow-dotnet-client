@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Linq;
+using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using RabbidsIncubator.ServiceNowClient.Application.Generators.Extensions;
@@ -24,10 +25,10 @@ namespace {model.Namespaces.Root}.Infrastructure.ServiceNowRestClient.Dependency
         public static IServiceCollection AddServiceNowRestClientGeneratedRepositories(this IServiceCollection services)
         {{
 ");
-            foreach (var entity in model.Entities)
+            foreach (var entityName in model.Entities?.Select(x => x.Name))
             {
                 sourceBuilder.Append($@"
-            services.TryAddTransient<Domain.Repositories.I{entity.Name.FirstCharToUpper()}Repository, Repositories.{entity.Name.FirstCharToUpper()}Repository>();
+            services.TryAddTransient<Domain.Repositories.I{entityName.FirstCharToUpper()}Repository, Repositories.{entityName.FirstCharToUpper()}Repository>();
 ");
             }
 
@@ -40,6 +41,11 @@ namespace {model.Namespaces.Root}.Infrastructure.ServiceNowRestClient.Dependency
 
             // inject the created source into the users compilation
             context.AddSource($"GeneratedServiceCollectionExtensions.cs", SourceText.From(sourceBuilder.ToString(), Encoding.UTF8));
+        }
+
+        protected override bool IsCompatible(Models.TargetApplicationType targetApplication)
+        {
+            return true;
         }
     }
 }
