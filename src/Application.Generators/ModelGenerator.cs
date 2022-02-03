@@ -29,7 +29,7 @@ namespace {namespaces.Root}.Domain.Models
                 {
                     case Models.FieldType.String:
                         sourceBuilder.Append($@"
-        public string? {field.Name.FirstCharToUpper()} {{ get; set; }}
+        public string {field.Name.FirstCharToUpper()} {{ get; set; }}
 ");
                         break;
                     case Models.FieldType.Number:
@@ -47,7 +47,8 @@ namespace {namespaces.Root}.Domain.Models
 
             sourceBuilder.Append(@"
     }
-}");
+}
+");
 
             // inject the created source into the users compilation
             context.AddSource($"Generated{entityPascalName}Model.cs", SourceText.From(sourceBuilder.ToString(), Encoding.UTF8));

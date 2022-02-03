@@ -104,7 +104,6 @@ entities:
                     ,
                     AdditionalReferences =
                     {
-                        typeof(AutoMapper.Profile).Assembly,
                         typeof(Domain.Repositories.ICacheRepository).Assembly
                     },
                     GeneratedSources =
