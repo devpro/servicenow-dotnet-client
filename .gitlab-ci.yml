@@ -36,6 +36,9 @@ test:
     ServiceNow__RestApi__BaseUrl: $SERVICENOW_SANDBOX_URL
     ServiceNow__RestApi__Username: $SERVICENOW_SANDBOX_USERNAME
     ServiceNow__RestApi__Password: $SERVICENOW_SANDBOX_USERPWD
+    COBERTURA_REPORT_FILEPATH: ./test/*/TestResults/*/coverage.cobertura.xml
+    REPORTGENERATOR_OPTIONS: -targetdir:sonarqubecoverage -reporttypes:SonarQube
+    SONAR_EXTRA_PARAMETERS: /d:sonar.cpd.exclusions=**/*Generated*.cs /d:sonar.coverageReportPaths=./sonarqubecoverage/SonarQube.xml
   script:
     - apt update
     - apt install -y default-jre
@@ -44,21 +47,19 @@ test:
     - export PATH="$PATH:/root/.dotnet/tools"
     - cd $ROOT_FOLDER
     - dotnet restore
-    - dotnet sonarscanner begin /o:$SONAR_ORGANIZATION /k:$SONAR_PROJECTKEY /d:sonar.host.url=$SONAR_HOSTURL /d:sonar.cpd.exclusions=**/*Generated*.cs /d:sonar.coverageReportPaths="./sonarqubecoverage/SonarQube.xml"
-    - dotnet build --no-restore --configuration Debug
+    - dotnet sonarscanner begin /o:$SONAR_ORGANIZATION /k:$SONAR_PROJECTKEY /d:sonar.host.url=$SONAR_HOSTURL $SONAR_EXTRA_PARAMETERS
     - dotnet test --no-build --configuration Debug --logger:"junit;LogFilePath=..\..\artifacts\{assembly}-test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose" --collect:"XPlat Code Coverage"
-    - reportgenerator "-reports:./test/*/TestResults/*/coverage.cobertura.xml" "-targetdir:sonarqubecoverage" "-reporttypes:SonarQube"
+    - reportgenerator "-reports:$COBERTURA_REPORT_FILEPATH" $REPORTGENERATOR_OPTIONS
     - dotnet sonarscanner end
-  dependencies:
-    - build
   artifacts:
     when: always
     paths:
       - ./**/*test-result.xml
+      - $COBERTURA_REPORT_FILEPATH
     reports:
       junit:
         - ./**/*test-result.xml
-      cobertura: ./test/*/TestResults/*/coverage.cobertura.xml
+      cobertura: $COBERTURA_REPORT_FILEPATH
   only:
     - external_pull_requests
     - main
@@ -74,6 +75,8 @@ pack:
     - dotnet pack --no-build --configuration Release -o output
     - ls -alrt output
     - for f in output/*.nupkg; do dotnet nuget push "$f" --api-key $NUGET_APIKEY --source https://api.nuget.org/v3/index.json ; done
+  dependencies:
+    - test
   only:
     refs:
       - main
