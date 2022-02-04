@@ -14,7 +14,7 @@ stages:
   - test
 
 # avoid duplicate runs
-# CI_PIPELINE_SOURCE=push|external_pull_request_event
+# CI_PIPELINE_SOURCE=push|external_pull_request_event|schedule
 workflow:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "external_pull_request_event"'
@@ -82,6 +82,8 @@ pack:
       - main
     changes:
       - Directory.Build.props
+    variables:
+      - $CI_PIPELINE_SOURCE == "push"
 
 #build:
 #  extends: .dotnet_build
