@@ -78,6 +78,26 @@ EOF
 # adds entities.yml as WebApi additional file
 sed -i 's|</Project>|  <ItemGroup>\n    <AdditionalFiles Include="entities.yml" />\n  </ItemGroup>\n\n</Project>|' src/WebApi/WebApi.csproj
 
+# rewrites configuration file
+rm src/WebApi/appsettings.json
+cat > src/WebApi/appsettings.json <<EOF
+{
+  "AllowedHosts": "*",
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning",
+      "RabbidsIncubator.ServiceNowClient": "Information"
+    }
+  },
+  "Cache": {
+    "InMemory": {
+      "GeneralTimeoutInSeconds": 3600
+    }
+  }
+}
+EOF
+
 # configures the application from ServiceNow authenticication information (this file won't be versioned)
 rm src/WebApi/appsettings.Development.json
 # /!\ replace the *** with the correct values
@@ -124,6 +144,8 @@ dotnet build
 
 # launches the application!
 dotnet run --project src/WebApi
+
+# checks the application with "/health" and "/swagger" endpoints (the URL is given in the command output)
 ```
 
 * Improves codebase before git commit
