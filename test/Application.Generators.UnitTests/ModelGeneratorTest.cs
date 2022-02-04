@@ -1,5 +1,7 @@
-﻿using System.Text;
+﻿using System.IO;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.Testing;
 using Microsoft.CodeAnalysis.Text;
 using Xunit;
 
@@ -21,7 +23,7 @@ namespace RabbidsIncubator.ServiceNowClient.DummyProject.Domain.Models
     public class LocationModel
     {
 
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         public int? SomeId { get; set; }
 
@@ -62,6 +64,12 @@ entities:
                     GeneratedSources =
                     {
                         (typeof(ModelGenerator), "GeneratedLocationModel.cs", SourceText.From(expected, Encoding.UTF8, SourceHashAlgorithm.Sha1)),
+                    },
+                    ExpectedDiagnostics =
+                    {
+                        DiagnosticResult
+                            .CompilerError("CS8632")
+                            .WithSpan($"RabbidsIncubator.ServiceNowClient.Application.Generators{Path.DirectorySeparatorChar}RabbidsIncubator.ServiceNowClient.Application.Generators.ModelGenerator{Path.DirectorySeparatorChar}GeneratedLocationModel.cs", 7, 22, 7, 23)
                     }
                 }
             };

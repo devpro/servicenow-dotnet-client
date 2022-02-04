@@ -6,6 +6,9 @@
     <AssemblyName>RabbidsIncubator.ServiceNowClient.Application.Generators</AssemblyName>
     <RootNamespace>RabbidsIncubator.ServiceNowClient.Application.Generators</RootNamespace>
     <ProjectGuid>{65EC304F-CFF0-4535-9F01-66627E93253F}</ProjectGuid>
+    <!-- Needed to be able to use this generator as a NuGet package -->
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,6 +26,11 @@
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Package the generator in the analyzer directory of the nuget package -->
+    <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+  </ItemGroup>
 
   <PropertyGroup>
     <GetTargetPathDependsOn>$(GetTargetPathDependsOn);GetDependencyTargetPaths</GetTargetPathDependsOn>
