@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Testing;
 using Microsoft.CodeAnalysis.Text;
@@ -68,7 +69,7 @@ entities:
                     {
                         DiagnosticResult
                             .CompilerError("CS8632")
-                            .WithSpan(@"RabbidsIncubator.ServiceNowClient.Application.Generators\RabbidsIncubator.ServiceNowClient.Application.Generators.ModelGenerator\GeneratedLocationModel.cs", 7, 22, 7, 23)
+                            .WithSpan($"RabbidsIncubator.ServiceNowClient.Application.Generators{Path.DirectorySeparatorChar}RabbidsIncubator.ServiceNowClient.Application.Generators.ModelGenerator{Path.DirectorySeparatorChar}GeneratedLocationModel.cs", 7, 22, 7, 23)
                     }
                 }
             };
