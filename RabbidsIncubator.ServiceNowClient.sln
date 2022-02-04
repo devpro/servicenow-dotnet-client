@@ -48,7 +48,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Generators", "s
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Samples", "3 - Samples", "{99B0040B-D9C0-4A41-8104-7B9348FAF412}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Generators.UnitTests", "src\Application.Generators.UnitTests\Application.Generators.UnitTests.csproj", "{2A4CD487-C0CD-4BD2-AC39-4E4D63A736B2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Generators.UnitTests", "test\Application.Generators.UnitTests\Application.Generators.UnitTests.csproj", "{2A4CD487-C0CD-4BD2-AC39-4E4D63A736B2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
