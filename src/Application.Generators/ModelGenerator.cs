@@ -29,7 +29,7 @@ namespace {namespaces.Root}.Domain.Models
                 {
                     case Models.FieldType.String:
                         sourceBuilder.Append($@"
-        public string {field.Name.FirstCharToUpper()} {{ get; set; }}
+        public string? {field.Name.FirstCharToUpper()} {{ get; set; }}
 ");
                         break;
                     case Models.FieldType.Number:
