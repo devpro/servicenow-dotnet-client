@@ -11,9 +11,11 @@ This is the codebase of .NET components (API & libraries) to integrate with [Ser
 
 * Begin with [Getting Started](./docs/getting-started.md) to learn about how to use the components.
 
-* To work locally with the sources and improve them, go to [Contribute](./docs/contribute.md).
+* Go to [Contribute](./docs/contribute.md) to work locally with the sources and improve them.
 
 ## Going further
+
+* Review software design with [.NET](./docs/dotnet.md).
 
 * Understand the automation done on this codebase with [GitLab](./docs/gitlab.md).
 
