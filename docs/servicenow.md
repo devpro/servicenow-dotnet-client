@@ -25,3 +25,11 @@ https://developer.servicenow.com/dev.do#!/learn/courses/rome/app_store_learnv2_r
 ## Docker images of ServiceNow
 
 * [vaultsystems/docker-servicenow](https://github.com/vaultsystems/docker-servicenow)
+
+## SQL Server client
+
+* Make sure connections are opened in the firewall (here for Windows)
+
+```powershell
+New-NetFirewallRule -DisplayName "SQLServer default instance" -Direction Outbound -LocalPort 1433 -Protocol TCP -Action Allow
+```
