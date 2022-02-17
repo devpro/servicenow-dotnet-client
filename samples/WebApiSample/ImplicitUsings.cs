@@ -1,0 +1,5 @@
+﻿global using RabbidsIncubator.Samples.ServiceNowWebApiSample.Infrastructure;
+global using RabbidsIncubator.Samples.ServiceNowWebApiSample.Infrastructure.ServiceNowRestClient.DependencyInjection;
+global using RabbidsIncubator.Samples.ServiceNowWebApiSample.Infrastructure.ServiceNowRestClient.MappingProfiles;
+global using RabbidsIncubator.ServiceNowClient.Application.Builder;
+global using RabbidsIncubator.ServiceNowClient.Application.DependencyInjection;
