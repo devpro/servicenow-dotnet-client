@@ -8,6 +8,11 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators
     [Generator]
     public class ControllerGenerator : GeneratorBase
     {
+        protected override bool IsCompatible(Models.TargetApplicationType targetApplication)
+        {
+            return targetApplication == Models.TargetApplicationType.WebApp;
+        }
+
         protected override void GenerateCode(GeneratorExecutionContext context, Models.GenerationConfigurationModel model)
         {
             model.Entities?.ForEach(x => GenerateController(context, x, model.Namespaces));
@@ -54,13 +59,8 @@ namespace {namespaces.WebApi}.Controllers
 }}
 ");
 
-            // inject the created source into the users compilation
+            // injects the created source into the users compilation
             context.AddSource($"Generated{entityPascalName}Controller.cs", SourceText.From(sourceBuilder.ToString(), Encoding.UTF8));
-        }
-
-        protected override bool IsCompatible(Models.TargetApplicationType targetApplication)
-        {
-            return targetApplication == Models.TargetApplicationType.WebApp;
         }
     }
 }

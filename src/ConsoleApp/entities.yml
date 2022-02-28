@@ -7,15 +7,15 @@ entities:
     resourceName: locations
     queries:
       findAll:
-        table: cmn_location
+        serviceNowRestApiTable: cmn_location
     fields:
       - name: Name
-        serviceNowFieldName: name
+        mapFrom: name
       - name: City
-        serviceNowFieldName: city
+        mapFrom: city
       - name: CountryName
-        serviceNowFieldName: country
+        mapFrom: country
       - name: Latitude
-        serviceNowFieldName: latitude
+        mapFrom: latitude
       - name: Longitude
-        serviceNowFieldName: longitude
+        mapFrom: longitude

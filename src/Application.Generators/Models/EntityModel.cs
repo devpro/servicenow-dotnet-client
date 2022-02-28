@@ -2,6 +2,9 @@
 
 namespace RabbidsIncubator.ServiceNowClient.Application.Generators.Models
 {
+    /// <summary>
+    /// Entity model.
+    /// </summary>
     public class EntityModel
     {
         /// <summary>

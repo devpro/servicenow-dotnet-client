@@ -9,6 +9,11 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators
     [Generator]
     public class ServiceCollectionGenerator : GeneratorBase
     {
+        protected override bool IsCompatible(Models.TargetApplicationType targetApplication)
+        {
+            return true;
+        }
+
         protected override void GenerateCode(GeneratorExecutionContext context, Models.GenerationConfigurationModel model)
         {
             var sourceBuilder = new StringBuilder($@"
@@ -25,10 +30,10 @@ namespace {model.Namespaces.Root}.Infrastructure.ServiceNowRestClient.Dependency
         public static IServiceCollection AddServiceNowRestClientGeneratedRepositories(this IServiceCollection services)
         {{
 ");
-            foreach (var entityName in model.Entities?.Select(x => x.Name))
+            foreach (var entity in model.Entities.Where(x => !string.IsNullOrEmpty(x.Queries.FindAll.ServiceNowRestApiTable)))
             {
                 sourceBuilder.Append($@"
-            services.TryAddTransient<Domain.Repositories.I{entityName.FirstCharToUpper()}Repository, Repositories.{entityName.FirstCharToUpper()}Repository>();
+            services.TryAddTransient<Domain.Repositories.I{entity.Name.FirstCharToUpper()}Repository, Repositories.{entity.Name.FirstCharToUpper()}Repository>();
 ");
             }
 
@@ -39,13 +44,8 @@ namespace {model.Namespaces.Root}.Infrastructure.ServiceNowRestClient.Dependency
 }
 ");
 
-            // inject the created source into the users compilation
+            // injects the created source into the users compilation
             context.AddSource($"GeneratedServiceCollectionExtensions.cs", SourceText.From(sourceBuilder.ToString(), Encoding.UTF8));
-        }
-
-        protected override bool IsCompatible(Models.TargetApplicationType targetApplication)
-        {
-            return true;
         }
     }
 }

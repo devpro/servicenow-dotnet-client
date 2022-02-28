@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using RabbidsIncubator.ServiceNowClient.Infrastructure.InMemory.DependencyInjection;
 using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.DependencyInjection;
+using RabbidsIncubator.ServiceNowClient.Infrastructure.SqlServerClient.DependencyInjection;
 
 namespace RabbidsIncubator.ServiceNowClient.Application.DependencyInjection
 {
@@ -15,6 +16,7 @@ namespace RabbidsIncubator.ServiceNowClient.Application.DependencyInjection
             services.AddAutoMapperConfiguration(additionalProfiles);
             services.AddInMemoryRepositories(configuration.GetSection("Cache:InMemory").Get<Infrastructure.InMemory.InMemoryConfiguration>());
             services.AddServiceNowRestClientRepositories(configuration.GetSection("ServiceNow:RestApi").Get<Infrastructure.ServiceNowRestClient.ServiceNowRestClientConfiguration>());
+            services.AddSqlServerClientRepositories(configuration.GetSection("ServiceNow:SqlServer").Get<Infrastructure.SqlServerClient.SqlServerClientConfiguration>());
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();

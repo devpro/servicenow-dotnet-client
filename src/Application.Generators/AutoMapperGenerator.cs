@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
@@ -9,24 +10,59 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators
     [Generator]
     public class AutoMapperGenerator : GeneratorBase
     {
+        protected override bool IsCompatible(Models.TargetApplicationType targetApplication)
+        {
+            return true;
+        }
+
         protected override void GenerateCode(GeneratorExecutionContext context, Models.GenerationConfigurationModel model)
+        {
+            if (model.Entities == null)
+            {
+                return;
+            }
+
+            if (model.Entities.Any(x => !string.IsNullOrEmpty(x.Queries.FindAll.ServiceNowRestApiTable)))
+            {
+                GenerateMappingProfile(
+                    context,
+                    model.Namespaces.Root,
+                    "ServiceNowRestClient",
+                    model.Entities.Where(x => !string.IsNullOrEmpty(x.Queries.FindAll.ServiceNowRestApiTable)).Select(x => x.Name).ToList());
+            }
+
+            if (model.Entities.Any(x => !string.IsNullOrEmpty(x.Queries.FindAll.SqlServerDatabaseTable)))
+            {
+                GenerateMappingProfile(
+                    context,
+                    model.Namespaces.Root,
+                    "SqlServerClient",
+                    model.Entities.Where(x => !string.IsNullOrEmpty(x.Queries.FindAll.SqlServerDatabaseTable)).Select(x => x.Name).ToList());
+            }
+        }
+
+        private void GenerateMappingProfile(
+            GeneratorExecutionContext context,
+            string rootNamespace,
+            string projectName,
+            List<string> entityNames)
         {
             var sourceBuilder = new StringBuilder($@"
 using AutoMapper;
 
-namespace {model.Namespaces.Root}.Infrastructure.ServiceNowRestClient.MappingProfiles
+namespace {rootNamespace}.Infrastructure.{projectName}.MappingProfiles
 {{
-    public class GeneratedServiceNowRestClientMappingProfile : Profile
+    public class Generated{projectName}MappingProfile : Profile
     {{
         public override string ProfileName
         {{
-            get {{ return ""{model.Namespaces.Root.Replace(".", "")}ServiceNowRestClientGeneratedMappingProfile""; }}
+            get {{ return ""{rootNamespace.Replace(".", "")}Generated{projectName}MappingProfile""; }}
         }}
 
-        public GeneratedServiceNowRestClientMappingProfile()
+        public Generated{projectName}MappingProfile()
         {{
 ");
-            foreach (var entityName in model.Entities?.Select(x => x.Name))
+            foreach (var entityName in entityNames)
             {
                 sourceBuilder.Append($@"
             CreateMap<Dto.{entityName.FirstCharToUpper()}Dto, Domain.Models.{entityName.FirstCharToUpper()}Model>();
@@ -40,14 +76,8 @@ namespace {model.Namespaces.Root}.Infrastructure.ServiceNowRestClient.MappingPro
 }
 ");
 
-            // inject the created source into the users compilation
-            var fileContent = SourceText.From(sourceBuilder.ToString(), Encoding.UTF8);
-            context.AddSource("GeneratedServiceNowRestClientMappingProfile.cs", fileContent);
-        }
-
-        protected override bool IsCompatible(Models.TargetApplicationType targetApplication)
-        {
-            return true;
+            // injects the created source into the users compilation
+            context.AddSource($"Generated{projectName}MappingProfile.cs", SourceText.From(sourceBuilder.ToString(), Encoding.UTF8));
         }
     }
 }

@@ -8,11 +8,17 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators
     [Generator]
     public class RepositoryGenerator : GeneratorBase
     {
+        protected override bool IsCompatible(Models.TargetApplicationType targetApplication)
+        {
+            return true;
+        }
+
         protected override void GenerateCode(GeneratorExecutionContext context, Models.GenerationConfigurationModel model)
         {
             model.Entities?.ForEach(x => GenerateRepositoryInterface(context, x, model.Namespaces));
-            model.Entities?.ForEach(x => GenerateServiceNowRepository(context, x, model.Namespaces));
-            model.Entities?.ForEach(x => GenerateServiceNowDto(context, x, model.Namespaces));
+            model.Entities?.ForEach(x => GenerateServiceNowRestClientRepository(context, x, model.Namespaces));
+            model.Entities?.ForEach(x => GenerateServiceNowRestClientDto(context, x, model.Namespaces));
+            model.Entities?.ForEach(x => GenerateSqlServerClientDto(context, x, model.Namespaces));
         }
 
         private static void GenerateRepositoryInterface(GeneratorExecutionContext context, Models.EntityModel entity, Models.NamespacesModel namespaces)
@@ -38,8 +44,13 @@ namespace {namespaces.Root}.Domain.Repositories
             context.AddSource($"IGenerated{entityPascalName}Repository.cs", SourceText.From(sourceBuilder.ToString(), Encoding.UTF8));
         }
 
-        private static void GenerateServiceNowRepository(GeneratorExecutionContext context, Models.EntityModel entity, Models.NamespacesModel namespaces)
+        private static void GenerateServiceNowRestClientRepository(GeneratorExecutionContext context, Models.EntityModel entity, Models.NamespacesModel namespaces)
         {
+            if (string.IsNullOrEmpty(entity.Queries.FindAll.ServiceNowRestApiTable))
+            {
+                return;
+            }
+
             var entityPascalName = entity.Name.FirstCharToUpper();
 
             var sourceBuilder = new StringBuilder($@"
@@ -74,7 +85,7 @@ namespace {namespaces.Root}.Infrastructure.ServiceNowRestClient.Repositories
                 sourceBuilder.Append($@"
         public async Task<List<{entityPascalName}Model>> FindAllAsync(QueryModel<{entityPascalName}Model> query)
         {{
-            return await FindAllAsync<{entityPascalName}Model, {entityPascalName}Dto>(""{entity.Queries.FindAll.Table}"", query, ""{entity.Queries.FindAll.Filter}"");
+            return await FindAllAsync<{entityPascalName}Model, {entityPascalName}Dto>(""{entity.Queries.FindAll.ServiceNowRestApiTable}"", query, ""{entity.Queries.FindAll.Filter}"");
         }}
 ");
             }
@@ -83,22 +94,48 @@ namespace {namespaces.Root}.Infrastructure.ServiceNowRestClient.Repositories
     }
 }");
 
-            // inject the created source into the users compilation
-            context.AddSource($"Generated{entityPascalName}ServiceNowRepository.cs", SourceText.From(sourceBuilder.ToString(), Encoding.UTF8));
+            // injects the created source into the users compilation
+            context.AddSource($"GeneratedServiceNowRestClient{entityPascalName}Repository.cs", SourceText.From(sourceBuilder.ToString(), Encoding.UTF8));
         }
 
-        private static void GenerateServiceNowDto(GeneratorExecutionContext context, Models.EntityModel entity, Models.NamespacesModel namespaces)
+        private static void GenerateServiceNowRestClientDto(GeneratorExecutionContext context, Models.EntityModel entity, Models.NamespacesModel namespaces)
+        {
+            if (string.IsNullOrEmpty(entity.Queries.FindAll.ServiceNowRestApiTable))
+            {
+                return;
+            }
+
+            GenerateDto(context, entity, namespaces, "ServiceNowRestClient", $"RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.Dto.IEntityDto");
+        }
+
+        private static void GenerateSqlServerClientDto(GeneratorExecutionContext context, Models.EntityModel entity, Models.NamespacesModel namespaces)
+        {
+            if (string.IsNullOrEmpty(entity.Queries.FindAll.SqlServerDatabaseTable))
+            {
+                return;
+            }
+
+            GenerateDto(context, entity, namespaces, "SqlServerClient");
+        }
+
+        private static void GenerateDto(
+            GeneratorExecutionContext context,
+            Models.EntityModel entity,
+            Models.NamespacesModel namespaces,
+            string projectName,
+            string interfaceName = "")
         {
             var entityPascalName = entity.Name.FirstCharToUpper();
+
+            var inheritance = string.IsNullOrEmpty(interfaceName) ? "" : $": {interfaceName}";
 
             var sourceBuilder = new StringBuilder($@"
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.Dto;
 
-namespace {namespaces.Root}.Infrastructure.ServiceNowRestClient.Dto
+namespace {namespaces.Root}.Infrastructure.{projectName}.Dto
 {{
-    public partial class {entityPascalName}Dto : IEntityDto
+    public partial class {entityPascalName}Dto {inheritance}
     {{
 ");
 
@@ -108,19 +145,19 @@ namespace {namespaces.Root}.Infrastructure.ServiceNowRestClient.Dto
                 {
                     case Models.FieldType.String:
                         sourceBuilder.Append($@"
-        [JsonProperty(""{field.ServiceNowFieldName}"")]
+        [JsonProperty(""{field.MapFrom}"")]
         public string? {field.Name.FirstCharToUpper()} {{ get; set; }}
 ");
                         break;
                     case Models.FieldType.Number:
                         sourceBuilder.Append($@"
-        [JsonProperty(""{field.ServiceNowFieldName}"")]
+        [JsonProperty(""{field.MapFrom}"")]
         public int? {field.Name.FirstCharToUpper()} {{ get; set; }}
 ");
                         break;
                     case Models.FieldType.Boolean:
                         sourceBuilder.Append($@"
-        [JsonProperty(""{field.ServiceNowFieldName}"")]
+        [JsonProperty(""{field.MapFrom}"")]
         public bool? {field.Name.FirstCharToUpper()} {{ get; set; }}
 ");
                         break;
@@ -136,9 +173,9 @@ namespace {namespaces.Root}.Infrastructure.ServiceNowRestClient.Dto
             foreach (var field in entity.Fields)
             {
                 sourceBuilder.Append($@"
-            if (!string.IsNullOrEmpty({field.Name.FirstCharToUpper()}))
+            if ({field.Name.FirstCharToUpper()} != null)
             {{
-                dictionary[""{field.ServiceNowFieldName}""] = {field.Name.FirstCharToUpper()};
+                dictionary[""{field.MapFrom}""] = {field.Name.FirstCharToUpper()}.Value.ToString();
             }}
 ");
             }
@@ -150,12 +187,7 @@ namespace {namespaces.Root}.Infrastructure.ServiceNowRestClient.Dto
 }");
 
             // inject the created source into the users compilation
-            context.AddSource($"Generated{entityPascalName}ServiceNowDto.cs", SourceText.From(sourceBuilder.ToString(), Encoding.UTF8));
-        }
-
-        protected override bool IsCompatible(Models.TargetApplicationType targetApplication)
-        {
-            return true;
+            context.AddSource($"Generated{projectName}{entityPascalName}Dto.cs", SourceText.From(sourceBuilder.ToString(), Encoding.UTF8));
         }
     }
 }

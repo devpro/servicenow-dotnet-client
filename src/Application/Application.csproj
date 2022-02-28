@@ -20,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Infrastructure.InMemory\Infrastructure.InMemory.csproj" />
     <ProjectReference Include="..\Infrastructure.ServiceNowRestClient\Infrastructure.ServiceNowRestClient.csproj" />
+    <ProjectReference Include="..\Infrastructure.SqlServerClient\Infrastructure.SqlServerClient.csproj" />
   </ItemGroup>
 
 </Project>
