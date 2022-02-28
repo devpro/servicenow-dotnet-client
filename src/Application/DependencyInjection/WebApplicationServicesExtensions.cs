@@ -8,6 +8,14 @@ namespace RabbidsIncubator.ServiceNowClient.Application.DependencyInjection
 {
     public static class WebApplicationServicesExtensions
     {
+        /// <summary>
+        /// Add default services in the service collection.
+        /// Expected configuration elements: "Cache:InMemory", "ServiceNow:RestApi", "ServiceNow:SqlServer".
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="configuration"></param>
+        /// <param name="additionalProfiles"></param>
+        /// <returns></returns>
         public static IServiceCollection AddDefaultServices(
             this IServiceCollection services,
             ConfigurationManager configuration,

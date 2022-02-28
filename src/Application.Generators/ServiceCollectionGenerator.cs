@@ -16,6 +16,8 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators
 
         protected override void GenerateCode(GeneratorExecutionContext context, Models.GenerationConfigurationModel model)
         {
+            // TODO: add SqlServer
+
             var sourceBuilder = new StringBuilder($@"
 using System;
 using System.Net.Http.Headers;

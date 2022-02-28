@@ -15,6 +15,8 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators
 
         protected override void GenerateCode(GeneratorExecutionContext context, Models.GenerationConfigurationModel model)
         {
+            // TODO: add SqlServer repository
+
             model.Entities?.ForEach(x => GenerateRepositoryInterface(context, x, model.Namespaces));
             model.Entities?.ForEach(x => GenerateServiceNowRestClientRepository(context, x, model.Namespaces));
             model.Entities?.ForEach(x => GenerateServiceNowRestClientDto(context, x, model.Namespaces));
@@ -172,12 +174,24 @@ namespace {namespaces.Root}.Infrastructure.{projectName}.Dto
 
             foreach (var field in entity.Fields)
             {
-                sourceBuilder.Append($@"
+                if (field.FieldType == Models.FieldType.String)
+                {
+                    sourceBuilder.Append($@"
+            if ({field.Name.FirstCharToUpper()} != null)
+            {{
+                dictionary[""{field.MapFrom}""] = {field.Name.FirstCharToUpper()}.ToString();
+            }}
+");
+                }
+                else
+                {
+                    sourceBuilder.Append($@"
             if ({field.Name.FirstCharToUpper()} != null)
             {{
                 dictionary[""{field.MapFrom}""] = {field.Name.FirstCharToUpper()}.Value.ToString();
             }}
 ");
+                }
             }
 
             sourceBuilder.Append(@"

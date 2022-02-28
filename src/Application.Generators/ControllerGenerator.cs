@@ -47,7 +47,25 @@ namespace {namespaces.WebApi}.Controllers
             _logger = logger;
             _{entityCamelName}Repository = {entityCamelName}Repository;
         }}
+");
 
+            if (!string.IsNullOrEmpty(entity.Queries.FindAll.SqlServerDatabaseTable))
+            {
+                sourceBuilder.Append($@"
+        [HttpGet(Name = ""Get{entity.ResourceName}"")]
+        public async Task<List<{entityPascalName}Model>> Get()
+        {{
+            var items = await _{entityCamelName}Repository.FindAllAsync(new QueryModel<{entityPascalName}Model>(null, 0, 0));
+            _logger.LogDebug(""Number of items found: {{itemsCount}}"", items.Count);
+            return items;
+        }}
+    }}
+}}
+");
+            }
+            else
+            {
+                sourceBuilder.Append($@"
         [HttpGet(Name = ""Get{entity.ResourceName}"")]
         public async Task<List<{entityPascalName}Model>> Get([FromQuery] {entityPascalName}Model model, int? startIndex, int? limit)
         {{
@@ -58,6 +76,7 @@ namespace {namespaces.WebApi}.Controllers
     }}
 }}
 ");
+            }
 
             // injects the created source into the users compilation
             context.AddSource($"Generated{entityPascalName}Controller.cs", SourceText.From(sourceBuilder.ToString(), Encoding.UTF8));
