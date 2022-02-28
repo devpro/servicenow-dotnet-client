@@ -36,7 +36,7 @@ namespace {namespaces.WebApi}.Controllers
 {{
     [ApiController]
     [Route(""{entity.ResourceName}"")]
-    public class {entityPascalName}Controller : ControllerBase
+    public partial class {entityPascalName}Controller : ControllerBase
     {{
         private readonly ILogger _logger;
 
@@ -53,9 +53,9 @@ namespace {namespaces.WebApi}.Controllers
             {
                 sourceBuilder.Append($@"
         [HttpGet(Name = ""Get{entity.ResourceName}"")]
-        public async Task<List<{entityPascalName}Model>> Get()
+        public async Task<List<{entityPascalName}Model>> Get(int? startIndex, int? limit)
         {{
-            var items = await _{entityCamelName}Repository.FindAllAsync(new QueryModel<{entityPascalName}Model>(null, 0, 0));
+            var items = await _{entityCamelName}Repository.FindAllAsync(new QueryModel<{entityPascalName}Model>(null, startIndex, limit));
             _logger.LogDebug(""Number of items found: {{itemsCount}}"", items.Count);
             return items;
         }}

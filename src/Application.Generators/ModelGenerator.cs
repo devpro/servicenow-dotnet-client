@@ -25,7 +25,7 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators
             var sourceBuilder = new StringBuilder($@"
 namespace {namespaces.Root}.Domain.Models
 {{
-    public class {entityPascalName}Model
+    public partial class {entityPascalName}Model
     {{
 ");
             foreach (var field in entity.Fields)

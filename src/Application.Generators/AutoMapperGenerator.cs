@@ -52,7 +52,7 @@ using AutoMapper;
 
 namespace {rootNamespace}.Infrastructure.{projectName}.MappingProfiles
 {{
-    public class Generated{projectName}MappingProfile : Profile
+    public partial class Generated{projectName}MappingProfile : Profile
     {{
         public override string ProfileName
         {{

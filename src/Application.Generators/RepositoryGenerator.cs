@@ -70,7 +70,7 @@ using {namespaces.Root}.Infrastructure.ServiceNowRestClient.Dto;
 
 namespace {namespaces.Root}.Infrastructure.ServiceNowRestClient.Repositories
 {{
-    public class {entityPascalName}Repository : ServiceNowRestClientRepositoryBase, I{entityPascalName}Repository
+    public partial class {entityPascalName}Repository : ServiceNowRestClientRepositoryBase, I{entityPascalName}Repository
     {{
         public {entityPascalName}Repository(
             ILogger<{entityPascalName}Repository> logger,
