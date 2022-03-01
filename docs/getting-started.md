@@ -132,6 +132,7 @@ using WebApi.Infrastructure.ServiceNowRestClient.MappingProfiles;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDefaultServices(builder.Configuration, new GeneratedServiceNowRestClientMappingProfile());
 builder.Services.AddServiceNowRestClientGeneratedRepositories();
+builder.Services.AddSqlServerClientClientGeneratedRepositories();
 
 var app = builder.Build();
 app.AddDefaultMiddlewares();

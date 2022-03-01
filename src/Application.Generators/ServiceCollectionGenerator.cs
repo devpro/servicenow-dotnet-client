@@ -16,8 +16,12 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators
 
         protected override void GenerateCode(GeneratorExecutionContext context, Models.GenerationConfigurationModel model)
         {
-            // TODO: add SqlServer
+            GenerateServiceNowRestServiceCollectionExtensionFile(context, model);
+            GenerateSqlServerServiceCollectionExtensionFile(context, model);
+        }
 
+        private static void GenerateServiceNowRestServiceCollectionExtensionFile(GeneratorExecutionContext context, Models.GenerationConfigurationModel model)
+        {
             var sourceBuilder = new StringBuilder($@"
 using System;
 using System.Net.Http.Headers;
@@ -47,7 +51,41 @@ namespace {model.Namespaces.Root}.Infrastructure.ServiceNowRestClient.Dependency
 ");
 
             // injects the created source into the users compilation
-            context.AddSource($"GeneratedServiceCollectionExtensions.cs", SourceText.From(sourceBuilder.ToString(), Encoding.UTF8));
+            context.AddSource($"GeneratedServiceNowRestClientServiceCollectionExtensions.cs", SourceText.From(sourceBuilder.ToString(), Encoding.UTF8));
+        }
+
+        private static void GenerateSqlServerServiceCollectionExtensionFile(GeneratorExecutionContext context, Models.GenerationConfigurationModel model)
+        {
+            var sourceBuilder = new StringBuilder($@"
+using System;
+using System.Net.Http.Headers;
+using System.Text;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+
+namespace {model.Namespaces.Root}.Infrastructure.SqlServerClient.DependencyInjection
+{{
+    public static class GeneratedServiceCollectionExtensions
+    {{
+        public static IServiceCollection AddSqlServerClientClientGeneratedRepositories(this IServiceCollection services)
+        {{
+");
+            foreach (var entity in model.Entities.Where(x => !string.IsNullOrEmpty(x.Queries.FindAll.SqlServerDatabaseTable)))
+            {
+                sourceBuilder.Append($@"
+            services.TryAddTransient<Domain.Repositories.I{entity.Name.FirstCharToUpper()}Repository, Repositories.{entity.Name.FirstCharToUpper()}Repository>();
+");
+            }
+
+            sourceBuilder.Append(@"
+            return services;
+        }
+    }
+}
+");
+
+            // injects the created source into the users compilation
+            context.AddSource($"GeneratedSqlServerClientServiceCollectionExtensions.cs", SourceText.From(sourceBuilder.ToString(), Encoding.UTF8));
         }
     }
 }

@@ -2,6 +2,7 @@
 builder.Services.AddDefaultServices(builder.Configuration, new GeneratedServiceNowRestClientMappingProfile(), new InfrastructureMappingProfile());
 builder.Services.AddWebApiSampleInfrastructureRepositories();
 builder.Services.AddServiceNowRestClientGeneratedRepositories();
+builder.Services.AddSqlServerClientClientGeneratedRepositories();
 
 var app = builder.Build();
 app.AddDefaultMiddlewares();

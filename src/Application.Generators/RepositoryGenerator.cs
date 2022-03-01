@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
@@ -147,9 +147,11 @@ namespace {namespaces.Root}.Infrastructure.SqlServerClient.Repositories
         {{
         }}
 
+        protected override string QueryTableName => ""{entity.Queries.FindAll.SqlServerDatabaseTable}"";
+
         protected override string GetSelectQueryField()
         {{
-            return ""{string.Join(",", entity.Fields.Select(x => x.MapFrom))}"";
+            return ""\""{string.Join("\\\",\\\"", entity.Fields.Select(x => x.MapFrom))}\"""";
         }}
 
         protected override {entityPascalName}Model CreateModel(SqlDataReader reader)

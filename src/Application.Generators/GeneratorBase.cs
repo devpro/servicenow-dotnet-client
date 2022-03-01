@@ -20,6 +20,16 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators
 
         protected abstract void GenerateCode(GeneratorExecutionContext context, Models.GenerationConfigurationModel model);
 
+        protected virtual void EnableDebug()
+        {
+#if DEBUG
+            if (!System.Diagnostics.Debugger.IsAttached)
+            {
+                System.Diagnostics.Debugger.Launch();
+            }
+#endif
+        }
+
         // Public methods
 
         public void Execute(GeneratorExecutionContext context)
