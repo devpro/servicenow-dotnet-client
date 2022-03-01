@@ -16,6 +16,7 @@ namespace RabbidsIncubator.ServiceNowClient.Application.DependencyInjection
             var mappingConfig = new MapperConfiguration(x =>
             {
                 x.AddProfile(new Infrastructure.ServiceNowRestClient.MappingProfiles.ServiceNowRestClientMappingProfile());
+                x.AddProfile(new Infrastructure.SqlServerClient.MappingProfiles.SqlServerClientMappingProfile());
                 if (additionalProfiles != null && additionalProfiles.Length > 0)
                 {
                     x.AddProfiles(additionalProfiles);
