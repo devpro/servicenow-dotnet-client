@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Linq;
+using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using RabbidsIncubator.ServiceNowClient.Application.Generators.Extensions;
@@ -15,10 +16,9 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators
 
         protected override void GenerateCode(GeneratorExecutionContext context, Models.GenerationConfigurationModel model)
         {
-            // TODO: add SqlServer repository
-
             model.Entities?.ForEach(x => GenerateRepositoryInterface(context, x, model.Namespaces));
             model.Entities?.ForEach(x => GenerateServiceNowRestClientRepository(context, x, model.Namespaces));
+            model.Entities?.ForEach(x => GenerateSqlServerClientRepository(context, x, model.Namespaces));
             model.Entities?.ForEach(x => GenerateServiceNowRestClientDto(context, x, model.Namespaces));
             model.Entities?.ForEach(x => GenerateSqlServerClientDto(context, x, model.Namespaces));
         }
@@ -27,7 +27,28 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators
         {
             var entityPascalName = entity.Name.FirstCharToUpper();
 
-            var sourceBuilder = new StringBuilder($@"
+            var sourceBuilder = new StringBuilder();
+
+            if (entity.IsCallingSqlServerDatabase())
+            {
+                sourceBuilder.Append($@"
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using RabbidsIncubator.ServiceNowClient.Domain.Models;
+using RabbidsIncubator.ServiceNowClient.Infrastructure.SqlServerClient.Repositories;
+using {namespaces.Root}.Domain.Models;
+
+namespace {namespaces.Root}.Domain.Repositories
+{{
+    public interface I{entityPascalName}Repository : ISqlServerClientQueryRepository<{entityPascalName}Model>
+    {{
+    }}
+}}
+");
+            }
+            else
+            {
+                sourceBuilder.Append($@"
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using RabbidsIncubator.ServiceNowClient.Domain.Models;
@@ -41,6 +62,7 @@ namespace {namespaces.Root}.Domain.Repositories
     }}
 }}
 ");
+            }
 
             // inject the created source into the users compilation
             context.AddSource($"IGenerated{entityPascalName}Repository.cs", SourceText.From(sourceBuilder.ToString(), Encoding.UTF8));
@@ -48,7 +70,7 @@ namespace {namespaces.Root}.Domain.Repositories
 
         private static void GenerateServiceNowRestClientRepository(GeneratorExecutionContext context, Models.EntityModel entity, Models.NamespacesModel namespaces)
         {
-            if (string.IsNullOrEmpty(entity.Queries.FindAll.ServiceNowRestApiTable))
+            if (!entity.IsCallingServiceNowRestApi())
             {
                 return;
             }
@@ -98,6 +120,75 @@ namespace {namespaces.Root}.Infrastructure.ServiceNowRestClient.Repositories
 
             // injects the created source into the users compilation
             context.AddSource($"GeneratedServiceNowRestClient{entityPascalName}Repository.cs", SourceText.From(sourceBuilder.ToString(), Encoding.UTF8));
+        }
+
+        private static void GenerateSqlServerClientRepository(GeneratorExecutionContext context, Models.EntityModel entity, Models.NamespacesModel namespaces)
+        {
+            if (!entity.IsCallingSqlServerDatabase())
+            {
+                return;
+            }
+
+            var entityPascalName = entity.Name.FirstCharToUpper();
+
+            var sourceBuilder = new StringBuilder($@"
+using System.Data.SqlClient;
+using RabbidsIncubator.ServiceNowClient.Infrastructure.SqlServerClient;
+using RabbidsIncubator.ServiceNowClient.Infrastructure.SqlServerClient.Repositories;
+using {namespaces.Root}.Domain.Models;
+using {namespaces.Root}.Domain.Repositories;
+
+namespace {namespaces.Root}.Infrastructure.SqlServerClient.Repositories
+{{
+    public partial class {entityPascalName}Repository : SqlServerClientRepositoryBase<{entityPascalName}Model>, I{entityPascalName}Repository
+    {{
+        public {entityPascalName}Repository(ILogger<{entityPascalName}Repository> logger, SqlServerClientConfiguration sqlServerClientConfiguration)
+            : base(logger, sqlServerClientConfiguration)
+        {{
+        }}
+
+        protected override string GetSelectQueryField()
+        {{
+            return ""{string.Join(",", entity.Fields.Select(x => x.MapFrom))}"";
+        }}
+
+        protected override {entityPascalName}Model CreateModel(SqlDataReader reader)
+        {{
+            return new {entityPascalName}Model()
+            {{
+");
+
+            foreach (var field in entity.Fields)
+            {
+                switch (field.FieldType)
+                {
+                    case Models.FieldType.String:
+                        sourceBuilder.Append($@"
+                {field.Name.FirstCharToUpper()} = reader[""{field.MapFrom}""].ToString(),
+");
+                        break;
+                    case Models.FieldType.Number:
+                        sourceBuilder.Append($@"
+                {field.Name.FirstCharToUpper()} = reader[""{field.MapFrom}""] != null ? int.Parse(reader[""{field.MapFrom}""].ToString() ?? ""0"") : null,
+");
+                        break;
+                    case Models.FieldType.Boolean:
+                        sourceBuilder.Append($@"
+                {field.Name.FirstCharToUpper()} = reader[""{field.MapFrom}""] != null ? bool.Parse(reader[""{field.MapFrom}""].ToString() ?? ""false"") : null,
+");
+                        break;
+                }
+            }
+
+            sourceBuilder.Append(@"
+            };
+        }
+    }
+}
+");
+
+            // injects the created source into the users compilation
+            context.AddSource($"GeneratedSqlServerClient{entityPascalName}Repository.cs", SourceText.From(sourceBuilder.ToString(), Encoding.UTF8));
         }
 
         private static void GenerateServiceNowRestClientDto(GeneratorExecutionContext context, Models.EntityModel entity, Models.NamespacesModel namespaces)

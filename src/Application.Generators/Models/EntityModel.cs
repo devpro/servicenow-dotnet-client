@@ -27,5 +27,23 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators.Models
         /// Entity field definitions.
         /// </summary>
         public List<FieldModel> Fields { get; set; }
+
+        /// <summary>
+        /// Is calling ServiceNow REST API?
+        /// </summary>
+        /// <returns></returns>
+        public bool IsCallingServiceNowRestApi()
+        {
+            return !string.IsNullOrEmpty(Queries.FindAll.ServiceNowRestApiTable);
+        }
+
+        /// <summary>
+        /// Is calling SQL Server database?
+        /// </summary>
+        /// <returns></returns>
+        public bool IsCallingSqlServerDatabase()
+        {
+            return !string.IsNullOrEmpty(Queries.FindAll.SqlServerDatabaseTable);
+        }
     }
 }
