@@ -5,7 +5,7 @@ builder.Services.AddServiceNowRestClientGeneratedRepositories();
 builder.Services.AddSqlServerClientClientGeneratedRepositories();
 
 var app = builder.Build();
-app.AddDefaultMiddlewares();
+app.AddDefaultMiddlewares(builder.Configuration);
 
 app.Run();
 

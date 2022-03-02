@@ -1,19 +1,32 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Configuration;
 
 namespace RabbidsIncubator.ServiceNowClient.Application.Builder
 {
     public static class WebApplicationExtensions
     {
-        public static WebApplication AddDefaultMiddlewares(this WebApplication app)
+        /// <summary>
+        /// Add default middleware.
+        /// Expected configuration elements: "Application:IsSwaggerEnabled", "Application:IsHttpsEnforced".
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="configuration"></param>
+        /// <returns></returns>
+        public static WebApplication AddDefaultMiddlewares(
+            this WebApplication app,
+            ConfigurationManager configuration)
         {
-            if (app.Environment.IsDevelopment())
+            if (bool.TryParse(configuration["Application:IsSwaggerEnabled"], out var isSwaggerEnabled) && isSwaggerEnabled)
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
+            if (bool.TryParse(configuration["Application:IsHttpsEnforced"], out var isHttpsEnforced) && isHttpsEnforced)
+            {
+                app.UseHttpsRedirection();
+            }
+
             app.UseAuthorization();
             app.MapControllers();
             app.MapHealthChecks("/health");
