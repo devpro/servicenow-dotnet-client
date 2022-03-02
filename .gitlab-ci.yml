@@ -39,6 +39,11 @@ test:
     COBERTURA_REPORT_FILEPATH: ./test/*/TestResults/*/coverage.cobertura.xml
     REPORTGENERATOR_OPTIONS: -targetdir:sonarqubecoverage -reporttypes:SonarQube
     SONAR_EXTRA_PARAMETERS: /d:sonar.cpd.exclusions=**/*Generated*.cs /d:sonar.coverageReportPaths=./sonarqubecoverage/SonarQube.xml
+    MSSQL_HOST: microsoft-mssql-server-linux
+    ACCEPT_EULA: "Y"
+    SA_PASSWORD: s0m3Str0ng!P@ssw0rd
+  services:
+    - mcr.microsoft.com/mssql/server:2019-latest
   script:
     - apt update
     - apt install -y default-jre
