@@ -147,19 +147,6 @@ docker pull devpro.jfrog.io/rabbidsincubator-docker-local/servicenowclientapisam
   * Close and open again Visual Studio
   * Run `dotnet clean` and `dotnet build` from the command line (outside Visual Studio)
   * Manually delete all bin/ and obj/ folders from the root folder
-  * Add a breakpoint in the ***Generator.cs file
-
-  ```cs
-    public void Execute(GeneratorExecutionContext context)
-    {
-  #if DEBUG
-        if (!System.Diagnostics.Debugger.IsAttached)
-        {
-            System.Diagnostics.Debugger.Launch();
-        }
-  #endif
-
-        var files = GetMappingFiles(context);
-        files?.ToList().ForEach(x => GenerateCode(context, x));
-    }
-  ```
+  * Update the ***Generator.cs file you are investigating to
+    * Add a call to EnableDebug from GenerateCode method
+    * Add a breakpoint in the 
