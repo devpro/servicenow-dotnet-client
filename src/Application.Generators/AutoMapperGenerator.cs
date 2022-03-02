@@ -22,23 +22,17 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators
                 return;
             }
 
-            if (model.Entities.Any(x => !string.IsNullOrEmpty(x.Queries.FindAll.ServiceNowRestApiTable)))
-            {
-                GenerateMappingProfile(
-                    context,
-                    model.Namespaces.Root,
-                    "ServiceNowRestClient",
-                    model.Entities.Where(x => !string.IsNullOrEmpty(x.Queries.FindAll.ServiceNowRestApiTable)).Select(x => x.Name).ToList());
-            }
+            GenerateMappingProfile(
+                context,
+                model.Namespaces.Root,
+                "ServiceNowRestClient",
+                model.Entities.Where(x => !string.IsNullOrEmpty(x.Queries.FindAll.ServiceNowRestApiTable)).Select(x => x.Name).ToList());
 
-            if (model.Entities.Any(x => !string.IsNullOrEmpty(x.Queries.FindAll.SqlServerDatabaseTable)))
-            {
-                GenerateMappingProfile(
-                    context,
-                    model.Namespaces.Root,
-                    "SqlServerClient",
-                    model.Entities.Where(x => !string.IsNullOrEmpty(x.Queries.FindAll.SqlServerDatabaseTable)).Select(x => x.Name).ToList());
-            }
+            GenerateMappingProfile(
+                context,
+                model.Namespaces.Root,
+                "SqlServerClient",
+                model.Entities.Where(x => !string.IsNullOrEmpty(x.Queries.FindAll.SqlServerDatabaseTable)).Select(x => x.Name).ToList());
         }
 
         private void GenerateMappingProfile(

@@ -19,3 +19,16 @@ entities:
         mapFrom: latitude
       - name: Longitude
         mapFrom: longitude
+  - name: MySqlServerView
+    resourceName: my-mssql-view
+    queries:
+      findAll:
+        sqlServerDatabaseTable: My_View
+    fields:
+      - name: Id
+        mapFrom: CMDB_ID
+      - name: Name
+        mapFrom: Name
+      - name: IsStackMember
+        mapFrom: Is_stack_Member
+        fieldType: Boolean
