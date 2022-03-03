@@ -17,16 +17,9 @@ stages:
   - test
 
 services:
-  - docker:dind
   # see: https://docs.microsoft.com/en-us/sql/linux/quickstart-install-connect-docker
   - name: mcr.microsoft.com/mssql/server:2019-latest
     alias: mssql
-
-docker_build:
-  stage: build
-  image: docker:latest
-  script:
-    - docker build -t example-image:latest .
 
 # avoid duplicate runs
 # CI_PIPELINE_SOURCE=push|external_pull_request_event|schedule
@@ -46,13 +39,10 @@ build:
 
 db-init:
   stage: build
-  image: docker:latest
+  image: mcr.microsoft.com/mssql-tools:latest
   script:
     # initializes local SQL Server database for integrations tests
-    - docker ps
-    - docker cp $PWD/scripts/mssql/db-init.sql mssql:/home/db-init.sql
-    - docker exec mssql ls "/home"
-    - docker exec mssql /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P $SA_PASSWORD -i /home/db-init.sql
+    - sqlcmd -S mssql -U SA -P $SA_PASSWORD -i $PWD/scripts/mssql/db-init.sql
 
 #.dotnet_test_sonar:
 test:
