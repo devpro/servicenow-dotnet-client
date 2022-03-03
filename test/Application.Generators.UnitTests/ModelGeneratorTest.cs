@@ -20,7 +20,7 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators.UnitTests
             var expected = @"
 namespace RabbidsIncubator.ServiceNowClient.DummyProject.Domain.Models
 {
-    public class LocationModel
+    public partial class LocationModel
     {
 
         public string? Name { get; set; }
@@ -49,15 +49,15 @@ entities:
     resourceName: locations
     queries:
       findAll:
-        table: cmn_location
+        serviceNowRestApiTable: cmn_location
     fields:
       - name: Name
-        serviceNowFieldName: name
+        mapFrom: name
       - name: SomeId
-        serviceNowFieldName: someId
+        mapFrom: someId
         fieldType: Number
       - name: IsImportant
-        serviceNowFieldName: isImportant
+        mapFrom: isImportant
         fieldType: Boolean
 ")
                     },

@@ -16,27 +16,28 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators.UnitTests
             var original = @"
 namespace RabbidsIncubator.ServiceNowClient.DummyProject.Infrastructure.ServiceNowRestClient.Dto
 {
-    public class LocationDto
+    public partial class LocationDto
     {
     }
 }
 namespace RabbidsIncubator.ServiceNowClient.DummyProject.Domain.Models
 {
-    public class LocationModel
+    public partial class LocationModel
     {
     }
 }
 ";
-            var expected = @"
+
+            var expectedServiceNowRest = @"
 using AutoMapper;
 
 namespace RabbidsIncubator.ServiceNowClient.DummyProject.Infrastructure.ServiceNowRestClient.MappingProfiles
 {
-    public class GeneratedServiceNowRestClientMappingProfile : Profile
+    public partial class GeneratedServiceNowRestClientMappingProfile : Profile
     {
         public override string ProfileName
         {
-            get { return ""RabbidsIncubatorServiceNowClientDummyProjectServiceNowRestClientGeneratedMappingProfile""; }
+            get { return ""RabbidsIncubatorServiceNowClientDummyProjectGeneratedServiceNowRestClientMappingProfile""; }
         }
 
         public GeneratedServiceNowRestClientMappingProfile()
@@ -49,6 +50,27 @@ namespace RabbidsIncubator.ServiceNowClient.DummyProject.Infrastructure.ServiceN
     }
 }
 ";
+
+            var expectedSqlServer = @"
+using AutoMapper;
+
+namespace RabbidsIncubator.ServiceNowClient.DummyProject.Infrastructure.SqlServerClient.MappingProfiles
+{
+    public partial class GeneratedSqlServerClientMappingProfile : Profile
+    {
+        public override string ProfileName
+        {
+            get { return ""RabbidsIncubatorServiceNowClientDummyProjectGeneratedSqlServerClientMappingProfile""; }
+        }
+
+        public GeneratedSqlServerClientMappingProfile()
+        {
+
+        }
+    }
+}
+";
+
             var test = new VerifyCS.Test
             {
                 TestState =
@@ -66,18 +88,18 @@ entities:
     resourceName: locations
     queries:
       findAll:
-        table: cmn_location
+        serviceNowRestApiTable: cmn_location
     fields:
       - name: Name
-        serviceNowFieldName: name
+        mapFrom: name
       - name: City
-        serviceNowFieldName: city
+        mapFrom: city
       - name: CountryName
-        serviceNowFieldName: country
+        mapFrom: country
       - name: Latitude
-        serviceNowFieldName: latitude
+        mapFrom: latitude
       - name: Longitude
-        serviceNowFieldName: longitude
+        mapFrom: longitude
 ")
                     },
                     AdditionalReferences =
@@ -86,7 +108,8 @@ entities:
                     },
                     GeneratedSources =
                     {
-                        (typeof(AutoMapperGenerator), "GeneratedServiceNowRestClientMappingProfile.cs", SourceText.From(expected, Encoding.UTF8, SourceHashAlgorithm.Sha1)),
+                        (typeof(AutoMapperGenerator), "GeneratedServiceNowRestClientMappingProfile.cs", SourceText.From(expectedServiceNowRest, Encoding.UTF8, SourceHashAlgorithm.Sha1)),
+                        (typeof(AutoMapperGenerator), "GeneratedSqlServerClientMappingProfile.cs", SourceText.From(expectedSqlServer, Encoding.UTF8, SourceHashAlgorithm.Sha1))
                     }
                 }
             };
