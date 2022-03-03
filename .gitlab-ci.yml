@@ -39,19 +39,31 @@ test:
     COBERTURA_REPORT_FILEPATH: ./test/*/TestResults/*/coverage.cobertura.xml
     REPORTGENERATOR_OPTIONS: -targetdir:sonarqubecoverage -reporttypes:SonarQube
     SONAR_EXTRA_PARAMETERS: /d:sonar.cpd.exclusions=**/*Generated*.cs /d:sonar.coverageReportPaths=./sonarqubecoverage/SonarQube.xml
-    MSSQL_HOST: microsoft-mssql-server-linux
+    MSSQL_HOST: localmssql
     ACCEPT_EULA: "Y"
     SA_PASSWORD: s0m3Str0ng!P@ssw0rd
+    ServiceNow__SqlServer__DataSource: localmssql
+    ServiceNow__SqlServer__UserId: SA
+    ServiceNow__SqlServer__Password: s0m3Str0ng!P@ssw0rd
+    ServiceNow__SqlServer__InitialCatalog: TestDB
   services:
     # see: https://docs.microsoft.com/en-us/sql/linux/quickstart-install-connect-docker
-    - mcr.microsoft.com/mssql/server:2019-latest
+    - name: mcr.microsoft.com/mssql/server:2019-latest
+      alias: mssql
   script:
+    # initializes local SQL Server database for integrations tests
+    - docker ps
+    - docker cp $PWD/scripts/mssql/db-init.sql mssql:/home/db-init.sql
+    - docker exec mssql ls "/home"
+    - docker exec mssql /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P $SA_PASSWORD -i /home/db-init.sql
+    # installs sonar tools
     - apt update
     - apt install -y default-jre
     - dotnet tool install --global dotnet-sonarscanner
     - dotnet tool install --global dotnet-reportgenerator-globaltool
     - export PATH="$PATH:/root/.dotnet/tools"
     - cd $ROOT_FOLDER
+    # runs all tests with sonar analysis
     - dotnet restore
     - dotnet sonarscanner begin /o:$SONAR_ORGANIZATION /k:$SONAR_PROJECTKEY /d:sonar.host.url=$SONAR_HOSTURL $SONAR_EXTRA_PARAMETERS
     - dotnet test --configuration Debug --logger:"junit;LogFilePath=..\..\artifacts\{assembly}-test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose" --collect:"XPlat Code Coverage"

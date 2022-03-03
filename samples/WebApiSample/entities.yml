@@ -19,16 +19,19 @@ entities:
         mapFrom: latitude
       - name: Longitude
         mapFrom: longitude
-  - name: MySqlServerView
-    resourceName: my-mssql-view
+  - name: DatabaseInventory
+    resourceName: db-inventories
     queries:
       findAll:
-        sqlServerDatabaseTable: My_View
+        sqlServerDatabaseTable: Inventory
     fields:
       - name: Id
         mapFrom: CMDB_ID
       - name: Name
         mapFrom: Name
+      - name: Quantity
+        mapFrom: Qty
+        fieldType: Number
       - name: IsStackMember
         mapFrom: Is_stack_Member
         fieldType: Boolean

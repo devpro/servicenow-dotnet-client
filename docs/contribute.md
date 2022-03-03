@@ -10,7 +10,7 @@ or [Rider](https://www.jetbrains.com/rider/)
 * ServiceNow instance: an user is needed to authenticate to an environment to run the integration tests and sample projects
 (see [Getting Started](./getting-started.md))
 
-## Steps
+## Common steps
 
 All commands are to be run from the root folder of the repository (where the sln file is).
 
@@ -51,11 +51,27 @@ dotnet build
 ```json
 # update with the values of your environment
 {
+  "Application": {
+    "IsSwaggerEnabled": true,
+    "IsHttpsEnforced": false
+  },
+  "Logging": {
+    "LogLevel": {
+      "RabbidsIncubator": "Debug",
+      "Withywoods": "Debug"
+    }
+  },
   "ServiceNow": {
     "RestApi": {
-      "BaseUrl": "https://devxxxxx.service-now.com/api/now",
-      "Username": "<myuser>",
+      "BaseUrl": "https://<instance_name>.service-now.com/api/now",
+      "Username": "<user_name>",
       "Password": ""*********"
+    },
+    "SqlServer": {
+      "DataSource": "127.0.0.1",
+      "UserId": "SA",
+      "Password": "s0m3Str0ng!P@ssw0rd",
+      "InitialCatalog": "TestDB"
     }
   }
 }
@@ -122,6 +138,8 @@ dotnet format
 
 ### Containerize
 
+#### Create a container image and run it with Docker
+
 ```bash
 # creates a Docker image for the webapi sample
 docker build . -t rabbidsincubator/servicenowclientapisample -f samples/WebApiSample/Dockerfile --no-cache
@@ -155,3 +173,31 @@ docker pull devpro.jfrog.io/rabbidsincubator-docker-local/servicenowclientapisam
   * Update the ***Generator.cs file you are investigating to
     * Add a call to EnableDebug from GenerateCode method
     * Add a breakpoint in the 
+
+## Specific usecases
+
+### SQL Server database calls
+
+* Run locally SQL Server in a container ([docs](
+https://docs.microsoft.com/en-us/sql/linux/quickstart-install-connect-docker))
+
+````bash
+# sets variable
+MSSQL_HOST=localmssql
+SA_PASSWORD='s0m3Str0ng!P@ssw0rd'
+
+# runs SQL Server in a container (can be accessed with localhost or 127.0.0.1 as Data Source)
+docker pull mcr.microsoft.com/mssql/server:2019-latest
+docker run --rm --name mssql --hostname $MSSQL_HOST \
+  -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=$SA_PASSWORD" -p 1433:1433 \
+  -d mcr.microsoft.com/mssql/server:2019-latest
+
+# manually connects to SQL Server instance
+docker exec -it mssql bash
+/opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "$SA_PASSWORD"
+
+# initializes database with data
+docker cp $PWD/scripts/mssql/db-init.sql mssql:/home/db-init.sql
+docker exec mssql ls "/home"
+docker exec mssql /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P $SA_PASSWORD -i /home/db-init.sql
+```
