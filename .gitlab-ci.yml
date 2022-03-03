@@ -42,7 +42,8 @@ db-init:
   image: mcr.microsoft.com/mssql-tools:latest
   script:
     # initializes local SQL Server database for integrations tests
-    - sqlcmd -S mssql -U SA -P $SA_PASSWORD -i $PWD/scripts/mssql/db-init.sql
+    - /opt/mssql-tools/bin/sqlcmd -S localmssql -U SA -P $SA_PASSWORD -i $PWD/scripts/mssql/db-init.sql 2>&1
+    - /opt/mssql-tools/bin/sqlcmd -S mssql -U SA -P $SA_PASSWORD -i $PWD/scripts/mssql/db-init.sql 2>&1
 
 #.dotnet_test_sonar:
 test:
