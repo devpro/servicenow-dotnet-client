@@ -1,6 +1,6 @@
-# GitLab
+# GitLab configuration guide
 
-GitLab is used to run the CI (Continuous Integration) pipeline, which is defined in `.gitlab-ci.yml` file.
+[GitLab](https://gitlab.com/) is used to run the CI (Continuous Integration) pipeline, which is defined in `.gitlab-ci.yml` file.
 
 ## Setup
 

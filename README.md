@@ -5,18 +5,17 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=rabbids-incubator_servicenow-dotnet-client&metric=coverage)](https://sonarcloud.io/summary/new_code?id=rabbids-incubator_servicenow-dotnet-client)
 [![Nuget](https://img.shields.io/nuget/v/RabbidsIncubator.ServiceNowClient.Application.svg)](https://www.nuget.org/packages/RabbidsIncubator.ServiceNowClient.Application)
 
-This is the codebase of .NET components (API & libraries) to integrate with [ServiceNow](https://www.servicenow.com/) from any system (Linux, MacOS, Windows).
+This is the codebase of .NET components (API & libraries) to simplify the integration with with [ServiceNow](https://www.servicenow.com/)
+from any system (Linux, MacOS, Windows).
 
 ## Quick start
 
-* Begin with [Getting Started](./docs/getting-started.md) to learn about how to use the components.
+* [Getting Started](./docs/getting-started.md) page to learn about how to use the components
 
-* Go to [Contribute](./docs/contribute.md) to work locally with the sources and improve them.
+* [Contribute](./docs/contribute.md) page to work locally with the sources and improve them
 
 ## Going further
 
-* Review software design with [.NET](./docs/dotnet.md).
+* [GitLab](./docs/gitlab.md) page to understand the automation done on this codebase
 
-* Understand the automation done on this codebase with [GitLab](./docs/gitlab.md).
-
-* Look at resources on [ServiceNow](./docs/servicenow.md).
+* [ServiceNow](./docs/servicenow.md) page for resources on the SaaS solution

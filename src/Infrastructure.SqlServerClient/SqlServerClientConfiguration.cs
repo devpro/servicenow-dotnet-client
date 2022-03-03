@@ -9,5 +9,13 @@
         public string? Password { get; set; }
 
         public string? InitialCatalog { get; set; }
+
+        public bool IsValid()
+        {
+            return !string.IsNullOrEmpty(DataSource)
+                && !string.IsNullOrEmpty(UserId)
+                && !string.IsNullOrEmpty(Password)
+                && !string.IsNullOrEmpty(InitialCatalog);
+        }
     }
 }

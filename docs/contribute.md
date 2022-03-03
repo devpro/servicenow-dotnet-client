@@ -1,14 +1,18 @@
-# Contribute
+# Contribution guide
 
 ## Requirements
 
-* [git CLI](https://git-scm.com/)
-* [.NET 6.0 SDK](https://dotnet.microsoft.com/download) (or above)
-* (Optional) [Docker Engine](https://docs.docker.com/engine/install/ubuntu/)
+* Container engine: [Docker Engine](https://docs.docker.com/engine/install/), [podman](https://podman.io/) or any other engine
+* Git client: [git CLI](https://git-scm.com/) and/or any other git client (such as [GitKraken](https://www.gitkraken.com/))
+* IDE: [Visual Studio 2022](https://visualstudio.microsoft.com/fr/vs/), [Visual Studio Code](https://code.visualstudio.com/)
+or [Rider](https://www.jetbrains.com/rider/)
+* SDK: [.NET 6.0 (or higher)](https://dotnet.microsoft.com/download)
+* ServiceNow instance: an user is needed to authenticate to an environment to run the integration tests and sample projects
+(see [Getting Started](./getting-started.md))
 
 ## Steps
 
-All commands are to be ran from the root folder of the repository (where the sln file is).
+All commands are to be run from the root folder of the repository (where the sln file is).
 
 ### Build
 
@@ -22,8 +26,6 @@ dotnet build
 
 ### Configure
 
-* A ServiceNow user is needed to run the integration tests and sample projects (see [Getting Started](./getting-started.md))
-
 * Create the file `src/ConsoleApp/Properties/launchSettings.json` 
 (can be done from Visual Studio by opening `Properties` window of ConsoleApp project then `Debug` > `General`)
 
@@ -35,9 +37,9 @@ dotnet build
       "commandName": "Project",
       "commandLineArgs": "-v",
       "environmentVariables": {
-        "ServiceNow__RestApi__Username": "admin",
-        "ServiceNow__RestApi__Password": "*********",
-        "ServiceNow__RestApi__BaseUrl": "https://devxxxxx.service-now.com/api/now"
+        "ServiceNow__RestApi__BaseUrl": "https://devxxxxx.service-now.com/api/now",
+        "ServiceNow__RestApi__Username": "<myuser>",
+        "ServiceNow__RestApi__Password": "*********"
       }
     }
   }
@@ -52,7 +54,7 @@ dotnet build
   "ServiceNow": {
     "RestApi": {
       "BaseUrl": "https://devxxxxx.service-now.com/api/now",
-      "Username": "admin",
+      "Username": "<myuser>",
       "Password": ""*********"
     }
   }
@@ -73,50 +75,52 @@ dotnet build
 </RunSettings>
 ```
 
-### Run the sample applications
+### Run
 
 ```bash
-# runs the Console project
+# runs the Console sample project
 dotnet run --project src/ConsoleApp
 
-# runs the Console dll with options
+# runs the Console sample dll with options
 dotnet src/ConsoleApp/bin/Debug/net6.0/RabbidsIncubator.ServiceNowClient.ConsoleApp.dll -v
 
-# runs the Web Api project (will be accessible at https://localhost:7079/swagger)
+# runs the Web Api sample project (will be accessible at https://localhost:7079/swagger)
 dotnet run --project src/WebApi
 
-# checks api health (should returned "Healthy")
+# checks local Web Api health (should returned "Healthy")
 curl -k https://localhost:7079/health
 ```
 
-### Debug the sample Web API in Visual Studio 2022
+### Debug
+
+#### Debug the sample Web API in Visual Studio 2022
 
 * Add breakpoint(s) in the files
 * Select `WebApi` in the startup project list
 * Click on `Debug` > `Start Debugging` (`F5`)
 
-### Debug a test Visual Studio 2022
+#### Debug a test Visual Studio 2022
 
 * Add breakpoint(s) in the files
 * (Optional) In the top menu, click on `Test` > `Configure Run Settings` > `Selection Solution Wide runsettings File`
 and select `Local.runsettings` at the root level of the solution
 * Select a test in the `Test Explorer` and click on Debug
 
-### Run the tests
+### Test
 
 ```bash
 # runs all tests (unit + integration)
 dotnet test
 ```
 
-### Format the code
+### Format
 
 ```bash
 # review and update source files from the rules defined in .editorconfig file
 dotnet format
 ```
 
-### Run the sample Web Api in a container
+### Containerize
 
 ```bash
 # creates a Docker image for the webapi sample
@@ -141,12 +145,13 @@ docker push devpro.jfrog.io/rabbidsincubator-docker-local/servicenowclientapisam
 docker pull devpro.jfrog.io/rabbidsincubator-docker-local/servicenowclientapisample
 ```
 
-### Troubleshoot issues
+### Troubleshoot
 
 * Code generation can be sensitive, if case of stange behaviors:
   * Close and open again Visual Studio
   * Run `dotnet clean` and `dotnet build` from the command line (outside Visual Studio)
   * Manually delete all bin/ and obj/ folders from the root folder
+  * Use a .NET assembly decompiler tool, such as [dotPeek](https://www.jetbrains.com/decompiler/), and open a dll from obj/ folder
   * Update the ***Generator.cs file you are investigating to
     * Add a call to EnableDebug from GenerateCode method
     * Add a breakpoint in the 

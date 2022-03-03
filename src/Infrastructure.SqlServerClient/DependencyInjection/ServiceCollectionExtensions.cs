@@ -13,6 +13,16 @@ namespace RabbidsIncubator.ServiceNowClient.Infrastructure.SqlServerClient.Depen
                 throw new ArgumentNullException(nameof(services));
             }
 
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration), "SQL Server configuration is missing.");
+            }
+
+            if (!configuration.IsValid())
+            {
+                throw new ArgumentNullException(nameof(configuration), "SQL Server configuration invalid. Make sure all fields are correctly set");
+            }
+
             services.AddSingleton(configuration);
 
             return services;
