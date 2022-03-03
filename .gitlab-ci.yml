@@ -7,11 +7,26 @@ variables:
   ROOT_FOLDER: .
   BUILD_SOURCEBRANCHNAME: $CI_COMMIT_BRANCH
   BUILD_BUILDID: $CI_PIPELINE_ID
+  MSSQL_HOST: localmssql
+  ACCEPT_EULA: "Y"
+  SA_PASSWORD: s0m3Str0ng!P@ssw0rd
 
 stages:
   - build
   - pack
   - test
+
+services:
+  - docker:dind
+  # see: https://docs.microsoft.com/en-us/sql/linux/quickstart-install-connect-docker
+  - name: mcr.microsoft.com/mssql/server:2019-latest
+    alias: mssql
+
+docker_build:
+  stage: build
+  image: docker:latest
+  script:
+    - docker build -t example-image:latest .
 
 # avoid duplicate runs
 # CI_PIPELINE_SOURCE=push|external_pull_request_event|schedule
@@ -29,6 +44,16 @@ build:
     - dotnet restore
     - dotnet build --no-restore --configuration Debug
 
+db-init:
+  stage: build
+  image: docker:latest
+  script:
+    # initializes local SQL Server database for integrations tests
+    - docker ps
+    - docker cp $PWD/scripts/mssql/db-init.sql mssql:/home/db-init.sql
+    - docker exec mssql ls "/home"
+    - docker exec mssql /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P $SA_PASSWORD -i /home/db-init.sql
+
 #.dotnet_test_sonar:
 test:
   stage: test
@@ -39,23 +64,11 @@ test:
     COBERTURA_REPORT_FILEPATH: ./test/*/TestResults/*/coverage.cobertura.xml
     REPORTGENERATOR_OPTIONS: -targetdir:sonarqubecoverage -reporttypes:SonarQube
     SONAR_EXTRA_PARAMETERS: /d:sonar.cpd.exclusions=**/*Generated*.cs /d:sonar.coverageReportPaths=./sonarqubecoverage/SonarQube.xml
-    MSSQL_HOST: localmssql
-    ACCEPT_EULA: "Y"
-    SA_PASSWORD: s0m3Str0ng!P@ssw0rd
     ServiceNow__SqlServer__DataSource: localmssql
     ServiceNow__SqlServer__UserId: SA
     ServiceNow__SqlServer__Password: s0m3Str0ng!P@ssw0rd
     ServiceNow__SqlServer__InitialCatalog: TestDB
-  services:
-    # see: https://docs.microsoft.com/en-us/sql/linux/quickstart-install-connect-docker
-    - name: mcr.microsoft.com/mssql/server:2019-latest
-      alias: mssql
   script:
-    # initializes local SQL Server database for integrations tests
-    - docker ps
-    - docker cp $PWD/scripts/mssql/db-init.sql mssql:/home/db-init.sql
-    - docker exec mssql ls "/home"
-    - docker exec mssql /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P $SA_PASSWORD -i /home/db-init.sql
     # installs sonar tools
     - apt update
     - apt install -y default-jre
