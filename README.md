@@ -5,7 +5,7 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=rabbids-incubator_servicenow-dotnet-client&metric=coverage)](https://sonarcloud.io/summary/new_code?id=rabbids-incubator_servicenow-dotnet-client)
 [![Nuget](https://img.shields.io/nuget/v/RabbidsIncubator.ServiceNowClient.Application.svg)](https://www.nuget.org/packages/RabbidsIncubator.ServiceNowClient.Application)
 
-This is the codebase of .NET components (API & libraries) to simplify the integration with with [ServiceNow](https://www.servicenow.com/)
+This is the codebase of .NET components (API & libraries) to simplify the integration with [ServiceNow](https://www.servicenow.com/),
 from any system (Linux, MacOS, Windows).
 
 ## Quick start

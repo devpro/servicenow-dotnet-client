@@ -30,7 +30,7 @@ Optionally, you can install .NET global tool to help you improve the source code
 dotnet tool install --global dotnet-format
 ```
 
-## Create a REST API in a few steps
+## Create a REST API entirely from the command line
 
 * From a new folder (ideally a new git repository)
 

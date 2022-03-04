@@ -65,7 +65,7 @@ dotnet build
     "RestApi": {
       "BaseUrl": "https://<instance_name>.service-now.com/api/now",
       "Username": "<user_name>",
-      "Password": ""*********"
+      "Password": "*********"
     },
     "SqlServer": {
       "DataSource": "127.0.0.1",
