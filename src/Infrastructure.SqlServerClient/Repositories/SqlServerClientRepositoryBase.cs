@@ -14,7 +14,7 @@ namespace RabbidsIncubator.ServiceNowClient.Infrastructure.SqlServerClient.Repos
 
         protected SqlServerClientConfiguration Configuration { get; private set; }
 
-        public SqlServerClientRepositoryBase(ILogger<SqlServerClientRepositoryBase<T>> logger, SqlServerClientConfiguration configuration)
+        protected SqlServerClientRepositoryBase(ILogger<SqlServerClientRepositoryBase<T>> logger, SqlServerClientConfiguration configuration)
         {
             Logger = logger;
             Configuration = configuration;

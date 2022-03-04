@@ -36,10 +36,10 @@ namespace {model.Namespaces.Root}.Infrastructure.ServiceNowRestClient.Dependency
         public static IServiceCollection AddServiceNowRestClientGeneratedRepositories(this IServiceCollection services)
         {{
 ");
-            foreach (var entity in model.Entities.Where(x => !string.IsNullOrEmpty(x.Queries.FindAll.ServiceNowRestApiTable)))
+            foreach (var entityName in model.Entities.Where(x => !string.IsNullOrEmpty(x.Queries.FindAll.ServiceNowRestApiTable)).Select(x => x.Name))
             {
                 sourceBuilder.Append($@"
-            services.TryAddTransient<Domain.Repositories.I{entity.Name.FirstCharToUpper()}Repository, Repositories.{entity.Name.FirstCharToUpper()}Repository>();
+            services.TryAddTransient<Domain.Repositories.I{entityName.FirstCharToUpper()}Repository, Repositories.{entityName.FirstCharToUpper()}Repository>();
 ");
             }
 
@@ -70,10 +70,10 @@ namespace {model.Namespaces.Root}.Infrastructure.SqlServerClient.DependencyInjec
         public static IServiceCollection AddSqlServerClientClientGeneratedRepositories(this IServiceCollection services)
         {{
 ");
-            foreach (var entity in model.Entities.Where(x => !string.IsNullOrEmpty(x.Queries.FindAll.SqlServerDatabaseTable)))
+            foreach (var entityName in model.Entities.Where(x => !string.IsNullOrEmpty(x.Queries.FindAll.SqlServerDatabaseTable)).Select(x => x.Name))
             {
                 sourceBuilder.Append($@"
-            services.TryAddTransient<Domain.Repositories.I{entity.Name.FirstCharToUpper()}Repository, Repositories.{entity.Name.FirstCharToUpper()}Repository>();
+            services.TryAddTransient<Domain.Repositories.I{entityName.FirstCharToUpper()}Repository, Repositories.{entityName.FirstCharToUpper()}Repository>();
 ");
             }
 
