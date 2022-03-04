@@ -7,11 +7,19 @@ variables:
   ROOT_FOLDER: .
   BUILD_SOURCEBRANCHNAME: $CI_COMMIT_BRANCH
   BUILD_BUILDID: $CI_PIPELINE_ID
+  #MSSQL_HOST: localmssql
+  ACCEPT_EULA: "Y"
+  SA_PASSWORD: s0m3Str0ng!P@ssw0rd
 
 stages:
   - build
   - pack
   - test
+
+services:
+  # see: https://docs.microsoft.com/en-us/sql/linux/quickstart-install-connect-docker
+  - name: mcr.microsoft.com/mssql/server:2019-latest
+    alias: mssql
 
 # avoid duplicate runs
 # CI_PIPELINE_SOURCE=push|external_pull_request_event|schedule
@@ -29,6 +37,14 @@ build:
     - dotnet restore
     - dotnet build --no-restore --configuration Debug
 
+# for investigation only
+# see: https://hub.docker.com/_/microsoft-mssql-tools
+#db_init:
+#  stage: build
+#  image: mcr.microsoft.com/mssql-tools:latest
+#  script:
+#    - /opt/mssql-tools/bin/sqlcmd -S mssql -U SA -P $SA_PASSWORD -i $PWD/scripts/mssql/db-init.sql 2>&1
+
 #.dotnet_test_sonar:
 test:
   stage: test
@@ -39,13 +55,28 @@ test:
     COBERTURA_REPORT_FILEPATH: ./test/*/TestResults/*/coverage.cobertura.xml
     REPORTGENERATOR_OPTIONS: -targetdir:sonarqubecoverage -reporttypes:SonarQube
     SONAR_EXTRA_PARAMETERS: /d:sonar.cpd.exclusions=**/*Generated*.cs /d:sonar.coverageReportPaths=./sonarqubecoverage/SonarQube.xml
+    ServiceNow__SqlServer__DataSource: mssql
+    ServiceNow__SqlServer__UserId: SA
+    ServiceNow__SqlServer__Password: $SA_PASSWORD
+    ServiceNow__SqlServer__InitialCatalog: TestDB
   script:
-    - apt update
+    # updates system
+    - apt-get update
+    - apt-get install -y gnupg
+    # installs sql server tools
+    - curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+    - curl https://packages.microsoft.com/config/ubuntu/20.04/prod.list | tee /etc/apt/sources.list.d/msprod.list
+    - apt-get update
+    - apt-get install -y mssql-tools unixodbc-dev
+    # initializes sql server database (schema + data)
+    - /opt/mssql-tools/bin/sqlcmd -S mssql -U SA -P $SA_PASSWORD -i $PWD/scripts/mssql/db-init.sql
+    # installs sonar tools
     - apt install -y default-jre
     - dotnet tool install --global dotnet-sonarscanner
     - dotnet tool install --global dotnet-reportgenerator-globaltool
     - export PATH="$PATH:/root/.dotnet/tools"
     - cd $ROOT_FOLDER
+    # runs all tests with sonar analysis
     - dotnet restore
     - dotnet sonarscanner begin /o:$SONAR_ORGANIZATION /k:$SONAR_PROJECTKEY /d:sonar.host.url=$SONAR_HOSTURL $SONAR_EXTRA_PARAMETERS
     - dotnet test --configuration Debug --logger:"junit;LogFilePath=..\..\artifacts\{assembly}-test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose" --collect:"XPlat Code Coverage"

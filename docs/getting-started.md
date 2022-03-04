@@ -1,4 +1,4 @@
-# Getting Started
+# Getting Started procedure
 
 ## Requirements
 
@@ -30,7 +30,7 @@ Optionally, you can install .NET global tool to help you improve the source code
 dotnet tool install --global dotnet-format
 ```
 
-## Create a REST API in a few steps
+## Create a REST API entirely from the command line
 
 * From a new folder (ideally a new git repository)
 
@@ -132,6 +132,7 @@ using WebApi.Infrastructure.ServiceNowRestClient.MappingProfiles;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDefaultServices(builder.Configuration, new GeneratedServiceNowRestClientMappingProfile());
 builder.Services.AddServiceNowRestClientGeneratedRepositories();
+builder.Services.AddSqlServerClientClientGeneratedRepositories();
 
 var app = builder.Build();
 app.AddDefaultMiddlewares();

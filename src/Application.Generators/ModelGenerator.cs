@@ -8,6 +8,11 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators
     [Generator]
     public class ModelGenerator : GeneratorBase
     {
+        protected override bool IsCompatible(Models.TargetApplicationType targetApplication)
+        {
+            return true;
+        }
+
         protected override void GenerateCode(GeneratorExecutionContext context, Models.GenerationConfigurationModel model)
         {
             model.Entities?.ForEach(x => GenerateModel(context, x, model.Namespaces));
@@ -20,7 +25,7 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators
             var sourceBuilder = new StringBuilder($@"
 namespace {namespaces.Root}.Domain.Models
 {{
-    public class {entityPascalName}Model
+    public partial class {entityPascalName}Model
     {{
 ");
             foreach (var field in entity.Fields)
@@ -50,13 +55,8 @@ namespace {namespaces.Root}.Domain.Models
 }
 ");
 
-            // inject the created source into the users compilation
+            // injects the created source into the users compilation
             context.AddSource($"Generated{entityPascalName}Model.cs", SourceText.From(sourceBuilder.ToString(), Encoding.UTF8));
-        }
-
-        protected override bool IsCompatible(Models.TargetApplicationType targetApplication)
-        {
-            return true;
         }
     }
 }

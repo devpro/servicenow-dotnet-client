@@ -8,6 +8,11 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators
     [Generator]
     public class ControllerGenerator : GeneratorBase
     {
+        protected override bool IsCompatible(Models.TargetApplicationType targetApplication)
+        {
+            return targetApplication == Models.TargetApplicationType.WebApp;
+        }
+
         protected override void GenerateCode(GeneratorExecutionContext context, Models.GenerationConfigurationModel model)
         {
             model.Entities?.ForEach(x => GenerateController(context, x, model.Namespaces));
@@ -31,7 +36,7 @@ namespace {namespaces.WebApi}.Controllers
 {{
     [ApiController]
     [Route(""{entity.ResourceName}"")]
-    public class {entityPascalName}Controller : ControllerBase
+    public partial class {entityPascalName}Controller : ControllerBase
     {{
         private readonly ILogger _logger;
 
@@ -42,7 +47,25 @@ namespace {namespaces.WebApi}.Controllers
             _logger = logger;
             _{entityCamelName}Repository = {entityCamelName}Repository;
         }}
+");
 
+            if (!string.IsNullOrEmpty(entity.Queries.FindAll.SqlServerDatabaseTable))
+            {
+                sourceBuilder.Append($@"
+        [HttpGet(Name = ""Get{entity.ResourceName}"")]
+        public async Task<List<{entityPascalName}Model>> Get(int? startIndex, int? limit)
+        {{
+            var items = await _{entityCamelName}Repository.FindAllAsync(new QueryModel<{entityPascalName}Model>(null, startIndex, limit));
+            _logger.LogDebug(""Number of items found: {{itemsCount}}"", items.Count);
+            return items;
+        }}
+    }}
+}}
+");
+            }
+            else
+            {
+                sourceBuilder.Append($@"
         [HttpGet(Name = ""Get{entity.ResourceName}"")]
         public async Task<List<{entityPascalName}Model>> Get([FromQuery] {entityPascalName}Model model, int? startIndex, int? limit)
         {{
@@ -53,14 +76,10 @@ namespace {namespaces.WebApi}.Controllers
     }}
 }}
 ");
+            }
 
-            // inject the created source into the users compilation
+            // injects the created source into the users compilation
             context.AddSource($"Generated{entityPascalName}Controller.cs", SourceText.From(sourceBuilder.ToString(), Encoding.UTF8));
-        }
-
-        protected override bool IsCompatible(Models.TargetApplicationType targetApplication)
-        {
-            return targetApplication == Models.TargetApplicationType.WebApp;
         }
     }
 }

@@ -1,16 +1,11 @@
-﻿using RabbidsIncubator.Samples.ServiceNowWebApiSample.Infrastructure;
-using RabbidsIncubator.Samples.ServiceNowWebApiSample.Infrastructure.ServiceNowRestClient.DependencyInjection;
-using RabbidsIncubator.Samples.ServiceNowWebApiSample.Infrastructure.ServiceNowRestClient.MappingProfiles;
-using RabbidsIncubator.ServiceNowClient.Application.Builder;
-using RabbidsIncubator.ServiceNowClient.Application.DependencyInjection;
-
-var builder = WebApplication.CreateBuilder(args);
+﻿var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDefaultServices(builder.Configuration, new GeneratedServiceNowRestClientMappingProfile(), new InfrastructureMappingProfile());
 builder.Services.AddWebApiSampleInfrastructureRepositories();
 builder.Services.AddServiceNowRestClientGeneratedRepositories();
+builder.Services.AddSqlServerClientClientGeneratedRepositories();
 
 var app = builder.Build();
-app.AddDefaultMiddlewares();
+app.AddDefaultMiddlewares(builder.Configuration);
 
 app.Run();
 

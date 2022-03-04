@@ -14,7 +14,23 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators
     /// </summary>
     public abstract class GeneratorBase : ISourceGenerator
     {
-        // ISourceGenerator methods
+        // Protected methods
+
+        protected abstract bool IsCompatible(Models.TargetApplicationType targetApplication);
+
+        protected abstract void GenerateCode(GeneratorExecutionContext context, Models.GenerationConfigurationModel model);
+
+        protected virtual void EnableDebug()
+        {
+#if DEBUG
+            if (!System.Diagnostics.Debugger.IsAttached)
+            {
+                System.Diagnostics.Debugger.Launch();
+            }
+#endif
+        }
+
+        // Public methods
 
         public void Execute(GeneratorExecutionContext context)
         {
@@ -36,14 +52,8 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators
 
         public void Initialize(GeneratorInitializationContext context)
         {
-            // No initialization required for this one
+            // initialization is not needed here
         }
-
-        // Protected methods
-
-        protected abstract bool IsCompatible(Models.TargetApplicationType targetApplication);
-
-        protected abstract void GenerateCode(GeneratorExecutionContext context, Models.GenerationConfigurationModel model);
 
         // Private methods
 

@@ -1,6 +1,6 @@
-# GitLab
+# GitLab configuration guide
 
-GitLab is used to run the CI (Continuous Integration) pipeline, which is defined in `.gitlab-ci.yml` file.
+[GitLab](https://gitlab.com/) is used to run the CI (Continuous Integration) pipeline, which is defined in `.gitlab-ci.yml` file.
 
 ## Setup
 
@@ -45,7 +45,6 @@ docker run --rm --name gitlab-runner --workdir $PWD \
   gitlab/gitlab-runner exec docker build
 
 # runs test job
-
 docker run --rm --name gitlab-runner --workdir $PWD \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v $PWD/.gitlab/runner/local/config:/etc/gitlab-runner \

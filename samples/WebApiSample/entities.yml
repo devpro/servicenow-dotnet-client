@@ -7,15 +7,31 @@ entities:
     resourceName: locations
     queries:
       findAll:
-        table: cmn_location
+        serviceNowRestApiTable: cmn_location
     fields:
       - name: Name
-        serviceNowFieldName: name
+        mapFrom: name
       - name: City
-        serviceNowFieldName: city
+        mapFrom: city
       - name: CountryName
-        serviceNowFieldName: country
+        mapFrom: country
       - name: Latitude
-        serviceNowFieldName: latitude
+        mapFrom: latitude
       - name: Longitude
-        serviceNowFieldName: longitude
+        mapFrom: longitude
+  - name: DatabaseInventory
+    resourceName: db-inventories
+    queries:
+      findAll:
+        sqlServerDatabaseTable: Inventory
+    fields:
+      - name: Id
+        mapFrom: CMDB_ID
+      - name: Name
+        mapFrom: Name
+      - name: Quantity
+        mapFrom: Qty
+        fieldType: Number
+      - name: IsStackMember
+        mapFrom: Is_stack_Member
+        fieldType: Boolean

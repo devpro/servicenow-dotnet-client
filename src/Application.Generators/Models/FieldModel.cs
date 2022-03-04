@@ -26,8 +26,8 @@
         public FieldType FieldType { get; set; } = FieldType.String;
 
         /// <summary>
-        /// Name in Service Now.
+        /// Map from.
         /// </summary>
-        public string ServiceNowFieldName { get; set; }
+        public string MapFrom { get; set; }
     }
 }

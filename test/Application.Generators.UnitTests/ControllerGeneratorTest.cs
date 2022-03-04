@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 using RabbidsIncubator.ServiceNowClient.Domain.Models;
 namespace RabbidsIncubator.ServiceNowClient.DummyProject.Domain.Models
 {
-    public class LocationModel
+    public partial class LocationModel
     {
     }
 }
@@ -46,7 +46,7 @@ namespace RabbidsIncubator.ServiceNowClient.DummyProject.Controllers
 {
     [ApiController]
     [Route(""locations"")]
-    public class LocationController : ControllerBase
+    public partial class LocationController : ControllerBase
     {
         private readonly ILogger _logger;
 
@@ -85,18 +85,18 @@ entities:
     resourceName: locations
     queries:
       findAll:
-        table: cmn_location
+        serviceNowRestApiTable: cmn_location
     fields:
       - name: Name
-        serviceNowFieldName: name
+        mapFrom: name
       - name: City
-        serviceNowFieldName: city
+        mapFrom: city
       - name: CountryName
-        serviceNowFieldName: country
+        mapFrom: country
       - name: Latitude
-        serviceNowFieldName: latitude
+        mapFrom: latitude
       - name: Longitude
-        serviceNowFieldName: longitude
+        mapFrom: longitude
 ")
                     },
                     ReferenceAssemblies = new ReferenceAssemblies("net6.0", new("Microsoft.NETCore.App.Ref", "6.0.0"), @"ref\net6.0")
