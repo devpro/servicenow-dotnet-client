@@ -15,9 +15,6 @@
 Name | Value | Protected | Masked
 ---- | ----- | --------- | ------
 NUGET_APIKEY | API key generated from nuget.org website | Yes | Yes
-SERVICENOW_SANDBOX_URL | ServiceNow Sandbox URL | No | Yes
-SERVICENOW_SANDBOX_USERNAME | ServiceNow Sandbox Username | No | Yes
-SERVICENOW_SANDBOX_USERPWD | ServiceNow Sandbox Password | No | Yes
 SONAR_ORGANIZATION | Sonar Organization | No | No
 SONAR_PROJECTKEY | Sonar Project Key | No | No
 SONAR_HOSTURL | Sonar Instance URL | No | No
@@ -50,9 +47,6 @@ docker run --rm --name gitlab-runner --workdir $PWD \
   -v $PWD/.gitlab/runner/local/config:/etc/gitlab-runner \
   -v $PWD:$PWD \
   gitlab/gitlab-runner exec docker \
-    --env SERVICENOW_SANDBOX_URL=*** \
-    --env SERVICENOW_SANDBOX_USERNAME=*** \
-    --env SERVICENOW_SANDBOX_USERPWD=*** \
     --env SONAR_ORGANIZATION=*** \
     --env SONAR_PROJECTKEY=*** \
     --env SONAR_HOSTURL=*** \
