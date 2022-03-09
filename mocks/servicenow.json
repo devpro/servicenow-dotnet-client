@@ -1,0 +1,67 @@
+{
+  "uuid": "eff78908-65cc-48f4-98e3-cece080c1a5d",
+  "lastMigration": 19,
+  "name": "Servicenow",
+  "endpointPrefix": "api/now",
+  "latency": 0,
+  "port": 3000,
+  "hostname": "0.0.0.0",
+  "routes": [
+    {
+      "uuid": "ed16a12b-2292-4309-945f-80b4a22c9650",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "table/cmdb_ci_ip_switch",
+      "responses": [
+        {
+          "uuid": "8aeaa3d0-8286-445e-bac3-5c229cadb9ce",
+          "body": "{\r\n    \"result\": [\r\n      {{# repeat (queryParam 'sysparm_limit' '10') }}\r\n        {\r\n            \r\n            \"attested_date\": \"\",\r\n            \"can_switch\": \"false\",\r\n            \"stack\": \"false\",\r\n            \"operational_status\": \"2\",\r\n            \"cpu_manufacturer\": \"\",\r\n            \"sys_updated_on\": \"{{ faker 'date.past' }}\",\r\n            \"discovery_source\": \"\",\r\n            \"first_discovered\": \"\",\r\n            \"due_in\": \"\",\r\n            \"can_partitionvlans\": \"false\",\r\n            \"metric_type\": \"\",\r\n            \"used_for\": \"\",\r\n            \"gl_account\": \"\",\r\n            \"invoice_number\": \"\",\r\n            \"sys_created_by\": \"{{ faker 'internet.email' }}\",\r\n            \"ram\": \"\",\r\n            \"warranty_expiration\": \"\",\r\n            \"cpu_speed\": \"\",\r\n            \"owned_by\": \"\",\r\n            \"checked_out\": \"\",\r\n            \"firmware_manufacturer\": \"\",\r\n            \"disk_space\": \"\",\r\n            \"sys_domain_path\": \"/\",\r\n            \"business_unit\": \"\",\r\n            \"discovery_proto_id\": \"\",\r\n            \"maintenance_schedule\": \"\",\r\n            \"cost_center\": { },\r\n            \"attested_by\": \"\",\r\n            \"dns_domain\": \"\",\r\n            \"assigned\": \"\",\r\n            \"life_cycle_stage\": \"\",\r\n            \"purchase_date\": \"\",\r\n            \"short_description\": \"\",\r\n            \"managed_by\": \"\",\r\n            \"range\": \"\",\r\n            \"firmware_version\": \"\",\r\n            \"can_print\": \"false\",\r\n            \"last_discovered\": \"\",\r\n            \"ports\": \"\",\r\n            \"sys_class_name\": \"cmdb_ci_ip_switch\",\r\n            \"cpu_count\": \"1\",\r\n            \"manufacturer\": { },\r\n            \"life_cycle_stage_status\": \"\",\r\n            \"vendor\": { },\r\n            \"can_route\": \"false\",\r\n            \"model_number\": \"\",\r\n            \"assigned_to\": \"\",\r\n            \"start_date\": \"\",\r\n            \"bandwidth\": \"\",\r\n            \"serial_number\": \"{{ faker 'random.number' }}\",\r\n            \"support_group\": \"\",\r\n            \"correlation_id\": \"\",\r\n            \"unverified\": \"false\",\r\n            \"attributes\": \"\",\r\n            \"asset\": { },\r\n            \"skip_sync\": \"false\",\r\n            \"most_frequent_user\": \"\",\r\n            \"device_type\": \"\",\r\n            \"attestation_score\": \"\",\r\n            \"sys_updated_by\": \"{{ faker 'date.past' }}\",\r\n            \"sys_created_on\": \"{{ faker 'date.past' }}\",\r\n            \"cpu_type\": \"\",\r\n            \"sys_domain\": { },\r\n            \"install_date\": \"\",\r\n            \"asset_tag\": \"{{ faker 'random.alpha' }}\",\r\n            \"hardware_substatus\": \"\",\r\n            \"fqdn\": \"\",\r\n            \"stack_mode\": \"\",\r\n            \"change_control\": \"\",\r\n            \"internet_facing\": \"true\",\r\n            \"physical_interface_count\": \"\",\r\n            \"delivery_date\": \"{{ faker 'date.past' }}\",\r\n            \"hardware_status\": \"pending_install\",\r\n            \"channels\": \"\",\r\n            \"install_status\": \"4\",\r\n            \"supported_by\": \"\",\r\n            \"name\": \"\",\r\n            \"subcategory\": \"IP\",\r\n            \"default_gateway\": \"\",\r\n            \"assignment_group\": \"\",\r\n            \"managed_by_group\": \"\",\r\n            \"can_hub\": \"false\",\r\n            \"sys_id\": \"{{ faker 'random.number' }}\",\r\n            \"po_number\": \"{{ faker 'random.number' }}\",\r\n            \"checked_in\": \"\",\r\n            \"sys_class_path\": \"/!!/!D/!$/!,\",\r\n            \"mac_address\": \"\",\r\n            \"company\": \"\",\r\n            \"justification\": \"\",\r\n            \"department\": \"\",\r\n            \"snmp_sys_location\": \"\",\r\n            \"comments\": \"\",\r\n            \"cost\": \"0\",\r\n            \"sys_mod_count\": \"9\",\r\n            \"monitor\": \"false\",\r\n            \"ip_address\": \"\",\r\n            \"model_id\": { },\r\n            \"sys_tags\": \"\",\r\n            \"cost_cc\": \"USD\",\r\n            \"discovery_proto_type\": \"\",\r\n            \"order_date\": \"{{ faker 'date.past' }}\",\r\n            \"schedule\": \"\",\r\n            \"environment\": \"\",\r\n            \"due\": \"\",\r\n            \"attested\": \"false\",\r\n            \"location\": { },\r\n            \"category\": \"Resource\",\r\n            \"fault_count\": \"0\",\r\n            \"lease_id\": \"\"\r\n        },\r\n      {{/ repeat }}\r\n    ]\r\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false
+        }
+      ],
+      "enabled": true,
+      "randomResponse": false,
+      "sequentialResponse": false
+    }
+  ],
+  "proxyMode": false,
+  "proxyHost": "",
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "cors": true,
+  "headers": [
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    }
+  ],
+  "proxyReqHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "proxyResHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ]
+}

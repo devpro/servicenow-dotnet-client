@@ -7,7 +7,6 @@ variables:
   ROOT_FOLDER: .
   BUILD_SOURCEBRANCHNAME: $CI_COMMIT_BRANCH
   BUILD_BUILDID: $CI_PIPELINE_ID
-  #MSSQL_HOST: localmssql
   ACCEPT_EULA: "Y"
   SA_PASSWORD: s0m3Str0ng!P@ssw0rd
 
@@ -49,9 +48,9 @@ build:
 test:
   stage: test
   variables:
-    ServiceNow__RestApi__BaseUrl: $SERVICENOW_SANDBOX_URL
-    ServiceNow__RestApi__Username: $SERVICENOW_SANDBOX_USERNAME
-    ServiceNow__RestApi__Password: $SERVICENOW_SANDBOX_USERPWD
+    ServiceNow__RestApi__BaseUrl: http://localhost:3000/api/now
+    ServiceNow__RestApi__Username: dummy
+    ServiceNow__RestApi__Password: dummy
     COBERTURA_REPORT_FILEPATH: ./test/*/TestResults/*/coverage.cobertura.xml
     REPORTGENERATOR_OPTIONS: -targetdir:sonarqubecoverage -reporttypes:SonarQube
     SONAR_EXTRA_PARAMETERS: /d:sonar.cpd.exclusions=**/*Generated*.cs /d:sonar.coverageReportPaths=./sonarqubecoverage/SonarQube.xml
@@ -59,7 +58,7 @@ test:
     ServiceNow__SqlServer__UserId: SA
     ServiceNow__SqlServer__Password: $SA_PASSWORD
     ServiceNow__SqlServer__InitialCatalog: TestDB
-  script:
+  before_script:
     # updates system
     - apt-get update
     - apt-get install -y gnupg
@@ -68,13 +67,21 @@ test:
     - curl https://packages.microsoft.com/config/ubuntu/20.04/prod.list | tee /etc/apt/sources.list.d/msprod.list
     - apt-get update
     - apt-get install -y mssql-tools unixodbc-dev
-    # initializes sql server database (schema + data)
+    # initializes a sql server database (schema + data)
     - /opt/mssql-tools/bin/sqlcmd -S mssql -U SA -P $SA_PASSWORD -i $PWD/scripts/mssql/db-init.sql
-    # installs sonar tools
+    # installs npm and mockoon-cli
+    - apt-get install -y npm
+    - npm install -g @mockoon/cli
+    # starts api mocks
+    - mockoon-cli start --data "$(pwd)/mocks/servicenow.json" --port 3000
+    - mockoon-cli list
+    # installs java runtime, sonar scanner and report generator tool
     - apt install -y default-jre
     - dotnet tool install --global dotnet-sonarscanner
     - dotnet tool install --global dotnet-reportgenerator-globaltool
+    # adds dotnet global tool in the path
     - export PATH="$PATH:/root/.dotnet/tools"
+  script:
     - cd $ROOT_FOLDER
     # runs all tests with sonar analysis
     - dotnet restore
@@ -82,6 +89,8 @@ test:
     - dotnet test --configuration Debug --logger:"junit;LogFilePath=..\..\artifacts\{assembly}-test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose" --collect:"XPlat Code Coverage"
     - reportgenerator "-reports:$COBERTURA_REPORT_FILEPATH" $REPORTGENERATOR_OPTIONS
     - dotnet sonarscanner end
+  after_script:
+    - mockoon-cli stop "all"
   #dependencies:
   #  - build
   artifacts:

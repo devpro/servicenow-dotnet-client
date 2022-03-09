@@ -57,6 +57,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "mssql", "mssql", "{EA2379E0
 		scripts\mssql\db-init.sql = scripts\mssql\db-init.sql
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "mocks", "mocks", "{B338D8C5-A1F8-4EAD-97D4-8E23624372BB}"
+	ProjectSection(SolutionItems) = preProject
+		mocks\servicenow.json = mocks\servicenow.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -130,6 +135,7 @@ Global
 		{3DBE79E6-D445-4544-96A6-3B214F936AB1} = {B952F0A1-0DB3-4D9F-BD49-C3DB6389FCB4}
 		{84A01CD5-1282-4114-A519-6F4C3625CE60} = {B952F0A1-0DB3-4D9F-BD49-C3DB6389FCB4}
 		{EA2379E0-3613-4EED-9238-92E6D48C5A62} = {03243F43-0975-4776-A5D3-9BA7141293DA}
+		{B338D8C5-A1F8-4EAD-97D4-8E23624372BB} = {03243F43-0975-4776-A5D3-9BA7141293DA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CF38BCED-2352-4EDA-A4D5-1462CCD9C659}
