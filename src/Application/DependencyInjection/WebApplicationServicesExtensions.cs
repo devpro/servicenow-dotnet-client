@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Identity.Web;
+using Microsoft.OpenApi.Models;
+using RabbidsIncubator.ServiceNowClient.Application.Configuration;
 using RabbidsIncubator.ServiceNowClient.Infrastructure.InMemory.DependencyInjection;
 using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.DependencyInjection;
 using RabbidsIncubator.ServiceNowClient.Infrastructure.SqlServerClient.DependencyInjection;
@@ -37,32 +40,51 @@ namespace RabbidsIncubator.ServiceNowClient.Application.DependencyInjection
             services.AddAutoMapperConfiguration(additionalProfiles);
             services.AddInMemoryRepositories(configuration.GetSectionValue<Infrastructure.InMemory.InMemoryConfiguration>(ConfigurationConstants.InMemoryCacheConfigKey));
             services.AddServiceNowRestClientRepositories(configuration.GetSectionValue<Infrastructure.ServiceNowRestClient.ServiceNowRestClientConfiguration>(ConfigurationConstants.RestApiServiceNowConfigKey));
+
             if (configuration.TryGetSection<Infrastructure.SqlServerClient.SqlServerClientConfiguration>(ConfigurationConstants.SqlServerServiceNowConfigKey) != null)
             {
                 services.AddSqlServerClientRepositories(configuration.GetSectionValue<Infrastructure.SqlServerClient.SqlServerClientConfiguration>(ConfigurationConstants.SqlServerServiceNowConfigKey));
             }
+
             services.AddControllers();
             services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen();
-            services.AddHealthChecks();
-            return services;
-        }
 
-        public static T TryGetSection<T>(this IConfiguration configuration, string sectionKey)
-        {
-            var section = configuration.GetSection(sectionKey);
-            return section.Get<T>();
-        }
-
-        public static T GetSectionValue<T>(this IConfiguration configuration, string sectionKey)
-        {
-            var value = configuration.TryGetSection<T>(sectionKey);
-            if (value == null)
+            services.AddSwaggerGen(c =>
             {
-                throw new ArgumentException($"Missing section \"{sectionKey}\" in configuration");
-            }
+                var openApi = configuration.GetSectionValue<OpenApiInfo>(ConfigurationConstants.OpenApiConfigKey);
+                c.SwaggerDoc(openApi.Version, openApi);
+                if (isSecuredByAzureAd)
+                {
+                    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                    {
+                        Description = "JWT Authorization header using the Bearer scheme.\r\n\r\nEnter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
+                        Name = "Authorization",
+                        In = ParameterLocation.Header,
+                        Type = SecuritySchemeType.Http,
+                        Scheme = "Bearer"
+                    });
+                    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                    {
+                        {
+                            new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = "Bearer"
+                                },
+                                Name = "Bearer",
+                                In = ParameterLocation.Header,
+                            },
+                            new List<string>()
+                        }
+                    });
+                }
+            });
 
-            return value;
+            services.AddHealthChecks();
+
+            return services;
         }
     }
 }

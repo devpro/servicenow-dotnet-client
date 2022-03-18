@@ -12,6 +12,8 @@
 
         public const string InMemoryCacheConfigKey = "Cache:InMemory";
 
+        public const string OpenApiConfigKey = "OpenApi";
+
         public const string RestApiServiceNowConfigKey = "ServiceNow:RestApi";
 
         public const string SqlServerServiceNowConfigKey = "ServiceNow:SqlServer";

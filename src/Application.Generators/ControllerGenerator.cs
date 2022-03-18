@@ -26,6 +26,7 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators
             var sourceBuilder = new StringBuilder($@"
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RabbidsIncubator.ServiceNowClient.Domain.Models;
@@ -34,7 +35,17 @@ using {namespaces.Root}.Domain.Repositories;
 
 namespace {namespaces.WebApi}.Controllers
 {{
-    [ApiController]
+");
+
+            if (entity.IsAuthorizationRequired)
+            {
+                sourceBuilder.Append(@"
+            [Authorize]
+");
+            }
+
+            sourceBuilder.Append($@"
+            [ApiController]
     [Route(""{entity.ResourceName}"")]
     public partial class {entityPascalName}Controller : ControllerBase
     {{

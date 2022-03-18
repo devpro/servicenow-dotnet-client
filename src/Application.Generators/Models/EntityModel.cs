@@ -19,6 +19,11 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators.Models
         public string ResourceName { get; set; }
 
         /// <summary>
+        /// Is an authorization required to access this resource?
+        /// </summary>
+        public bool IsAuthorizationRequired { get; set; } = true;
+
+        /// <summary>
         /// Queries.
         /// </summary>
         public QueriesModel Queries { get; set; }

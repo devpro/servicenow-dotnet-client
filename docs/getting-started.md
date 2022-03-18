@@ -83,6 +83,20 @@ rm src/WebApi/appsettings.json
 cat > src/WebApi/appsettings.json <<EOF
 {
   "AllowedHosts": "*",
+  "Application": {
+    "IsSwaggerEnabled": false,
+    "IsHttpsEnforced": true,
+    "IsSecuredByAzureAd": true
+  },
+  "OpenApi": {
+    "Title": "ServiceNow Client Web API sample",
+    "Version": "v1.0"
+  },
+  "AzureAd": {
+    "Instance": "https://login.microsoftonline.com/",
+    "CallbackPath": "/signin-oidc",
+    "SignedOutCallbackPath": "/signout-callback-oidc"
+  },
   "Logging": {
     "LogLevel": {
       "Default": "Information",
@@ -103,6 +117,12 @@ rm src/WebApi/appsettings.Development.json
 # /!\ replace the *** with the correct values
 cat > src/WebApi/appsettings.Development.json <<EOF
 {
+  "AzureAd": {
+    "Domain": "***.onmicrosoft.com",
+    "TenantId": "***",
+    "ClientId": "***",
+    "ClientSecret": "***"
+  },
   "Logging": {
     "LogLevel": {
       "Default": "Information",

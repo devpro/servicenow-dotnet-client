@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
+using Microsoft.OpenApi.Models;
+using RabbidsIncubator.ServiceNowClient.Application.Configuration;
 
 namespace RabbidsIncubator.ServiceNowClient.Application.Builder
 {
@@ -18,8 +20,10 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Builder
         {
             if (bool.TryParse(configuration[ConfigurationConstants.IsSwaggerEnabledConfigKey], out var isSwaggerEnabled) && isSwaggerEnabled)
             {
+                var openApi = configuration.GetSectionValue<OpenApiInfo>(ConfigurationConstants.OpenApiConfigKey);
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint($"/swagger/{openApi.Version}/swagger.json",
+                    $"{openApi.Title} {openApi.Version}"));
             }
 
             if (bool.TryParse(configuration[ConfigurationConstants.IsHttpsEnforcedConfigKey], out var isHttpsEnforced) && isHttpsEnforced)
