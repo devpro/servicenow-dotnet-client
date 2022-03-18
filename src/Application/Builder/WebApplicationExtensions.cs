@@ -16,15 +16,20 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Builder
             this WebApplication app,
             ConfigurationManager configuration)
         {
-            if (bool.TryParse(configuration["Application:IsSwaggerEnabled"], out var isSwaggerEnabled) && isSwaggerEnabled)
+            if (bool.TryParse(configuration[ConfigurationConstants.IsSwaggerEnabledConfigKey], out var isSwaggerEnabled) && isSwaggerEnabled)
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
 
-            if (bool.TryParse(configuration["Application:IsHttpsEnforced"], out var isHttpsEnforced) && isHttpsEnforced)
+            if (bool.TryParse(configuration[ConfigurationConstants.IsHttpsEnforcedConfigKey], out var isHttpsEnforced) && isHttpsEnforced)
             {
                 app.UseHttpsRedirection();
+            }
+
+            if (bool.TryParse(configuration[ConfigurationConstants.IsSecuredByAzureAdConfigKey], out var isSecuredByAzureAd) && isSecuredByAzureAd)
+            {
+                app.UseAuthentication();
             }
 
             app.UseAuthorization();

@@ -1,4 +1,4 @@
-# GitLab configuration guide
+# Automation guide
 
 [GitLab](https://gitlab.com/) is used to run the CI (Continuous Integration) pipeline, which is defined in `.gitlab-ci.yml` file.
 

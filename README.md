@@ -10,12 +10,14 @@ from any system (Linux, MacOS, Windows).
 
 ## Quick start
 
-* [Getting Started](./docs/getting-started.md) page to learn about how to use the components
+* [Getting Started](./docs/getting-started.md) to learn about how to use the components
 
-* [Contribute](./docs/contribute.md) page to work locally with the sources and improve them
+* [Contribute](./docs/contribute.md) to work locally with the sources and improve them
 
 ## Going further
 
-* [GitLab](./docs/gitlab.md) page to understand the automation done on this codebase
+* [Authentication](./docs/authentication.md) to get a procedure to secure an application
 
-* [ServiceNow](./docs/servicenow.md) page for resources on the SaaS solution
+* [Automation](./docs/automation.md) to understand the automation done on this codebase
+
+* [ServiceNow](./docs/servicenow.md) for resources on the SaaS solution

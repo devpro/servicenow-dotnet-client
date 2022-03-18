@@ -32,9 +32,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "src\Applicat
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{D314857E-9EE4-4947-AD1A-0949B04E28CA}"
 	ProjectSection(SolutionItems) = preProject
+		docs\authentication.md = docs\authentication.md
+		docs\automation.md = docs\automation.md
 		docs\contribute.md = docs\contribute.md
 		docs\getting-started.md = docs\getting-started.md
-		docs\gitlab.md = docs\gitlab.md
 		docs\servicenow.md = docs\servicenow.md
 	EndProjectSection
 EndProject

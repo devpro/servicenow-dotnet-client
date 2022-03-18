@@ -1,6 +1,8 @@
 ﻿using System;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Identity.Web;
 using RabbidsIncubator.ServiceNowClient.Infrastructure.InMemory.DependencyInjection;
 using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.DependencyInjection;
 using RabbidsIncubator.ServiceNowClient.Infrastructure.SqlServerClient.DependencyInjection;
@@ -9,12 +11,6 @@ namespace RabbidsIncubator.ServiceNowClient.Application.DependencyInjection
 {
     public static class WebApplicationServicesExtensions
     {
-        public const string InMemoryCacheConfigKey = "Cache:InMemory";
-
-        public const string RestApiServiceNowConfigKey = "ServiceNow:RestApi";
-
-        public const string SqlServerServiceNowConfigKey = "ServiceNow:SqlServer";
-
         /// <summary>
         /// Add default services in the service collection.
         /// Expected configuration elements: "Cache:InMemory", "ServiceNow:RestApi", "ServiceNow:SqlServer".
@@ -28,12 +24,22 @@ namespace RabbidsIncubator.ServiceNowClient.Application.DependencyInjection
             ConfigurationManager configuration,
             params AutoMapper.Profile[] additionalProfiles)
         {
-            services.AddAutoMapperConfiguration(additionalProfiles);
-            services.AddInMemoryRepositories(configuration.GetSectionValue<Infrastructure.InMemory.InMemoryConfiguration>(InMemoryCacheConfigKey));
-            services.AddServiceNowRestClientRepositories(configuration.GetSectionValue<Infrastructure.ServiceNowRestClient.ServiceNowRestClientConfiguration>(RestApiServiceNowConfigKey));
-            if (configuration.TryGetSection<Infrastructure.SqlServerClient.SqlServerClientConfiguration>(SqlServerServiceNowConfigKey) != null)
+            if (bool.TryParse(configuration[ConfigurationConstants.IsSecuredByAzureAdConfigKey], out var isSecuredByAzureAd) && isSecuredByAzureAd)
             {
-                services.AddSqlServerClientRepositories(configuration.GetSectionValue<Infrastructure.SqlServerClient.SqlServerClientConfiguration>(SqlServerServiceNowConfigKey));
+                services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddMicrosoftIdentityWebApi(configuration.GetSection(ConfigurationConstants.AzureAdConfigKey))
+                        .EnableTokenAcquisitionToCallDownstreamApi()
+                        .AddInMemoryTokenCaches();
+            }
+
+            //TODO: add OpenTelemetry
+
+            services.AddAutoMapperConfiguration(additionalProfiles);
+            services.AddInMemoryRepositories(configuration.GetSectionValue<Infrastructure.InMemory.InMemoryConfiguration>(ConfigurationConstants.InMemoryCacheConfigKey));
+            services.AddServiceNowRestClientRepositories(configuration.GetSectionValue<Infrastructure.ServiceNowRestClient.ServiceNowRestClientConfiguration>(ConfigurationConstants.RestApiServiceNowConfigKey));
+            if (configuration.TryGetSection<Infrastructure.SqlServerClient.SqlServerClientConfiguration>(ConfigurationConstants.SqlServerServiceNowConfigKey) != null)
+            {
+                services.AddSqlServerClientRepositories(configuration.GetSectionValue<Infrastructure.SqlServerClient.SqlServerClientConfiguration>(ConfigurationConstants.SqlServerServiceNowConfigKey));
             }
             services.AddControllers();
             services.AddEndpointsApiExplorer();
