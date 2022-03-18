@@ -34,18 +34,16 @@ using {namespaces.Root}.Domain.Models;
 using {namespaces.Root}.Domain.Repositories;
 
 namespace {namespaces.WebApi}.Controllers
-{{
-");
+{{");
 
             if (entity.IsAuthorizationRequired)
             {
                 sourceBuilder.Append(@"
-            [Authorize]
-");
+    [Authorize]");
             }
 
             sourceBuilder.Append($@"
-            [ApiController]
+    [ApiController]
     [Route(""{entity.ResourceName}"")]
     public partial class {entityPascalName}Controller : ControllerBase
     {{

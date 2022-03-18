@@ -36,6 +36,7 @@ namespace RabbidsIncubator.ServiceNowClient.DummyProject.Domain.Repositories
             var expected = @"
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RabbidsIncubator.ServiceNowClient.Domain.Models;
@@ -44,6 +45,7 @@ using RabbidsIncubator.ServiceNowClient.DummyProject.Domain.Repositories;
 
 namespace RabbidsIncubator.ServiceNowClient.DummyProject.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route(""locations"")]
     public partial class LocationController : ControllerBase
