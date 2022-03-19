@@ -1,0 +1,29 @@
+version: "2"
+services:
+  zipkin:
+    container_name: zipkin
+    image: openzipkin/zipkin:latest
+    ports:
+      - "9411:9411"
+  otel-collector:
+    container_name: otel-collector
+    image: otel/opentelemetry-collector:latest
+    command: ["--config=/etc/otel-collector-config.yml"]
+    volumes:
+      - ./.docker/opentelemetry-collector.yml:/etc/otel-collector-config.yml
+      - ./output:/etc/output:rw
+    ports:
+      - "8888:8888" # prometheus metrics
+      - "8889:8889" # prometheus exporter
+      - "4317:4317" # oltp grpc receiver
+    depends_on:
+      - zipkin
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:latest
+    volumes:
+      - ./.docker/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    depends_on:
+      - otel-collector

@@ -358,3 +358,6 @@ Local.md
 # GitLab runner files
 /builds/
 /.gitlab/runner/local/
+
+# Local build and log files
+/output/*

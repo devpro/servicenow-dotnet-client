@@ -207,3 +207,19 @@ docker cp $PWD/scripts/mssql/db-init.sql mssql:/home/db-init.sql
 docker exec mssql ls "/home"
 docker exec mssql /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P $SA_PASSWORD -i /home/db-init.sql
 ```
+
+### Observability
+
+* Start containers (Prometheus, Zipkin and OpenTelemetry collector)
+
+```bash
+docker-compose up
+```
+
+* Open web UIs: [Zipkin](http://localhost:9411/zipkin/), [Prometheus](http://localhost:9090/graph)
+
+* Remove containers
+
+```bash
+docker-compose up
+```
