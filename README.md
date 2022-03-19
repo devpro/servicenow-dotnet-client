@@ -5,19 +5,22 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=rabbids-incubator_servicenow-dotnet-client&metric=coverage)](https://sonarcloud.io/summary/new_code?id=rabbids-incubator_servicenow-dotnet-client)
 [![Nuget](https://img.shields.io/nuget/v/RabbidsIncubator.ServiceNowClient.Application.svg)](https://www.nuget.org/packages/RabbidsIncubator.ServiceNowClient.Application)
 
-This is the codebase of .NET components (API & libraries) to simplify the integration with [ServiceNow](https://www.servicenow.com/),
-from any system (Linux, MacOS, Windows).
+.NET components (API & libraries) to simplify the integration with [ServiceNow](https://www.servicenow.com/), from any system (Linux, MacOS, Windows).
 
-## Quick start
+## Getting started
 
-* [Getting Started](./docs/getting-started.md) to learn about how to use the components
+* [Quickstart](./docs/quickstart.md) to get an application running in 5 minutes
 
-* [Contribute](./docs/contribute.md) to work locally with the sources and improve them
+* [Contribution](./docs/contribution.md) to run locally the solution and push code changes
 
 ## Going further
 
-* [Authentication](./docs/authentication.md) to get a procedure to secure an application
+* [Authentication](./docs/authentication.md) to secure the application
 
-* [Automation](./docs/automation.md) to understand the automation done on this codebase
+* [Automation](./docs/automation.md) to know about the Continuous Integration and Delivery pipeline
 
-* [ServiceNow](./docs/servicenow.md) for resources on the SaaS solution
+* [Dependencies](./docs/dependencies.md) to view the dependencies (in particular the link with ServiceNow)
+
+* [Design](./docs/design.md) to understand the software design of the solution
+
+* [Observability](./docs/automation.md) to monitor and measure the application

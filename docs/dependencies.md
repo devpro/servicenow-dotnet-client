@@ -1,4 +1,6 @@
-# ServiceNow resources
+# Dependencies resources
+
+### ServiceNow
 
 ## General
 

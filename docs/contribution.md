@@ -1,4 +1,4 @@
-# Contribution guide
+# Contribution
 
 ## Requirements
 
@@ -54,6 +54,12 @@ dotnet build
   "Application": {
     "IsSwaggerEnabled": true,
     "IsHttpsEnforced": false
+  },
+  "AzureAd": {
+    "Domain": "xxx.onmicrosoft.com",
+    "TenantId": "xxx",
+    "ClientId": "xxx",
+    "ClientSecret": "xxx"
   },
   "Logging": {
     "LogLevel": {
