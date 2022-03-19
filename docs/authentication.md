@@ -21,3 +21,6 @@ select "New registration"
   * "Api permissions": do "Grant admin consent for Default Directory" (Microsoft Graph > User.Read has been added by default)
   * "Expose an API": set the application ID URI, "api://<client_id>" is the default and correct choice
   * "Expose an API": add a scope, for example "access_as_user" with "Admins and users" for the consent option
+
+* References:
+  * [Scenario: Protected web API](https://docs.microsoft.com/en-us/azure/active-directory/develop/scenario-protected-web-api-overview)
