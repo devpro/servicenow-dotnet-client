@@ -74,7 +74,7 @@ namespace RabbidsIncubator.ServiceNowClient.ConsoleApp
                 })
                 .AddServiceNowRestClientGeneratedRepositories()
                 .AddServiceNowRestClientRepositories(appConfiguration.ServiceNowRestClientConfiguration)
-                .AddAutoMapperConfiguration(new GeneratedServiceNowRestClientMappingProfile());
+                .AddAutoMapper(new GeneratedServiceNowRestClientMappingProfile());
 
             return serviceCollection.BuildServiceProvider();
         }

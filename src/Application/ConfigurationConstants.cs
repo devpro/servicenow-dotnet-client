@@ -2,20 +2,28 @@
 {
     public static class ConfigurationConstants
     {
-        public const string AzureAdConfigKey = "AzureAd";
+        public const string IsHttpsEnforcedConfigKey = "Application:IsHttpsEnforced";
 
         public const string IsSecuredByAzureAdConfigKey = "Application:IsSecuredByAzureAd";
 
         public const string IsSwaggerEnabledConfigKey = "Application:IsSwaggerEnabled";
 
-        public const string IsHttpsEnforcedConfigKey = "Application:IsHttpsEnforced";
+        public const string IsOpenTelemetryEnabledConfigKey = "Application:IsOpenTelemetryEnabled";
+
+        public const string AzureAdConfigKey = "AzureAd";
 
         public const string InMemoryCacheConfigKey = "Cache:InMemory";
 
         public const string OpenApiConfigKey = "OpenApi";
 
-        public const string RestApiServiceNowConfigKey = "ServiceNow:RestApi";
+        public const string OpenTelemetryMetricsSourceConfigKey = "OpenTelemetry:Metrics:Source";
 
-        public const string SqlServerServiceNowConfigKey = "ServiceNow:SqlServer";
+        public const string OpenTelemetryOtlpExporterEndpointConfigKey = "OpenTelemetry:OtlpExporter:Endpoint";
+
+        public const string OpenTelemetryTracingSourceConfigKey = "OpenTelemetry:Tracing:Source";
+
+        public const string ServiceNowRestApiConfigKey = "ServiceNow:RestApi";
+
+        public const string ServiceNowSqlServerConfigKey = "ServiceNow:SqlServer";
     }
 }

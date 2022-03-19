@@ -11,7 +11,7 @@ namespace RabbidsIncubator.ServiceNowClient.Application.DependencyInjection
         /// <param name="services">Service collection</param>
         /// <param name="additionalProfiles">Additional profiles</param>
         /// <returns></returns>
-        public static IServiceCollection AddAutoMapperConfiguration(this IServiceCollection services, params Profile[] additionalProfiles)
+        public static IServiceCollection AddAutoMapper(this IServiceCollection services, params Profile[] additionalProfiles)
         {
             var mappingConfig = new MapperConfiguration(x =>
             {

@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0 - Solution Items", "0 - S
 		.gitignore = .gitignore
 		.gitlab-ci.yml = .gitlab-ci.yml
 		Directory.Build.props = Directory.Build.props
+		docker-compose.yml = docker-compose.yml
 		Local.md = Local.md
 		Local.runsettings = Local.runsettings
 		README.md = README.md
@@ -63,6 +64,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "mocks", "mocks", "{B338D8C5-A1F8-4EAD-97D4-8E23624372BB}"
 	ProjectSection(SolutionItems) = preProject
 		mocks\servicenow.json = mocks\servicenow.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{8B94AA54-5F8B-463E-9CA0-D7E75B6F60AE}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+		.docker\opentelemetry-collector.yml = .docker\opentelemetry-collector.yml
+		.docker\prometheus.yml = .docker\prometheus.yml
 	EndProjectSection
 EndProject
 Global
@@ -139,6 +147,7 @@ Global
 		{84A01CD5-1282-4114-A519-6F4C3625CE60} = {B952F0A1-0DB3-4D9F-BD49-C3DB6389FCB4}
 		{EA2379E0-3613-4EED-9238-92E6D48C5A62} = {03243F43-0975-4776-A5D3-9BA7141293DA}
 		{B338D8C5-A1F8-4EAD-97D4-8E23624372BB} = {03243F43-0975-4776-A5D3-9BA7141293DA}
+		{8B94AA54-5F8B-463E-9CA0-D7E75B6F60AE} = {03243F43-0975-4776-A5D3-9BA7141293DA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CF38BCED-2352-4EDA-A4D5-1462CCD9C659}

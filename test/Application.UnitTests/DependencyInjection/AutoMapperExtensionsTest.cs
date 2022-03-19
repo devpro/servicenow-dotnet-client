@@ -15,7 +15,7 @@ namespace RabbidsIncubator.ServiceNowClient.Application.UnitTests.DependencyInje
             var serviceCollection = new ServiceCollection();
 
             // Act
-            serviceCollection.AddAutoMapperConfiguration();
+            serviceCollection.AddAutoMapper();
 
             // Assert
             var serviceProvider = serviceCollection.BuildServiceProvider();
