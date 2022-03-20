@@ -216,7 +216,7 @@ docker exec mssql /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P $SA_PASSWORD
 docker-compose up
 ```
 
-* Open web UIs: [Zipkin](http://localhost:9411/zipkin/), [Prometheus](http://localhost:9090/graph)
+* Open web UIs: [Zipkin](http://localhost:9411/zipkin/), [Prometheus](http://localhost:9090/graph), [Grafana](http://localhost:3000/)
 
 * Remove containers
 

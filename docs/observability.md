@@ -16,3 +16,5 @@ https://rafaelldi.blog/posts/open-telemetry-in-dotnet/) by Rival Abdrakhmanov - 
 * Projects
   * [ASP.NET Instrumentation for OpenTelemetry](
 https://github.com/open-telemetry/opentelemetry-dotnet/tree/main/src/OpenTelemetry.Instrumentation.AspNet)
+  * [OpenTelemetry Collector](https://github.com/open-telemetry/opentelemetry-collector)
+  * [OpenTelemetry Collector Contrib](https://github.com/open-telemetry/opentelemetry-collector-contrib)

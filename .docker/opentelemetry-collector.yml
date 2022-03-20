@@ -12,21 +12,31 @@ exporters:
     format: proto
   file:
     path: /etc/output/logs.json
+  otlp:
+    endpoint: tempo:4317
+    tls:
+      insecure: true
+  loki:
+    endpoint: "http://loki:3100/loki/api/v1/push"
+    format: json
+    labels:
+      resource:
+        service.name: "service_name"
+        service.instance.id: "service_instance_id"
 
 processors:
   batch:
 
 service:
   pipelines:
-    traces:
+    logs:
       receivers: [otlp]
-      processors: [batch]
-      exporters: [logging, zipkin]
+      exporters: [logging, file, loki]
     metrics:
       receivers: [otlp]
       processors: [batch]
       exporters: [logging, prometheus]
-    logs:
+    traces:
       receivers: [otlp]
-      processors: []
-      exporters: [logging, file]
+      processors: [batch]
+      exporters: [logging, zipkin, otlp]

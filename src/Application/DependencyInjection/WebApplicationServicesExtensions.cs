@@ -122,8 +122,12 @@ namespace RabbidsIncubator.ServiceNowClient.Application.DependencyInjection
                     builder.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(openTelemetryService));
                     builder.AddAspNetCoreInstrumentation();
                     builder.AddHttpClientInstrumentation();
-                    //builder.AddMeter(openTelemetryMetricsSource);
-                    builder.AddOtlpExporter(options => options.Endpoint = new Uri(openTelemetryCollectorEndpoint));
+                    builder.AddMeter(openTelemetryMetricsSource);
+                    builder.AddOtlpExporter(options =>
+                    {
+                        options.Endpoint = new Uri(openTelemetryCollectorEndpoint);
+                        options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc;
+                    });
                 });
                 
                 services.AddOpenTelemetryTracing(builder =>
@@ -132,8 +136,12 @@ namespace RabbidsIncubator.ServiceNowClient.Application.DependencyInjection
                     builder.AddAspNetCoreInstrumentation();
                     builder.AddHttpClientInstrumentation();
                     builder.AddSqlClientInstrumentation();
-                    //builder.AddSource(openTelemetryTracingSource);
-                    builder.AddOtlpExporter(options => options.Endpoint = new Uri(openTelemetryCollectorEndpoint));
+                    builder.AddSource(openTelemetryTracingSource);
+                    builder.AddOtlpExporter(options =>
+                    {
+                        options.Endpoint = new Uri(openTelemetryCollectorEndpoint);
+                        options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc;
+                    });
                 });
 
                 logging.AddOpenTelemetry(builder =>
@@ -142,7 +150,11 @@ namespace RabbidsIncubator.ServiceNowClient.Application.DependencyInjection
                     builder.IncludeFormattedMessage = true;
                     builder.IncludeScopes = true;
                     builder.ParseStateValues = true;
-                    builder.AddOtlpExporter(options => options.Endpoint = new Uri(openTelemetryCollectorEndpoint));
+                    builder.AddOtlpExporter(options =>
+                    {
+                        options.Endpoint = new Uri(openTelemetryCollectorEndpoint);
+                        options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc;
+                    });
                 });
             }
 

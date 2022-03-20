@@ -68,8 +68,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{8B94AA54-5F8B-463E-9CA0-D7E75B6F60AE}"
 	ProjectSection(SolutionItems) = preProject
 		docker-compose.yml = docker-compose.yml
+		.docker\grafana-datasources.yaml = .docker\grafana-datasources.yaml
 		.docker\opentelemetry-collector.yml = .docker\opentelemetry-collector.yml
 		.docker\prometheus.yml = .docker\prometheus.yml
+		.docker\tempo.yaml = .docker\tempo.yaml
 	EndProjectSection
 EndProject
 Global
