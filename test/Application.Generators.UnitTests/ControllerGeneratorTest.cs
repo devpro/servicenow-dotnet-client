@@ -55,7 +55,6 @@ namespace RabbidsIncubator.ServiceNowClient.DummyProject.Controllers
         public LocationController(ILogger<LocationController> logger, ILocationRepository locationRepository)
             : base(logger)
         {
-            _logger = logger;
             _locationRepository = locationRepository;
         }
 
