@@ -6,15 +6,13 @@ namespace RabbidsIncubator.Samples.ServiceNowWebApiSample.Controllers
 {
     [ApiController]
     [Route("switches")]
-    public class SwitchController : ControllerBase
+    public class SwitchController : RabbidsIncubator.ServiceNowClient.Application.Mvc.ControllerBase
     {
-        private readonly ILogger _logger;
-
         private readonly ISwitchRepository _switchRepository;
 
         public SwitchController(ILogger<SwitchController> logger, ISwitchRepository switchRepository)
+            : base(logger)
         {
-            _logger = logger;
             _switchRepository = switchRepository;
         }
 
@@ -22,7 +20,7 @@ namespace RabbidsIncubator.Samples.ServiceNowWebApiSample.Controllers
         public async Task<List<SwitchModel>> Get([FromQuery] SwitchModel model, int? startIndex, int? limit)
         {
             var items = await _switchRepository.FindAllAsync(new QueryModel<SwitchModel>(model, startIndex, limit));
-            _logger.LogDebug("Number of items found: {itemsCount}", items.Count);
+            ReportListCount(items.Count);
             return items;
         }
     }

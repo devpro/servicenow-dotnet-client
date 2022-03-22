@@ -194,7 +194,7 @@ SA_PASSWORD='s0m3Str0ng!P@ssw0rd'
 
 # runs SQL Server in a container (can be accessed with localhost or 127.0.0.1 as Data Source)
 docker pull mcr.microsoft.com/mssql/server:2019-latest
-docker run --rm --name mssql --hostname $MSSQL_HOST \
+docker run --name mssql --hostname $MSSQL_HOST \
   -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=$SA_PASSWORD" -p 1433:1433 \
   -d mcr.microsoft.com/mssql/server:2019-latest
 
@@ -204,7 +204,7 @@ docker exec -it mssql bash
 
 # initializes database with data
 docker cp $PWD/scripts/mssql/db-init.sql mssql:/home/db-init.sql
-docker exec mssql ls "/home"
+#docker exec mssql ls "/home"
 docker exec mssql /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P $SA_PASSWORD -i /home/db-init.sql
 ```
 

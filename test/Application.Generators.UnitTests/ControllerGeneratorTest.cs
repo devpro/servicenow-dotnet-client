@@ -48,13 +48,12 @@ namespace RabbidsIncubator.ServiceNowClient.DummyProject.Controllers
     [Authorize]
     [ApiController]
     [Route(""locations"")]
-    public partial class LocationController : ControllerBase
+    public partial class LocationController : RabbidsIncubator.ServiceNowClient.Application.Mvc.ControllerBase
     {
-        private readonly ILogger _logger;
-
         private readonly ILocationRepository _locationRepository;
 
         public LocationController(ILogger<LocationController> logger, ILocationRepository locationRepository)
+            : base(logger)
         {
             _logger = logger;
             _locationRepository = locationRepository;
@@ -64,7 +63,7 @@ namespace RabbidsIncubator.ServiceNowClient.DummyProject.Controllers
         public async Task<List<LocationModel>> Get([FromQuery] LocationModel model, int? startIndex, int? limit)
         {
             var items = await _locationRepository.FindAllAsync(new QueryModel<LocationModel>(model, startIndex, limit));
-            _logger.LogDebug(""Number of items found: {itemsCount}"", items.Count);
+            ReportListCount(items.Count);
             return items;
         }
     }

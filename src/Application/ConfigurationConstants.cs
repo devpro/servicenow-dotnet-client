@@ -16,13 +16,9 @@
 
         public const string OpenApiConfigKey = "OpenApi";
 
-        public const string OpenTelemetryMetricsSourceConfigKey = "OpenTelemetry:Metrics:Source";
-
         public const string OpenTelemetryOtlpExporterEndpointConfigKey = "OpenTelemetry:OtlpExporter:Endpoint";
 
         public const string OpenTelemetryServiceConfigKey = "OpenTelemetry:Service";
-
-        public const string OpenTelemetryTracingSourceConfigKey = "OpenTelemetry:Tracing:Source";
 
         public const string ServiceNowRestApiConfigKey = "ServiceNow:RestApi";
 

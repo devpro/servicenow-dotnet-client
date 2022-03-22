@@ -36,6 +36,7 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Builder
                 app.UseAuthentication();
             }
 
+            app.UseActivityEnrichment();
             app.UseAuthorization();
             app.MapControllers();
             app.MapHealthChecks("/health");
