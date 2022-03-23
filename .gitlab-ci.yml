@@ -110,6 +110,7 @@ test:
   only:
     - external_pull_requests
     - main
+    - web
 
 # ref. https://docs.microsoft.com/en-us/nuget/nuget-org/publish-a-package
 #.dotnet_pack:
