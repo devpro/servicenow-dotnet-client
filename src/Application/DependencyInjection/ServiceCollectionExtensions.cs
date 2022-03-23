@@ -77,6 +77,10 @@ namespace RabbidsIncubator.ServiceNowClient.Application.DependencyInjection
                         builder.AddOtlpExporter(options => options.Endpoint = new Uri(openTelemetryCollectorEndpoint));
                     });
                 }
+                else
+                {
+                    services.AddTransient<Domain.Diagnostics.IMetricsContext, Diagnostics.NoMetricsContext>();
+                }
 
                 var openTelemetryTracingSource = configuration[ConfigurationConstants.OpenTelemetryTracingSourceConfigKey];
                 if (!string.IsNullOrEmpty(openTelemetryTracingSource))
@@ -107,6 +111,10 @@ namespace RabbidsIncubator.ServiceNowClient.Application.DependencyInjection
                     builder.ParseStateValues = true;
                     builder.AddOtlpExporter(options => options.Endpoint = new Uri(openTelemetryCollectorEndpoint));
                 });
+            }
+            else
+            {
+                services.AddTransient<Domain.Diagnostics.IMetricsContext, Diagnostics.NoMetricsContext>();
             }
 
             return services;

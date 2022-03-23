@@ -53,6 +53,7 @@ test:
     REPORTGENERATOR_OPTIONS: -targetdir:sonarqubecoverage -reporttypes:SonarQube
     SONAR_EXTRA_PARAMETERS: /d:sonar.cpd.exclusions=**/*Generated*.cs /d:sonar.coverageReportPaths=./sonarqubecoverage/SonarQube.xml
     Application__IsSecuredByAzureAd: "false"
+    Application__IsOpenTelemetryEnabled: "true"
     OpenTelemetry__Service: SampleServiceNowRestClient
     OpenTelemetry__Metrics__Meter: SampleServiceNowRestClientMetrics
     OpenTelemetry__Tracing__Source: SampleServiceNowRestClientTracing
