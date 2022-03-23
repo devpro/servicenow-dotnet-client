@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Testing;
@@ -16,6 +17,8 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators.UnitTests
         public async Task ControllerGeneratorGenerateCode()
         {
             var original = @"
+using System.Diagnostics;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using RabbidsIncubator.ServiceNowClient.Domain.Models;
@@ -30,6 +33,23 @@ namespace RabbidsIncubator.ServiceNowClient.DummyProject.Domain.Repositories
     public interface ILocationRepository
     {
         Task<List<Models.LocationModel>> FindAllAsync(QueryModel<Models.LocationModel> query);
+    }
+}
+namespace RabbidsIncubator.ServiceNowClient.Application.Mvc
+{
+    public abstract class ControllerBase : Microsoft.AspNetCore.Mvc.ControllerBase
+    {
+        protected ILogger Logger { get; private set; }
+
+        protected ControllerBase(ILogger<ControllerBase> logger)
+        {
+            Logger = logger;
+        }
+
+        protected void ReportListCount(int count)
+        {
+            Logger.LogDebug(""Dummy log"");
+        }
     }
 }
 ";

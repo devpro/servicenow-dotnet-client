@@ -16,8 +16,9 @@ https://rehansaeed.com/optimally-configuring-open-telemetry-tracing-for-asp-net-
   * [.NET / Collect metrics](https://docs.microsoft.com/en-us/dotnet/core/diagnostics/metrics-collection)
   * [OpenTelemetry / Instrumentation / .NET](https://opentelemetry.io/docs/instrumentation/net/)
 * Projects
-  * [ASP.NET Instrumentation for OpenTelemetry](
-https://github.com/open-telemetry/opentelemetry-dotnet/tree/main/src/OpenTelemetry.Instrumentation.AspNet)
+  * [ASP.NET Core Instrumentation for OpenTelemetry](
+https://github.com/open-telemetry/opentelemetry-dotnet/tree/main/src/OpenTelemetry.Instrumentation.AspNetCore)
+    * Current metrics: `http.server.duration` (histogram)
   * [OpenTelemetry Collector](https://github.com/open-telemetry/opentelemetry-collector)
   * [OpenTelemetry Collector Contrib](https://github.com/open-telemetry/opentelemetry-collector-contrib)
 * Limitation
