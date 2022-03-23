@@ -23,12 +23,12 @@ namespace RabbidsIncubator.ServiceNowClient.Application.DependencyInjection
     {
         /// <summary>
         /// Add default services in the service collection.
-        /// Expected configuration elements: "Cache:InMemory", "ServiceNow:RestApi", "ServiceNow:SqlServer".
         /// </summary>
         /// <param name="services"></param>
         /// <param name="configuration"></param>
         /// <param name="additionalProfiles"></param>
         /// <returns></returns>
+        /// <see cref="ConfigurationConstants"/>
         public static IServiceCollection AddDefaultServices(this IServiceCollection services, ConfigurationManager configuration, ILoggingBuilder logging,
             params Profile[] additionalProfiles)
         {
@@ -64,40 +64,40 @@ namespace RabbidsIncubator.ServiceNowClient.Application.DependencyInjection
                 var openTelemetryCollectorEndpoint = configuration[ConfigurationConstants.OpenTelemetryOtlpExporterEndpointConfigKey];
                 var openTelemetryService = configuration[ConfigurationConstants.OpenTelemetryServiceConfigKey];
 
-                services.AddOpenTelemetryMetrics(builder =>
+                var openTelemetryMetricsMeter = configuration[ConfigurationConstants.OpenTelemetryMetricsMeterConfigKey];
+                if (!string.IsNullOrEmpty(openTelemetryMetricsMeter))
                 {
-                    builder.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(openTelemetryService));
-                    builder.AddAspNetCoreInstrumentation();
-                    builder.AddHttpClientInstrumentation();
-                    builder.AddMeter(openTelemetryService);
-                    builder.AddOtlpExporter(options =>
+                    services.AddSingleton<Domain.Diagnostics.IMetricsContext, Diagnostics.MetricsContext>();
+                    services.AddOpenTelemetryMetrics(builder =>
                     {
-                        options.Endpoint = new Uri(openTelemetryCollectorEndpoint);
-                        options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc;
+                        builder.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(openTelemetryService));
+                        builder.AddAspNetCoreInstrumentation();
+                        builder.AddHttpClientInstrumentation();
+                        builder.AddMeter(openTelemetryMetricsMeter);
+                        builder.AddOtlpExporter(options => options.Endpoint = new Uri(openTelemetryCollectorEndpoint));
                     });
-                });
+                }
 
-                services.AddOpenTelemetryTracing(builder =>
+                var openTelemetryTracingSource = configuration[ConfigurationConstants.OpenTelemetryTracingSourceConfigKey];
+                if (!string.IsNullOrEmpty(openTelemetryTracingSource))
                 {
-                    builder.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(openTelemetryService));
-                    builder.AddAspNetCoreInstrumentation(options =>
+                    services.AddOpenTelemetryTracing(builder =>
                     {
-                        options.RecordException = true;
-
-                        if (enrichAction != default)
+                        builder.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(openTelemetryService));
+                        builder.AddAspNetCoreInstrumentation(options =>
                         {
-                            options.Enrich = enrichAction;
-                        }
+                            options.RecordException = true;
+                            if (enrichAction != default)
+                            {
+                                options.Enrich = enrichAction;
+                            }
+                        });
+                        builder.AddHttpClientInstrumentation();
+                        builder.AddSqlClientInstrumentation();
+                        builder.AddSource(openTelemetryTracingSource);
+                        builder.AddOtlpExporter(options => options.Endpoint = new Uri(openTelemetryCollectorEndpoint));
                     });
-                    builder.AddHttpClientInstrumentation();
-                    builder.AddSqlClientInstrumentation();
-                    builder.AddSource(openTelemetryService);
-                    builder.AddOtlpExporter(options =>
-                    {
-                        options.Endpoint = new Uri(openTelemetryCollectorEndpoint);
-                        options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc;
-                    });
-                });
+                }
 
                 logging.AddOpenTelemetry(builder =>
                 {
@@ -105,11 +105,7 @@ namespace RabbidsIncubator.ServiceNowClient.Application.DependencyInjection
                     builder.IncludeFormattedMessage = true;
                     builder.IncludeScopes = true;
                     builder.ParseStateValues = true;
-                    builder.AddOtlpExporter(options =>
-                    {
-                        options.Endpoint = new Uri(openTelemetryCollectorEndpoint);
-                        options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc;
-                    });
+                    builder.AddOtlpExporter(options => options.Endpoint = new Uri(openTelemetryCollectorEndpoint));
                 });
             }
 

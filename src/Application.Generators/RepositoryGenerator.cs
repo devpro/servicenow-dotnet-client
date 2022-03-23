@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
@@ -83,6 +83,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
+using RabbidsIncubator.ServiceNowClient.Domain.Diagnostics;
 using RabbidsIncubator.ServiceNowClient.Domain.Models;
 using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient;
 using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.Repositories;
@@ -98,8 +99,9 @@ namespace {namespaces.Root}.Infrastructure.ServiceNowRestClient.Repositories
             ILogger<{entityPascalName}Repository> logger,
             IHttpClientFactory httpClientFactory,
             IMapper mapper,
-            ServiceNowRestClientConfiguration restApiConfiguration)
-            : base(logger, httpClientFactory, mapper, restApiConfiguration)
+            ServiceNowRestClientConfiguration restApiConfiguration,
+            IMetricsContext metricsContext)
+            : base(logger, httpClientFactory, mapper, restApiConfiguration, metricsContext)
         {{
         }}
 ");

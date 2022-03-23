@@ -216,10 +216,17 @@ docker exec mssql /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P $SA_PASSWORD
 docker-compose up
 ```
 
-* Open web UIs: [Zipkin](http://localhost:9411/zipkin/), [Prometheus](http://localhost:9090/graph), [Grafana](http://localhost:3000/)
+* Open web UIs:
+  * [Zipkin](http://localhost:9411/zipkin/)
+  * [Prometheus](http://localhost:9090/graph)
+  * [Grafana](http://localhost:3000/)
 
 * Remove containers
 
 ```bash
 docker-compose up
 ```
+
+* Warnings:
+  * If you are running the containers on WSL, when the Linux VM memory is full you will face strange behaviors.
+Do not hesitate to restart regularly WSL: `wsl --shutdown`.

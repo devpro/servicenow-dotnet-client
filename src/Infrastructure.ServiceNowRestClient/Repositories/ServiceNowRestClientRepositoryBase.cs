@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
+using RabbidsIncubator.ServiceNowClient.Domain.Diagnostics;
 
 namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.Repositories
 {
@@ -21,16 +22,20 @@ namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.
             ILogger logger,
             IHttpClientFactory httpClientFactory,
             IMapper mapper,
-            ServiceNowRestClientConfiguration restApiConfiguration)
+            ServiceNowRestClientConfiguration restApiConfiguration,
+            IMetricsContext metricsContext)
             : base(logger, httpClientFactory)
         {
             Mapper = mapper;
             _restApiConfiguration = restApiConfiguration;
+            MetricsContext = metricsContext;
         }
 
         protected override string HttpClientName => _restApiConfiguration.HttpClientName;
 
         protected IMapper Mapper { get; private set; }
+
+        protected IMetricsContext MetricsContext { get; private set; }
 
         /// <summary>
         /// Generate URL from parameters.
@@ -90,6 +95,7 @@ namespace RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.
             where T : class
             where U : Dto.IEntityDto
         {
+            MetricsContext.AddToCounter("servicenow.restapi_requests", 1);
             var url = GenerateUrl<T, U>(tableName, queryModel, extraParameters);
             var resultList = await GetAsync<Dto.ResultListDto<U>>(url);
             return Mapper.Map<List<T>>(resultList.Result);

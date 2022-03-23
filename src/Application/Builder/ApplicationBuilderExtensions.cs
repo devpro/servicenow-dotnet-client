@@ -8,7 +8,7 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Builder
         public static IApplicationBuilder UseActivityEnrichment(
             this IApplicationBuilder builder)
         {
-            return builder.UseMiddleware<ActivityEnrichmentMiddleware>();
+            return builder.UseMiddleware<DiagnosticsEnrichmentMiddleware>();
         }
     }
 }
