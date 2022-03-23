@@ -1,4 +1,4 @@
-# Contribution guide
+# Contribution
 
 ## Requirements
 
@@ -54,6 +54,12 @@ dotnet build
   "Application": {
     "IsSwaggerEnabled": true,
     "IsHttpsEnforced": false
+  },
+  "AzureAd": {
+    "Domain": "xxx.onmicrosoft.com",
+    "TenantId": "xxx",
+    "ClientId": "xxx",
+    "ClientSecret": "xxx"
   },
   "Logging": {
     "LogLevel": {
@@ -188,7 +194,7 @@ SA_PASSWORD='s0m3Str0ng!P@ssw0rd'
 
 # runs SQL Server in a container (can be accessed with localhost or 127.0.0.1 as Data Source)
 docker pull mcr.microsoft.com/mssql/server:2019-latest
-docker run --rm --name mssql --hostname $MSSQL_HOST \
+docker run --name mssql --hostname $MSSQL_HOST \
   -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=$SA_PASSWORD" -p 1433:1433 \
   -d mcr.microsoft.com/mssql/server:2019-latest
 
@@ -198,6 +204,29 @@ docker exec -it mssql bash
 
 # initializes database with data
 docker cp $PWD/scripts/mssql/db-init.sql mssql:/home/db-init.sql
-docker exec mssql ls "/home"
+#docker exec mssql ls "/home"
 docker exec mssql /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P $SA_PASSWORD -i /home/db-init.sql
 ```
+
+### Observability
+
+* Start containers (Prometheus, Zipkin and OpenTelemetry collector)
+
+```bash
+docker-compose up
+```
+
+* Open web UIs:
+  * [Zipkin](http://localhost:9411/zipkin/)
+  * [Prometheus](http://localhost:9090/graph)
+  * [Grafana](http://localhost:3000/)
+
+* Remove containers
+
+```bash
+docker-compose up
+```
+
+* Warnings:
+  * If you are running the containers on WSL, when the Linux VM memory is full you will face strange behaviors.
+Do not hesitate to restart regularly WSL: `wsl --shutdown`.

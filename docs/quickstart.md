@@ -1,4 +1,4 @@
-# Getting Started procedure
+# Quickstart
 
 ## Requirements
 
@@ -83,6 +83,22 @@ rm src/WebApi/appsettings.json
 cat > src/WebApi/appsettings.json <<EOF
 {
   "AllowedHosts": "*",
+  "Application": {
+    "IsHttpsEnforced": false,
+    "IsOpenTelemetryEnabled": false,
+    "IsSecuredByAzureAd": false,
+    "IsSwaggerEnabled": false
+  },
+  "AzureAd": {
+    "Instance": "https://login.microsoftonline.com/",
+    "CallbackPath": "/signin-oidc",
+    "SignedOutCallbackPath": "/signout-callback-oidc"
+  },
+  "Cache": {
+    "InMemory": {
+      "GeneralTimeoutInSeconds": 3600
+    }
+  },
   "Logging": {
     "LogLevel": {
       "Default": "Information",
@@ -90,9 +106,16 @@ cat > src/WebApi/appsettings.json <<EOF
       "RabbidsIncubator.ServiceNowClient": "Information"
     }
   },
-  "Cache": {
-    "InMemory": {
-      "GeneralTimeoutInSeconds": 3600
+  "OpenApi": {
+    "Title": "ServiceNow Client Web API sample",
+    "Version": "v1.0"
+  },
+  "OpenTelemetry": {
+    "Metrics": {
+      "Source": "SampleServiceNowRestClientMetrics"
+    },
+    "Tracing": {
+      "Source": "SampleServiceNowRestClientTracing"
     }
   }
 }
@@ -103,12 +126,27 @@ rm src/WebApi/appsettings.Development.json
 # /!\ replace the *** with the correct values
 cat > src/WebApi/appsettings.Development.json <<EOF
 {
+  "Application": {
+    "IsHttpsEnforced": false,
+    "IsOpenTelemetryEnabled": true,
+    "IsSecuredByAzureAd": false,
+    "IsSwaggerEnabled": true
+  },
+  "AzureAd": {
+    "Domain": "***.onmicrosoft.com",
+    "TenantId": "***",
+    "ClientId": "***",
+    "ClientSecret": "***"
+  },
   "Logging": {
     "LogLevel": {
-      "Default": "Information",
-      "Microsoft.AspNetCore": "Warning",
       "RabbidsIncubator.ServiceNowClient": "Debug",
       "Withywoods": "Debug"
+    }
+  },
+  "OpenTelemetry": {
+    "OtlpExporter": {
+      "Endpoint": "http://localhost:4317"
     }
   },
   "ServiceNow": {
@@ -116,6 +154,12 @@ cat > src/WebApi/appsettings.Development.json <<EOF
       "BaseUrl": "https://***.service-now.com/api/now",
       "Username": "***",
       "Password": "***"
+    },
+    "SqlServer": {
+      "DataSource": "***",
+      "UserId": "***",
+      "Password": "***",
+      "InitialCatalog": "***"
     }
   }
 }
@@ -130,7 +174,7 @@ using WebApi.Infrastructure.ServiceNowRestClient.DependencyInjection;
 using WebApi.Infrastructure.ServiceNowRestClient.MappingProfiles;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDefaultServices(builder.Configuration, new GeneratedServiceNowRestClientMappingProfile());
+builder.Services.AddDefaultServices(builder.Configuration, builder.Logging, new GeneratedServiceNowRestClientMappingProfile());
 builder.Services.AddServiceNowRestClientGeneratedRepositories();
 builder.Services.AddSqlServerClientClientGeneratedRepositories();
 

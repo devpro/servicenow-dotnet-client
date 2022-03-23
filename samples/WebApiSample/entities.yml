@@ -5,6 +5,7 @@ targetApplication: WebApp
 entities:
   - name: Location
     resourceName: locations
+    isAuthorizationRequired: false
     queries:
       findAll:
         serviceNowRestApiTable: cmn_location
@@ -21,6 +22,7 @@ entities:
         mapFrom: longitude
   - name: DatabaseInventory
     resourceName: db-inventories
+    isAuthorizationRequired: false
     queries:
       findAll:
         sqlServerDatabaseTable: Inventory

@@ -26,6 +26,7 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators
             var sourceBuilder = new StringBuilder($@"
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RabbidsIncubator.ServiceNowClient.Domain.Models;
@@ -33,18 +34,24 @@ using {namespaces.Root}.Domain.Models;
 using {namespaces.Root}.Domain.Repositories;
 
 namespace {namespaces.WebApi}.Controllers
-{{
+{{");
+
+            if (entity.IsAuthorizationRequired)
+            {
+                sourceBuilder.Append(@"
+    [Authorize]");
+            }
+
+            sourceBuilder.Append($@"
     [ApiController]
     [Route(""{entity.ResourceName}"")]
-    public partial class {entityPascalName}Controller : ControllerBase
+    public partial class {entityPascalName}Controller : RabbidsIncubator.ServiceNowClient.Application.Mvc.ControllerBase
     {{
-        private readonly ILogger _logger;
-
         private readonly I{entityPascalName}Repository _{entityCamelName}Repository;
 
         public {entityPascalName}Controller(ILogger<{entityPascalName}Controller> logger, I{entityPascalName}Repository {entityCamelName}Repository)
+            : base(logger)
         {{
-            _logger = logger;
             _{entityCamelName}Repository = {entityCamelName}Repository;
         }}
 ");
@@ -56,7 +63,7 @@ namespace {namespaces.WebApi}.Controllers
         public async Task<List<{entityPascalName}Model>> Get(int? startIndex, int? limit)
         {{
             var items = await _{entityCamelName}Repository.FindAllAsync(new QueryModel<{entityPascalName}Model>(null, startIndex, limit));
-            _logger.LogDebug(""Number of items found: {{itemsCount}}"", items.Count);
+            ReportListCount(items.Count);
             return items;
         }}
     }}
@@ -70,7 +77,7 @@ namespace {namespaces.WebApi}.Controllers
         public async Task<List<{entityPascalName}Model>> Get([FromQuery] {entityPascalName}Model model, int? startIndex, int? limit)
         {{
             var items = await _{entityCamelName}Repository.FindAllAsync(new QueryModel<{entityPascalName}Model>(model, startIndex, limit));
-            _logger.LogDebug(""Number of items found: {{itemsCount}}"", items.Count);
+            ReportListCount(items.Count);
             return items;
         }}
     }}

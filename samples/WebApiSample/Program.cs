@@ -1,5 +1,5 @@
 ﻿var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDefaultServices(builder.Configuration, new GeneratedServiceNowRestClientMappingProfile(), new InfrastructureMappingProfile());
+builder.Services.AddDefaultServices(builder.Configuration, builder.Logging, new GeneratedServiceNowRestClientMappingProfile(), new InfrastructureMappingProfile());
 builder.Services.AddWebApiSampleInfrastructureRepositories();
 builder.Services.AddServiceNowRestClientGeneratedRepositories();
 builder.Services.AddSqlServerClientClientGeneratedRepositories();

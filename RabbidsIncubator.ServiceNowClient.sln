@@ -32,10 +32,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "src\Applicat
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{D314857E-9EE4-4947-AD1A-0949B04E28CA}"
 	ProjectSection(SolutionItems) = preProject
-		docs\contribute.md = docs\contribute.md
-		docs\getting-started.md = docs\getting-started.md
-		docs\gitlab.md = docs\gitlab.md
-		docs\servicenow.md = docs\servicenow.md
+		docs\authentication.md = docs\authentication.md
+		docs\automation.md = docs\automation.md
+		docs\contribution.md = docs\contribution.md
+		docs\dependencies.md = docs\dependencies.md
+		docs\design.md = docs\design.md
+		docs\observability.md = docs\observability.md
+		docs\quickstart.md = docs\quickstart.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.InMemory", "src\Infrastructure.InMemory\Infrastructure.InMemory.csproj", "{A01619B4-8F70-417D-B4BD-1651D627770E}"
@@ -60,6 +63,15 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "mocks", "mocks", "{B338D8C5-A1F8-4EAD-97D4-8E23624372BB}"
 	ProjectSection(SolutionItems) = preProject
 		mocks\servicenow.json = mocks\servicenow.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{8B94AA54-5F8B-463E-9CA0-D7E75B6F60AE}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+		.docker\grafana-datasources.yaml = .docker\grafana-datasources.yaml
+		.docker\opentelemetry-collector.yml = .docker\opentelemetry-collector.yml
+		.docker\prometheus.yml = .docker\prometheus.yml
+		.docker\tempo.yaml = .docker\tempo.yaml
 	EndProjectSection
 EndProject
 Global
@@ -136,6 +148,7 @@ Global
 		{84A01CD5-1282-4114-A519-6F4C3625CE60} = {B952F0A1-0DB3-4D9F-BD49-C3DB6389FCB4}
 		{EA2379E0-3613-4EED-9238-92E6D48C5A62} = {03243F43-0975-4776-A5D3-9BA7141293DA}
 		{B338D8C5-A1F8-4EAD-97D4-8E23624372BB} = {03243F43-0975-4776-A5D3-9BA7141293DA}
+		{8B94AA54-5F8B-463E-9CA0-D7E75B6F60AE} = {03243F43-0975-4776-A5D3-9BA7141293DA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CF38BCED-2352-4EDA-A4D5-1462CCD9C659}

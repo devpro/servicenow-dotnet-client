@@ -1,0 +1,62 @@
+version: "3.9"
+services:
+  zipkin:
+    image: openzipkin/zipkin:latest
+    container_name: zipkin
+    ports:
+      - "9411:9411"
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    container_name: otel-collector
+    command: ["--config=/etc/otel-collector.yml"]
+    volumes:
+      - ./.docker/opentelemetry-collector.yml:/etc/otel-collector.yml
+      - ./output:/etc/output:rw
+    ports:
+      - "8888:8888" # prometheus metrics
+      - "8889:8889" # prometheus exporter
+      - "4317:4317" # oltp grpc receiver
+    depends_on:
+      - zipkin
+      - grafana
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./.docker/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+
+  tempo:
+    image: grafana/tempo:latest
+    container_name: tempo
+    command: [ "-config.file=/etc/tempo.yaml" ]
+    volumes:
+      - ./.docker/tempo.yaml:/etc/tempo.yaml
+    ports:
+      - "3200:3200"
+
+  loki:
+    image: grafana/loki:2.4.2
+    container_name: loki
+    command: [ "-config.file=/etc/loki/local-config.yaml" ]
+    ports:
+      - "3100:3100"
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./.docker/grafana-datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+    depends_on:
+      - prometheus
+      - loki
+      - tempo

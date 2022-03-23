@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Testing;
@@ -16,6 +17,8 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators.UnitTests
         public async Task ControllerGeneratorGenerateCode()
         {
             var original = @"
+using System.Diagnostics;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using RabbidsIncubator.ServiceNowClient.Domain.Models;
@@ -32,10 +35,28 @@ namespace RabbidsIncubator.ServiceNowClient.DummyProject.Domain.Repositories
         Task<List<Models.LocationModel>> FindAllAsync(QueryModel<Models.LocationModel> query);
     }
 }
+namespace RabbidsIncubator.ServiceNowClient.Application.Mvc
+{
+    public abstract class ControllerBase : Microsoft.AspNetCore.Mvc.ControllerBase
+    {
+        protected ILogger Logger { get; private set; }
+
+        protected ControllerBase(ILogger<ControllerBase> logger)
+        {
+            Logger = logger;
+        }
+
+        protected void ReportListCount(int count)
+        {
+            Logger.LogDebug(""Dummy log"");
+        }
+    }
+}
 ";
             var expected = @"
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RabbidsIncubator.ServiceNowClient.Domain.Models;
@@ -44,17 +65,16 @@ using RabbidsIncubator.ServiceNowClient.DummyProject.Domain.Repositories;
 
 namespace RabbidsIncubator.ServiceNowClient.DummyProject.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route(""locations"")]
-    public partial class LocationController : ControllerBase
+    public partial class LocationController : RabbidsIncubator.ServiceNowClient.Application.Mvc.ControllerBase
     {
-        private readonly ILogger _logger;
-
         private readonly ILocationRepository _locationRepository;
 
         public LocationController(ILogger<LocationController> logger, ILocationRepository locationRepository)
+            : base(logger)
         {
-            _logger = logger;
             _locationRepository = locationRepository;
         }
 
@@ -62,7 +82,7 @@ namespace RabbidsIncubator.ServiceNowClient.DummyProject.Controllers
         public async Task<List<LocationModel>> Get([FromQuery] LocationModel model, int? startIndex, int? limit)
         {
             var items = await _locationRepository.FindAllAsync(new QueryModel<LocationModel>(model, startIndex, limit));
-            _logger.LogDebug(""Number of items found: {itemsCount}"", items.Count);
+            ReportListCount(items.Count);
             return items;
         }
     }

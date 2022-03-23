@@ -1,0 +1,42 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+
+exporters:
+  prometheus:
+    endpoint: "0.0.0.0:8889"
+  logging:
+  zipkin:
+    endpoint: "http://zipkin:9411/api/v2/spans"
+    format: proto
+  file:
+    path: /etc/output/logs.json
+  otlp:
+    endpoint: tempo:4317
+    tls:
+      insecure: true
+  loki:
+    endpoint: "http://loki:3100/loki/api/v1/push"
+    format: json
+    labels:
+      resource:
+        service.name: "service_name"
+        service.instance.id: "service_instance_id"
+
+processors:
+  batch:
+
+service:
+  pipelines:
+    logs:
+      receivers: [otlp]
+      exporters: [logging, file, loki]
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [logging, prometheus]
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [logging, zipkin, otlp]

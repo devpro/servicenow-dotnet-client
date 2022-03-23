@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using RabbidsIncubator.Samples.ServiceNowWebApiSample.Domain;
+using RabbidsIncubator.ServiceNowClient.Domain.Diagnostics;
 using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient;
 using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.Dto;
 using RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient.Repositories;
@@ -12,8 +13,9 @@ namespace RabbidsIncubator.Samples.ServiceNowWebApiSample.Infrastructure
             ILogger<ConfigurationItemRelationshipRepository> logger,
             IHttpClientFactory httpClientFactory,
             IMapper mapper,
-            ServiceNowRestClientConfiguration restApiConfiguration)
-            : base(logger, httpClientFactory, mapper, restApiConfiguration)
+            ServiceNowRestClientConfiguration restApiConfiguration,
+            IMetricsContext metricsContext)
+            : base(logger, httpClientFactory, mapper, restApiConfiguration, metricsContext)
         {
         }
 

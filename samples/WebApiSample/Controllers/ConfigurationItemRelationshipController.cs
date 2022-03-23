@@ -5,17 +5,15 @@ namespace RabbidsIncubator.Samples.ServiceNowWebApiSample.Controllers
 {
     [ApiController]
     [Route("configuration-item-relationships")]
-    public class ConfigurationItemRelationshipController : ControllerBase
+    public class ConfigurationItemRelationshipController : RabbidsIncubator.ServiceNowClient.Application.Mvc.ControllerBase
     {
         private readonly IConfigurationItemRelationshipRepository _configurationItemRelationshipRepository;
-
-        private readonly ILogger _logger;
 
         public ConfigurationItemRelationshipController(
             ILogger<ConfigurationItemRelationshipController> logger,
             IConfigurationItemRelationshipRepository configurationItemRelationshipRepository)
+            : base(logger)
         {
-            _logger = logger;
             _configurationItemRelationshipRepository = configurationItemRelationshipRepository;
         }
 
@@ -23,7 +21,7 @@ namespace RabbidsIncubator.Samples.ServiceNowWebApiSample.Controllers
         public async Task<List<ConfigurationItemRelationshipModel>> Get()
         {
             var items = await _configurationItemRelationshipRepository.FindAllAsync();
-            _logger.LogDebug("Number of items found: {itemsCount}", items.Count);
+            ReportListCount(items.Count);
             return items;
         }
     }

@@ -9,13 +9,13 @@ namespace RabbidsIncubator.ServiceNowClient.Application.UnitTests.DependencyInje
     public class AutoMapperExtensionsTest
     {
         [Fact]
-        public void AutoMapperExtensions_AddAutoMapperConfiguration_RegisterIMapper()
+        public void AutoMapperExtensions_AddAutoMapper_RegisterIMapper()
         {
             // Arrange
             var serviceCollection = new ServiceCollection();
 
             // Act
-            serviceCollection.AddAutoMapperConfiguration();
+            serviceCollection.AddAutoMapper();
 
             // Assert
             var serviceProvider = serviceCollection.BuildServiceProvider();
