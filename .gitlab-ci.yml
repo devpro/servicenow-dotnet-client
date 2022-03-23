@@ -57,6 +57,7 @@ test:
     OpenTelemetry__Service: SampleServiceNowRestClient
     OpenTelemetry__Metrics__Meter: SampleServiceNowRestClientMetrics
     OpenTelemetry__Tracing__Source: SampleServiceNowRestClientTracing
+    OpenTelemetry__OtlpExporter__Endpoint: "http://localhost:4317"
     ServiceNow__RestApi__BaseUrl: "http://localhost:3000/api/now"
     ServiceNow__RestApi__Password: dummy
     ServiceNow__RestApi__Username: dummy
