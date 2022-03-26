@@ -167,30 +167,70 @@ namespace RabbidsIncubator.ServiceNowClient.Application.DependencyInjection
                 c.SwaggerDoc(openApi.Version, openApi);
                 if (isSecured)
                 {
-                    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                    var securityName = configuration.GetSection("Swagger")?.GetValue<string>("SecurityDefinitionName");
+                    if (securityName != null && securityName == "Bearer")
                     {
-                        Description = "JWT Authorization header using the Bearer scheme.\r\n\r\nEnter your token in the text input below.",
-                        Name = "Authorization",
-                        In = ParameterLocation.Header,
-                        Type = SecuritySchemeType.Http,
-                        Scheme = "Bearer"
-                    });
-                    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-                    {
+                        c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                         {
-                            new OpenApiSecurityScheme
+                            Description = "JWT Authorization header using the Bearer scheme.\r\n\r\nEnter your token in the text input below.",
+                            Name = "Authorization",
+                            In = ParameterLocation.Header,
+                            Type = SecuritySchemeType.Http,
+                            Scheme = "Bearer"
+                        });
+                        c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                        {
                             {
-                                Reference = new OpenApiReference
+                                new OpenApiSecurityScheme
                                 {
-                                    Type = ReferenceType.SecurityScheme,
-                                    Id = "Bearer"
+                                    Reference = new OpenApiReference
+                                    {
+                                        Type = ReferenceType.SecurityScheme,
+                                        Id = "Bearer"
+                                    },
+                                    Name = "Bearer",
+                                    In = ParameterLocation.Header,
                                 },
-                                Name = "Bearer",
-                                In = ParameterLocation.Header,
-                            },
-                            new List<string>()
-                        }
-                    });
+                                new List<string>()
+                            }
+                        });
+                    }
+                    else
+                    {
+                        var azureAd = configuration.GetSection(ConfigurationConstants.AzureAdConfigKey);
+                        // see https://github.com/domaindrivendev/Swashbuckle.AspNetCore/blob/master/README.md#add-security-definitions-and-requirements
+                        c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme()
+                        {
+                            Type = SecuritySchemeType.OAuth2,
+                            Description = "Azure AAD Authentication",
+                            Flows = new OpenApiOAuthFlows()
+                            {
+                                // flow not possible for an API (requires SPA auth) and requires client secret
+                                //AuthorizationCode = new OpenApiOAuthFlow() { AuthorizationUrl = ..., TokenUrl = new Uri($"{azureAd["Instance"]}{azureAd["TenantId"]}/oauth2/v2.0/token"), Scopes = ... }
+                                // implicit flow used instead
+                                Implicit = new OpenApiOAuthFlow
+                                {
+                                    AuthorizationUrl = new Uri($"{azureAd["Instance"]}{azureAd["TenantId"]}/oauth2/v2.0/authorize"),
+                                    Scopes = { { $"api://{azureAd["ClientId"]}/access_as_user", "Access as user" } }
+                                }
+                            }
+                        });
+
+                        c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                        {
+                            {
+                                new OpenApiSecurityScheme
+                                {
+                                    Reference = new OpenApiReference
+                                    {
+                                        Type = ReferenceType.SecurityScheme,
+                                        Id = "oauth2"
+                                    }
+                                },
+                                new[] { $"api://{azureAd["ClientId"]}/access_as_user" }
+                            }
+                        });
+                    }
                 }
             });
 
