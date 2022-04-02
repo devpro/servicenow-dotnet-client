@@ -90,6 +90,21 @@ namespace RabbidsIncubator.ServiceNowClient.Application.DependencyInjection
                         builder.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(openTelemetryService));
                         builder.AddAspNetCoreInstrumentation(options =>
                         {
+                            options.Filter = (httpContext) =>
+                            {
+                                var pathsToIgnore = "/health";
+
+                                foreach (var path in pathsToIgnore.Split(','))
+                                {
+                                    if (httpContext.Request.Path.StartsWithSegments(path))
+                                    {
+                                        return false;
+                                    }
+                                }
+
+                                return true;
+                            };
+
                             options.RecordException = true;
                             if (enrichAction != default)
                             {
