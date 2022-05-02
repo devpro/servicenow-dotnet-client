@@ -24,6 +24,11 @@ namespace RabbidsIncubator.ServiceNowClient.Application.Generators.Models
         public bool IsAuthorizationRequired { get; set; } = true;
 
         /// <summary>
+        /// Comma separated roles to be set to the authorization.
+        /// </summary>
+        public string AuthorizationRoles { get; set; } = string.Empty;
+
+        /// <summary>
         /// Queries.
         /// </summary>
         public QueriesModel Queries { get; set; }

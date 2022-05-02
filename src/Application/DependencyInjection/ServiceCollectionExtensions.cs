@@ -92,7 +92,7 @@ namespace RabbidsIncubator.ServiceNowClient.Application.DependencyInjection
                         {
                             options.Filter = (httpContext) =>
                             {
-                                var pathsToIgnore = "/health";
+                                var pathsToIgnore = "/health,/favicon.ico";
 
                                 foreach (var path in pathsToIgnore.Split(','))
                                 {
