@@ -5,7 +5,7 @@ targetApplication: WebApp
 entities:
   - name: Location
     resourceName: locations
-    isAuthorizationRequired: false
+    #isAuthorizationRequired: false
     queries:
       findAll:
         serviceNowRestApiTable: cmn_location

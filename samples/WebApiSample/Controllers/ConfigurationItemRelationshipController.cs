@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RabbidsIncubator.Samples.ServiceNowWebApiSample.Domain;
 
 namespace RabbidsIncubator.Samples.ServiceNowWebApiSample.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("configuration-item-relationships")]
     public class ConfigurationItemRelationshipController : RabbidsIncubator.ServiceNowClient.Application.Mvc.ControllerBase

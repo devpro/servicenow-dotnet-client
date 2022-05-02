@@ -36,10 +36,15 @@ using {namespaces.Root}.Domain.Repositories;
 namespace {namespaces.WebApi}.Controllers
 {{");
 
-            if (entity.IsAuthorizationRequired)
+            if (entity.IsAuthorizationRequired && string.IsNullOrEmpty(entity.AuthorizationRoles))
             {
                 sourceBuilder.Append(@"
     [Authorize]");
+            }
+            else if (entity.IsAuthorizationRequired && !string.IsNullOrEmpty(entity.AuthorizationRoles))
+            {
+                sourceBuilder.Append($@"
+    [Authorize(Roles = ""{entity.AuthorizationRoles}"")]");
             }
 
             sourceBuilder.Append($@"
