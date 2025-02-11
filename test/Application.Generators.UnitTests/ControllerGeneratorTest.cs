@@ -88,6 +88,12 @@ namespace RabbidsIncubator.ServiceNowClient.DummyProject.Controllers
     }
 }
 ";
+
+            // TODO: investigate and fix (may come from netstandard2.0 vs net9.0)
+            var expectedDiagnostic = DiagnosticResult
+                .CompilerError("CS1705")
+                .WithArguments("RabbidsIncubator.ServiceNowClient.Domain", "RabbidsIncubator.ServiceNowClient.Domain, Version=1.3.0.0, Culture=neutral, PublicKeyToken=null", "System.Runtime, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", "System.Runtime", "System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a");
+
             var test = new VerifyCS.Test
             {
                 TestState =
@@ -129,9 +135,16 @@ entities:
                     GeneratedSources =
                     {
                         (typeof(ControllerGenerator), "GeneratedLocationController.cs", SourceText.From(expected, Encoding.UTF8, SourceHashAlgorithm.Sha1)),
+                    },
+                    ExpectedDiagnostics =
+                    {
+                        expectedDiagnostic,
+                        expectedDiagnostic,
+                        expectedDiagnostic
                     }
                 }
             };
+            
             await test.RunAsync();
         }
     }

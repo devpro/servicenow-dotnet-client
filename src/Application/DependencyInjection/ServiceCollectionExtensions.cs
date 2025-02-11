@@ -68,14 +68,13 @@ namespace RabbidsIncubator.ServiceNowClient.Application.DependencyInjection
                 if (!string.IsNullOrEmpty(openTelemetryMetricsMeter))
                 {
                     services.AddSingleton<Domain.Diagnostics.IMetricsContext, Diagnostics.MetricsContext>();
-                    services.AddOpenTelemetryMetrics(builder =>
-                    {
-                        builder.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(openTelemetryService));
-                        builder.AddAspNetCoreInstrumentation();
-                        builder.AddHttpClientInstrumentation();
-                        builder.AddMeter(openTelemetryMetricsMeter);
-                        builder.AddOtlpExporter(options => options.Endpoint = new Uri(openTelemetryCollectorEndpoint));
-                    });
+                    services.AddOpenTelemetry()
+                        .ConfigureResource(builder => builder
+                            .AddService(serviceName: openTelemetryService))
+                        .WithMetrics(builder => builder
+                            .AddAspNetCoreInstrumentation()
+                            .AddOtlpExporter(options => options.Endpoint = new Uri(openTelemetryCollectorEndpoint))
+                        );
                 }
                 else
                 {
@@ -85,37 +84,40 @@ namespace RabbidsIncubator.ServiceNowClient.Application.DependencyInjection
                 var openTelemetryTracingSource = configuration[ConfigurationConstants.OpenTelemetryTracingSourceConfigKey];
                 if (!string.IsNullOrEmpty(openTelemetryTracingSource))
                 {
-                    services.AddOpenTelemetryTracing(builder =>
-                    {
-                        builder.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(openTelemetryService));
-                        builder.AddAspNetCoreInstrumentation(options =>
-                        {
-                            options.Filter = (httpContext) =>
-                            {
-                                var pathsToIgnore = "/health,/favicon.ico";
 
-                                foreach (var path in pathsToIgnore.Split(','))
+                    services.AddOpenTelemetry()
+                        .ConfigureResource(builder => builder
+                            .AddService(serviceName: openTelemetryService))
+                        .WithTracing(builder => builder
+                            .AddAspNetCoreInstrumentation(options =>
+                            {
+                                options.Filter = (httpContext) =>
                                 {
-                                    if (httpContext.Request.Path.StartsWithSegments(path))
+                                    var pathsToIgnore = "/health,/favicon.ico";
+
+                                    foreach (var path in pathsToIgnore.Split(','))
                                     {
-                                        return false;
+                                        if (httpContext.Request.Path.StartsWithSegments(path))
+                                        {
+                                            return false;
+                                        }
                                     }
-                                }
 
-                                return true;
-                            };
+                                    return true;
+                                };
 
-                            options.RecordException = true;
-                            if (enrichAction != default)
-                            {
-                                options.Enrich = enrichAction;
-                            }
-                        });
-                        builder.AddHttpClientInstrumentation();
-                        builder.AddSqlClientInstrumentation();
-                        builder.AddSource(openTelemetryTracingSource);
-                        builder.AddOtlpExporter(options => options.Endpoint = new Uri(openTelemetryCollectorEndpoint));
-                    });
+                                options.RecordException = true;
+                                // TODO: migrate to latest version of the lib
+                                //if (enrichAction != default)
+                                //{
+                                //    options.Enrich = enrichAction;
+                                //}
+                            })
+                            .AddHttpClientInstrumentation()
+                            .AddSqlClientInstrumentation()
+                            .AddSource(openTelemetryTracingSource)
+                            .AddOtlpExporter(options => options.Endpoint = new Uri(openTelemetryCollectorEndpoint))
+                        );
                 }
 
                 logging.AddOpenTelemetry(builder =>

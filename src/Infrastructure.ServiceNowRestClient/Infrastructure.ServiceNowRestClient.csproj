@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <AssemblyName>RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient</AssemblyName>
     <RootNamespace>RabbidsIncubator.ServiceNowClient.Infrastructure.ServiceNowRestClient</RootNamespace>
     <ProjectGuid>{D1503758-1C3A-4CB3-8C9C-AAD9D31B1E91}</ProjectGuid>
@@ -14,11 +14,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="11.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
-    <PackageReference Include="Withywoods.Net.Http" Version="1.4.6" />
-    <PackageReference Include="Withywoods.Serialization" Version="1.4.6" />
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.1" />
+    <PackageReference Include="Withywoods.Net.Http" Version="1.5.2" />
+    <PackageReference Include="Withywoods.Serialization" Version="1.5.2" />
   </ItemGroup>
 
   <ItemGroup>
