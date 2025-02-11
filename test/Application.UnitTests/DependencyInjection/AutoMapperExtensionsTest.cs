@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using AutoMapper;
+using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using RabbidsIncubator.ServiceNowClient.Application.DependencyInjection;
 using Xunit;
@@ -15,7 +16,8 @@ namespace RabbidsIncubator.ServiceNowClient.Application.UnitTests.DependencyInje
             var serviceCollection = new ServiceCollection();
 
             // Act
-            serviceCollection.AddAutoMapper();
+            Profile[] additionalProfiles = [];
+            serviceCollection.AddAutoMapper(additionalProfiles);
 
             // Assert
             var serviceProvider = serviceCollection.BuildServiceProvider();

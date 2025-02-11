@@ -1,10 +1,9 @@
 #include:
 #  - remote: "https://raw.githubusercontent.com/rabbids-incubator/gitlab-pipeline-definitions/feature/dotnet-templates/dotnet/ci.yml"
 
-image: mcr.microsoft.com/dotnet/sdk:6.0
+image: mcr.microsoft.com/dotnet/sdk:9.0
 
 variables:
-  ROOT_FOLDER: .
   BUILD_SOURCEBRANCHNAME: $CI_COMMIT_BRANCH
   BUILD_BUILDID: $CI_PIPELINE_ID
   ACCEPT_EULA: "Y"
@@ -12,8 +11,8 @@ variables:
 
 stages:
   - build
-  - pack
   - test
+  - deliver
 
 services:
   # see: https://docs.microsoft.com/en-us/sql/linux/quickstart-install-connect-docker
@@ -24,16 +23,15 @@ services:
 # CI_PIPELINE_SOURCE=push|external_pull_request_event|schedule
 workflow:
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "external_pull_request_event"'
-    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
-    - if: '$CI_PIPELINE_SOURCE == "web"'
+    # - if: '$CI_PIPELINE_SOURCE == "external_pull_request_event"'
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_PIPELINE_SOURCE == "web"
 
 #.dotnet_build:
-build:
+build-dotnet:
   stage: build
   script:
-    - env
-    - cd $ROOT_FOLDER
     - dotnet restore
     - dotnet build --no-restore --configuration Debug
 
@@ -46,12 +44,12 @@ build:
 #    - /opt/mssql-tools/bin/sqlcmd -S mssql -U SA -P $SA_PASSWORD -i $PWD/scripts/mssql/db-init.sql 2>&1
 
 #.dotnet_test_sonar:
-test:
+test-dotnet:
   stage: test
   variables:
-    COBERTURA_REPORT_FILEPATH: ./test/*/TestResults/*/coverage.cobertura.xml
-    REPORTGENERATOR_OPTIONS: -targetdir:sonarqubecoverage -reporttypes:SonarQube
-    SONAR_EXTRA_PARAMETERS: /d:sonar.cpd.exclusions=**/*Generated*.cs /d:sonar.coverageReportPaths=./sonarqubecoverage/SonarQube.xml
+    DOTNET_TEST_RESULT_XMLFILES: ./**/*test-result.xml
+    DOTNET_TEST_COVERAGE_XMLFILES: ./test/*/TestResults/*/coverage.cobertura.xml
+    DOTNET_TEST_REPORT_FOLDER: report
     Application__IsSecuredByAzureAd: "false"
     Application__IsOpenTelemetryEnabled: "true"
     OpenTelemetry__Service: SampleServiceNowRestClient
@@ -80,46 +78,51 @@ test:
     - apt-get install -y npm
     - npm install -g @mockoon/cli
     # starts api mocks
-    - mockoon-cli start --data "$(pwd)/mocks/servicenow.json" --port 3000
-    - mockoon-cli list
+    - mockoon-cli start --data "$(pwd)/mocks/servicenow.json" --port 3000 &
     # installs java runtime, sonar scanner and report generator tool
-    - apt install -y default-jre
-    - dotnet tool install --global dotnet-sonarscanner
+    # - apt install -y default-jre
+    # - dotnet tool install --global dotnet-sonarscanner
     - dotnet tool install --global dotnet-reportgenerator-globaltool
     # adds dotnet global tool in the path
     - export PATH="$PATH:/root/.dotnet/tools"
   script:
-    - cd $ROOT_FOLDER
     # runs all tests with sonar analysis
     - dotnet restore
-    - dotnet sonarscanner begin /o:$SONAR_ORGANIZATION /k:$SONAR_PROJECTKEY /d:sonar.host.url=$SONAR_HOSTURL $SONAR_EXTRA_PARAMETERS
+    # - dotnet sonarscanner begin /o:$SONAR_ORGANIZATION /k:$SONAR_PROJECTKEY /d:sonar.host.url=$SONAR_HOSTURL /d:sonar.cpd.exclusions=**/*Generated*.cs /d:sonar.coverageReportPaths=./sonarqubecoverage/SonarQube.xml
     - dotnet test --configuration Debug --logger:"junit;LogFilePath=..\..\artifacts\{assembly}-test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose" --collect:"XPlat Code Coverage"
-    - reportgenerator "-reports:$COBERTURA_REPORT_FILEPATH" $REPORTGENERATOR_OPTIONS
-    - dotnet sonarscanner end
-  after_script:
-    - mockoon-cli stop "all"
+    - reportgenerator "-reports:$DOTNET_TEST_COVERAGE_XMLFILES" -targetdir:$DOTNET_TEST_REPORT_FOLDER "-reporttypes:Cobertura;Html;TextSummary"
+    - cat $DOTNET_TEST_REPORT_FOLDER/Summary.txt
+    # - reportgenerator "-reports:$DOTNET_TEST_COVERAGE_XMLFILES" -targetdir:sonarqubecoverage -reporttypes:SonarQube
+    # - dotnet sonarscanner end
+  # after_script:
   #dependencies:
   #  - build
   artifacts:
     when: always
     paths:
-      - ./**/*test-result.xml
-      - $COBERTURA_REPORT_FILEPATH
+      - $DOTNET_TEST_RESULT_XMLFILES
+      - $DOTNET_TEST_COVERAGE_XMLFILES
+      - $DOTNET_TEST_REPORT_FOLDER/Cobertura.xml
+      - $DOTNET_TEST_REPORT_FOLDER/Summary.txt
     reports:
       junit:
-        - ./**/*test-result.xml
-      cobertura: $COBERTURA_REPORT_FILEPATH
+        - $DOTNET_TEST_RESULT_XMLFILES
+      coverage_report:
+        coverage_format: cobertura
+        # should also work and will prevent issue with line limit
+        # path: $DOTNET_TEST_REPORT_FOLDER/Cobertura.xml
+        path: $DOTNET_TEST_COVERAGE_XMLFILES
+  coverage: '/Line coverage: \d+(?:\.\d+)?%/'
   only:
-    - external_pull_requests
+    - merge_requests
     - main
     - web
 
 # ref. https://docs.microsoft.com/en-us/nuget/nuget-org/publish-a-package
 #.dotnet_pack:
-pack:
-  stage: build
+pack-dotnet:
+  stage: deliver
   script:
-    - cd $ROOT_FOLDER
     - dotnet restore
     - dotnet build --no-restore --configuration Release
     - dotnet pack --no-build --configuration Release -o output
@@ -141,3 +144,14 @@ pack:
 
 #test:
 #  extends: .dotnet_test
+
+include:
+  # https://docs.gitlab.com/ee/user/application_security/dependency_scanning/  
+  - template: Jobs/Dependency-Scanning.gitlab-ci.yml
+  # https://docs.gitlab.com/ee/user/application_security/sast/
+  - template: Jobs/SAST.gitlab-ci.yml
+  # https://docs.gitlab.com/ee/user/application_security/secret_detection/pipeline/
+  - template: Jobs/Secret-Detection.gitlab-ci.yml
+
+sast:
+  stage: test

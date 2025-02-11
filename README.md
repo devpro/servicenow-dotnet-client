@@ -1,9 +1,10 @@
 # ServiceNow .NET Client
 
-[![GitLab Pipeline Status](https://gitlab.com/rabbids-incubator/servicenow-dotnet-client/badges/main/pipeline.svg)](https://gitlab.com/rabbids-incubator/servicenow-dotnet-client/-/pipelines)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=rabbids-incubator_servicenow-dotnet-client&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=rabbids-incubator_servicenow-dotnet-client)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=rabbids-incubator_servicenow-dotnet-client&metric=coverage)](https://sonarcloud.io/summary/new_code?id=rabbids-incubator_servicenow-dotnet-client)
+[![GitLab Pipeline Status](https://gitlab.com/devpro-labs/software/servicenow-dotnet-client/badges/main/pipeline.svg)](https://gitlab.com/devpro-labs/software/servicenow-dotnet-client/-/pipelines)
+[![coverage report](https://gitlab.com/devpro-labs/software/servicenow-dotnet-client/badges/main/coverage.svg)](https://gitlab.com/devpro-labs/software/servicenow-dotnet-client/-/commits/main)
 [![Nuget](https://img.shields.io/nuget/v/RabbidsIncubator.ServiceNowClient.Application.svg)](https://www.nuget.org/packages/RabbidsIncubator.ServiceNowClient.Application)
+<!--[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=rabbids-incubator_servicenow-dotnet-client&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=rabbids-incubator_servicenow-dotnet-client)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=rabbids-incubator_servicenow-dotnet-client&metric=coverage)](https://sonarcloud.io/summary/new_code?id=rabbids-incubator_servicenow-dotnet-client)-->
 
 .NET components (API & libraries) to simplify the integration with [ServiceNow](https://www.servicenow.com/), from any system (Linux, MacOS, Windows).
 
